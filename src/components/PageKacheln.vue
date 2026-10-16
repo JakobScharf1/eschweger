@@ -50,7 +50,7 @@
             Entdecken Sie Ihre Region!
           </h3>
           <p>
-            Neben unserer Funktion als Bürgerzeitung bieten wir zudem verschiedene Angebote, wie einen Veranstaltungskalender, Gewinnspiele, einen Merchandise-Shop oder Kleinanzeigen an. Natürlich alles kostenlos!
+            Neben unserer Funktion als Bürgerzeitung bieten wir zudem verschiedene Angebote, wie einen Veranstaltungskalender, Gewinnspiele und Kleinanzeigen an. Natürlich alles kostenlos!
           </p>
         </div>
         <!--/column -->
@@ -84,26 +84,26 @@ const cards = [
     iconClass: "icon-svg icon-svg-md text-red mb-3",
     title: "Gewinnspiele",
     description:
-      "Monatlich neue Gewinnspiele mit unterschiedlichsten Preisen und hoher Gewinnchance!",
+      "Gewinne bis zum 1.1.2027 eine Drohne!",
     path: "/gewinnspiele"
   },
+  // {
+  //   id: 3,
+  //   classes: "col-md-5",
+  //   cardClass: "bg-pale-leaf",
+  //   iconSrc: "/assets/img/icons/lineal/shop.svg",
+  //   iconClass: "icon-svg icon-svg-md text-leaf mb-3",
+  //   title: "Merchandise",
+  //   description: "Regional hergestellt und gestaltet.",
+  //   path: "/shop"
+  // },
   {
     id: 3,
-    classes: "col-md-5",
-    cardClass: "bg-pale-leaf",
-    iconSrc: "/assets/img/icons/lineal/shop.svg",
-    iconClass: "icon-svg icon-svg-md text-leaf mb-3",
-    title: "Merchandise",
-    description: "Regional hergestellt und gestaltet.",
-    path: "/shop"
-  },
-  {
-    id: 4,
     classes: "col-md-6 align-self-start",
     cardClass: "bg-pale-primary",
     iconSrc: "/assets/img/icons/lineal/pin.svg",
     iconClass: "icon-svg icon-svg-md text-primary mb-3",
-    title: "Kleinanzeigen",
+    title: "Kostenlose Kleinanzeigen",
     description:
       "Inserieren Sie digital und in unserer Zeitung, um Bürger:innen in Ihrer Umgebung zu erreichen!",
     path: "/kleinanzeigen"

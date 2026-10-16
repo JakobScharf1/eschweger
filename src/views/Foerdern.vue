@@ -7,8 +7,7 @@
             <img
               :width="560"
               :height="525"
-              src="/assets/img/avatars/avatar.jpg"
-              srcset="/assets/img/avatars/avatar@2x.jpg 2x"
+              src="/assets/img/eschweger/foerdermitgliedschaft.jpg?url"
               alt=""
             />
           </div>
@@ -21,9 +20,7 @@
         <p>
             Die jährliche Mitgliedschaft verlängert sich automatisch um ein weiteres Jahr, wenn nicht bis eine Woche vor Ablauf des Jahres gekündigt wurde. Dazu werden Sie rechtzeitig per E-Mail informiert.
         </p>
-          </p>
-          <a href="#" class="btn btn-primary mt-2"
-            >Jetzt unterstützen</a>
+      </p>
         </div>
         <!--/column -->
       </div>

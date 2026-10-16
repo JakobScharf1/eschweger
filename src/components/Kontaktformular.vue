@@ -49,7 +49,7 @@
                     </div>
                   </div>
                   <!-- /column -->
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <div class="form-floating mb-4">
                       <input
                         type="email"
@@ -65,32 +65,58 @@
                       <div class="invalid-feedback">{{ errors.email || 'Bitte geben Sie eine gültige Email an.' }}</div>
                     </div>
                   </div>
-                  <!-- /column -->
-                  <div class="col-md-6">
-                    <div class="form-select-wrapper mb-4">
-                      <select
-                        class="form-select"
-                        id="form-select"
-                        name="department"
+                  <div class="col-md-12">
+                    <div class="form-floating mb-4">
+                      <input
+                        type="text"
+                        name="strasse"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.strasse }"
+                        placeholder="Strasse & Hausnr."
                         required
-                        v-model="form.category"
-                        :disabled="preselection"
-                      >
-                        <option selected disabled value="">
-                          Betreff auswählen
-                        </option>
-                        <option value="Allgemein">Allgemeine Anfrage</option>
-                        <option value="Inhaltliche Frage">
-                          Fragen zu Inhalten
-                        </option>
-                        <option value="Leserbrief">Leser:innenbrief</option>
-                        <option value="Mitmachen">Mitmachen</option>
-                        <option value="Werbeanzeigen">Werbeanzeigen</option>
-                      </select>
-                      <div class="valid-feedback">Looks good!</div>
-                      <div class="invalid-feedback">{{ errors.category || 'Please select a department.' }}</div>
+                        v-model="form.strasse"
+                      />
+                      <label>Straße & Hausnr. *</label>
+                      <div class="valid-feedback">Passt!</div>
+                      <div class="invalid-feedback">{{ errors.strasse || 'Bitte geben Sie eine gültige Straße und Hausnummer an.' }}</div>
                     </div>
                   </div>
+
+                  <div class="col-md-6">
+                    <div class="form-floating mb-4">
+                      <input
+                        type="text"
+                        name="plz"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.plz }
+                        "
+                        placeholder="37281"
+                        required
+                        v-model="form.plz"
+                      />
+                      <label>PLZ *</label>
+                      <div class="valid-feedback">Passt!</div>
+                      <div class="invalid-feedback">{{ errors.plz || 'Bitte PLZ angeben.' }}</div>
+                    </div>
+                  </div>
+                  <!-- /column -->
+                  <div class="col-md-6">
+                    <div class="form-floating mb-4">
+                      <input
+                        type="text"
+                        name="ort"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.ort }"
+                        placeholder="Eschwege"
+                        required
+                        v-model="form.ort"
+                      />
+                      <label>Ort *</label>
+                      <div class="valid-feedback">Passt!</div>
+                      <div class="invalid-feedback">{{ errors.ort || 'Bitte Ort angeben.' }}</div>
+                    </div>
+                  </div>
+
                   <!-- /column -->
                   <div class="col-12">
                     <div class="form-floating mb-4">
@@ -155,8 +181,8 @@
                   <h5>Adresse</h5>
 
                   <address>
-                    STRASSE HAUSNR.<br class="d-none d-md-block" />
-                    PLZ, ORT
+                    Unter den Weiden 5<br class="d-none d-md-block" />
+                    37281 Wanfried
                   </address>
                 </div>
               </div>
@@ -172,8 +198,8 @@
                 <div>
                   <h5>Telefon</h5>
 
-                  <a :href="`tel:${12345}`">
-                    012358726347
+                  <a :href="`tel:${+491608989401}`">
+                    0160 89 89 401
                   </a>
                 </div>
               </div>
@@ -189,7 +215,7 @@
                 <div>
                   <h5>Email</h5>
 
-                  <a :href="`mailto:info@mail.com`">info@mail.com</a>
+                  <a :href="`mailto:redaktion@die-eschweger.de`">redaktion@die-eschweger.de</a>
                 </div>
               </div>
             </div>
@@ -215,7 +241,9 @@ const form = reactive({
   vorname: '',
   nachname: '',
   email: '',
-  category: '',
+  strasse: '',
+  plz: '',
+  ort: '',
   message: '',
   accepted: false,
 })
@@ -224,15 +252,11 @@ const errors = reactive({
   vorname: '',
   nachname: '',
   email: '',
-  category: '',
+  strasse: '',
+  plz: '',
+  ort: '',
   message: '',
   accepted: '',
-})
-
-onMounted(() => {
-  if (props.preselection) {
-    form.category = props.preselection
-  }
 })
 
 function validate() {
@@ -253,8 +277,16 @@ function validate() {
     errors.email = 'Bitte geben Sie eine gültige Email an.'
     ok = false
   }
-  if (!form.category) {
-    errors.category = 'Bitte Betreff auswählen.'
+  if (!form.strasse || !form.strasse.trim()) {
+    errors.message = 'Bitte geben Sie eine Straße und Hausnummer ein.'
+    ok = false
+  }
+  if (!form.plz || !form.plz.trim()) {
+    errors.message = 'Bitte geben Sie eine gültige PLZ ein.'
+    ok = false
+  }
+  if (!form.ort || !form.ort.trim()) {
+    errors.message = 'Bitte geben Sie eine Ort ein.'
     ok = false
   }
   if (!form.message || !form.message.trim()) {
@@ -273,7 +305,9 @@ function resetForm() {
   form.vorname = ''
   form.nachname = ''
   form.email = ''
-  form.category = ''
+  form.strasse = ''
+  form.ort = ''
+  form.plz = ''
   form.message = ''
   form.accepted = false
 }

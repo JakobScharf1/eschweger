@@ -8447,71 +8447,71 @@ fieldset:disabled .btn {
 .sticky-top {
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-index: 999;
 }
 .sticky-bottom {
     position: sticky;
     bottom: 0;
-    z-index: 1020;
+    z-index: 999;
 }
 @media (min-width: 576px) {
     .sticky-sm-top {
         position: sticky;
         top: 0;
-        z-index: 1020;
+        z-index: 999;
     }
     .sticky-sm-bottom {
         position: sticky;
         bottom: 0;
-        z-index: 1020;
+        z-index: 999;
     }
 }
 @media (min-width: 768px) {
     .sticky-md-top {
         position: sticky;
         top: 0;
-        z-index: 1020;
+        z-index: 999;
     }
     .sticky-md-bottom {
         position: sticky;
         bottom: 0;
-        z-index: 1020;
+        z-index: 999;
     }
 }
 @media (min-width: 992px) {
     .sticky-lg-top {
         position: sticky;
         top: 0;
-        z-index: 1020;
+        z-index: 999;
     }
     .sticky-lg-bottom {
         position: sticky;
         bottom: 0;
-        z-index: 1020;
+        z-index: 999;
     }
 }
 @media (min-width: 1200px) {
     .sticky-xl-top {
         position: sticky;
         top: 0;
-        z-index: 1020;
+        z-index: 999;
     }
     .sticky-xl-bottom {
         position: sticky;
         bottom: 0;
-        z-index: 1020;
+        z-index: 999;
     }
 }
 @media (min-width: 1400px) {
     .sticky-xxl-top {
         position: sticky;
         top: 0;
-        z-index: 1020;
+        z-index: 999;
     }
     .sticky-xxl-bottom {
         position: sticky;
         bottom: 0;
-        z-index: 1020;
+        z-index: 999;
     }
 }
 .visually-hidden,
@@ -31961,7 +31961,7 @@ header {
 }
 .navbar {
     width: 100%;
-    z-index: 1020;
+    z-index: 999;
 }
 .navbar .container {
     position: relative;
@@ -32022,7 +32022,7 @@ header {
 }
 .navbar-clone {
     position: fixed !important;
-    z-index: 1008;
+    z-index: 999;
     top: 0;
     left: 0;
     transform: translateY(-100%);

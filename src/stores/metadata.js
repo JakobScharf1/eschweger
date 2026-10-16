@@ -3,15 +3,16 @@ import { defineStore } from "pinia"
 
 export const useMetaStore = defineStore('meta', () => {
     const id = ref(1)
-    const title = ref("Der Wannefredder")
-    const logo = ref("/assets/img/logo.png")
-    const facebook = ref("https://facebook.com/wannefredder")
-    const instagram = ref("https://instagram.com/der_wannefredder")
+    const title = ref("DIE ESCHWEGER")
+    const logo = ref("/assets/img/eschweger/logo.png")
+    const logoFooter = ref("/assets/img/eschweger/logo-clean.png")
+    const facebook = ref("https://www.facebook.com/people/Die-Eschweger/61592634340997")
+    const instagram = ref("https://instagram.com/dieeschweger")
     const favicon = ref("/favicon.ico")
-    const strasse = ref("Musterstr. 1")
+    const strasse = ref("Unter den Weiden 5")
     const ort = ref("37281 Wanfried")
-    const email = ref("info@wannefredder.de")
-    const tel = ref("+4915223706657")
+    const email = ref("info@brombeerland.de")
+    const tel = ref("0160 89 89 401")
 
     async function fetchMeta() {
         return
@@ -21,6 +22,7 @@ export const useMetaStore = defineStore('meta', () => {
         id,
         title,
         logo,
+        logoFooter,
         facebook,
         instagram,
         favicon,

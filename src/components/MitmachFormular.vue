@@ -75,7 +75,41 @@
           </div>
         </div>
 
-        <div class="col-12">
+        <div class="col-6">
+          <div class="form-floating mb-4">
+            <input
+              type="text"
+              name="strasse"
+              class="form-control"
+              :class="{ 'is-invalid': errors.strasse && (showErrors || touched.strasse) }"
+              placeholder="Strasse"
+              required
+              v-model="form.strasse"
+              @blur="setTouched('strasse')"
+            />
+            <label>Straße und Hausnr. *</label>
+            <div v-if="errors.strasse && (showErrors || touched.strasse)" class="invalid-feedback">{{ errors.strasse }}</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-floating mb-4">
+            <input
+              type="text"
+              name="plz"
+              class="form-control"
+              :class="{ 'is-invalid': errors.plz && (showErrors || touched.plz) }"
+              placeholder="PLZ"
+              required
+              v-model="form.plz"
+              @blur="setTouched('plz')"
+            />
+            <label>PLZ *</label>
+            <div v-if="errors.plz && (showErrors || touched.plz)" class="invalid-feedback">{{ errors.plz }}</div>
+          </div>
+        </div>
+
+        <div class="col-3">
           <div class="form-floating mb-4">
             <input
               type="text"
@@ -89,6 +123,24 @@
             />
             <label>Ort *</label>
             <div v-if="errors.ort && (showErrors || touched.ort)" class="invalid-feedback">{{ errors.ort }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 mb-4">
+          <h4>Paket auswählen</h4>
+          <div class="row">
+            <div class="col-3">
+              <div class="form-check" v-for="paket in pakete1">
+                <input class="form-check-input" type="checkbox" v-model="paket.chosen" :id="paket.label">
+                <label class="form-check-label" :for="paket.label">{{ paket.label }}</label>
+              </div>
+            </div>
+            <div class="col-9">
+              <div class="form-check" v-for="paket in pakete2">
+                <input class="form-check-input" type="checkbox" v-model="paket.chosen" :id="paket.label">
+                <label class="form-check-label" :for="paket.label">{{ paket.label }}</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -123,12 +175,60 @@ const submitting = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
 
+const pakete1 = reactive([
+  {
+    label: "Social Media",
+    chosen: false,
+  },
+  {
+    label: "Newsletter",
+    chosen: false,
+  },
+  {
+    label: "Veranstaltungskalender",
+    chosen: false,
+  },
+  {
+    label: "Veranstaltungsteilnahme",
+    chosen: false,
+  },
+  {
+    label: "Abobetreuung",
+    chosen: false,
+  },
+])
+
+const pakete2 = reactive([
+  {
+    label: "Recherche",
+    chosen: false,
+  },
+  {
+    label: "Redaktion",
+    chosen: false,
+  },
+  {
+    label: "Fotos",
+    chosen: false,
+  },
+  {
+    label: "Printausgabe",
+    chosen: false,
+  },
+  {
+    label: "Anzeigenverkauf, Social-Gamification und Mitmachaktionen",
+    chosen: false,
+  },
+])
+
 const form = reactive({
   vorname: '',
   nachname: '',
   email: '',
   telefon: '',
   ort: '',
+  strasse: '',
+  plz: '',
   bemerkung: '',
 })
 
@@ -138,6 +238,8 @@ const errors = reactive({
   email: '',
   telefon: '',
   ort: '',
+  strasse: '',
+  plz: '',
 })
 
 const touched = reactive({
@@ -146,6 +248,8 @@ const touched = reactive({
   email: false,
   telefon: false,
   ort: false,
+  strasse: false,
+  plz: false,
 })
 
 const showErrors = ref(false)
@@ -176,6 +280,14 @@ function validate() {
     errors.ort = 'Bitte Ort angeben.'
     ok = false
   }
+  if (!form.strasse || !form.strasse.trim()) {
+    errors.ort = 'Bitte Straße und Hausnummer angeben.'
+    ok = false
+  }
+  if (!form.plz || !form.plz.trim()) {
+    errors.plz = 'Bitte PLZ angeben.'
+    ok = false
+  }
 
   return ok
 }
@@ -192,6 +304,8 @@ function resetForm() {
   form.email = ''
   form.telefon = ''
   form.ort = ''
+  form.strasse = ''
+  form.plz = ''
   form.bemerkung = ''
 }
 

@@ -1,31 +1,29 @@
 <template>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      href="https://wannefredder.sumupstore.com/"
-      target="_blank"
-      >Shop</a
-    >
-  </li>
-  <li class="nav-item">
+  <!-- <li class="nav-item">
     <router-link
       :class="['nav-link', { active: isActiveMenu('/veranstaltungen') }]"
       to="/veranstaltungen"
       >Veranstaltungen</router-link
     >
-  </li>
+  </li> -->
   <li class="nav-item">
     <router-link
-      :class="['nav-link', { active: isActiveMenu('/gewinnspiel') }]"
-      to="/gewinnspiel"
-      >Gewinnspiel</router-link
+      :class="['nav-link', { active: isActiveMenu('/mitmachen') }]"
+      to="/mitmachen"
+      >Mitmachen</router-link
     >
   </li>
   <li class="nav-item">
     <router-link
-      :class="['nav-link', { active: isActiveMenu('/unterstuetzen') }]"
-      to="/unterstuetzen"
-    >Unterstützen</router-link>
+      :class="['nav-link', { active: isActiveMenu('/ueber') }]"
+      to="/ueber"
+    >Über</router-link>
+  </li>
+  <li class="nav-item">
+    <router-link
+      :class="['nav-link', { active: isActiveMenu('/anzeigen') }]"
+      to="/anzeigen"
+    >Anzeigen</router-link>
   </li>
 </template>
 

@@ -13,9 +13,6 @@
       <!-- /.row -->
     </div>
     <!-- /.container -->
-    <figure class="position-absoute" style="bottom: 0; left: 0; z-index: 2">
-      <img src="/assets/img/photos/bg12.jpg" alt="photo" />
-    </figure>
   </section>
 
   <section class="wrapper bg-gray">
@@ -30,8 +27,7 @@
         <img src="/assets/img/icons/lineal/home.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
           <h3 class="mt-3">Unsere Geschichte</h3>
           <p>
-            Etiam porta sem malesuada magna mollis euismod. Praesent commodo
-            cursus magna vel consectetur purus sit amet fermentum.
+            Die Idee für DIE ESCHWEGER ist uns gekommen, nachdem wir bemerkt haben, dass die Kommunikation der Stadt, der Vereine und anderer Akteure in der Hauptsache über die Sozialen Medien oder die Tageszeitung läuft. Da aber nicht alle Bürger unserer Stadt die richtigen Online-Kanäle oder die Tageszeitung abonniert haben, aus was für Gründen auch immer, geht viel an Informationen verloren. Deshalb haben wir uns entschieden, eine monatliche Zeitung herauszugeben, die für alle Bewohner kostenlos ist.
           </p>
           <ul class="progress-list">
             <li
@@ -53,10 +49,7 @@
             <img src="/assets/img/icons/lineal/balance.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
           <h3 class="mt-3">Unsere Philosophie</h3>
           <p>
-            Vestibulum id ligula porta felis euismod semper. Cras mattis
-            consectetur purus sit amet fermentum. Donec ullamcorper nulla non
-            metus auctor fringilla. Nullam id dolor id nibh ultricies. Cras
-            mattis consectetur purus amet fermentum.
+            Eine Stadtzeitung von Eschwegern für Eschweger! Wir wollen allen Bürgern, Vereinen, Stammtischen, Organisationen und Unternehmen Eschweges ein Sprachrohr sein. Wir möchten mit DIE ESCHWEGER das Wir-Gefühl in unserer Stadt stärken und durch unterschiedliche Perspektiven in der Berichterstattung die vielen Besonderheiten und die Einzigartigkeit Eschweges beleuchten.
           </p>
           <ul class="icon-list bullet-bg bullet-soft-primary mb-0">
             <li v-for="(item, index) in checklistItems" :key="index">
@@ -69,10 +62,8 @@
             <img src="/assets/img/icons/lineal/check-list.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
           <h3 class="mt-3">Was wir noch vorhaben</h3>
           <p>
-            Vestibulum id ligula porta felis euismod semper. Cras mattis
-            consectetur purus sit amet fermentum. Donec ullamcorper nulla non
-            metus auctor fringilla. Nullam id dolor id nibh ultricies. Cras
-            mattis consectetur purus amet fermentum.
+            Wir möchten mit einem gut erreichbaren Redaktionsladen einen Anlaufpunkt für alle Eschweger und ihre Gäste geschaffen.<br/>
+            Wir wollen alle Bürger zu zukünftigen Veranstaltungen einladen, sich zu begegnen, zu feiern und zu „schnuddeln“. Dabei können alteingessene Eschweger die neuen Bürger kennen lernen. Die „Alten“ können sich mit den „Jungen“ austauschen und unsere Gäste und Freunde von „Auswärts“ können erleben, wie gut und gerne die Eschweger feiern können. Und in der Vorweihnachtszeit soll es jedes Jahr einen Adventskalender geben. Lassen Sie sich überraschen. Aber vielleicht haben Sie, habt Ihr noch mehr Ideen, was DIE ESCHWEGER noch so alles los machen können. Seid gespannt, wir sind es auch.
           </p>
           <ul class="icon-list bullet-bg bullet-soft-primary mb-0">
             <li v-for="(item, index) in checklistItems" :key="index">
@@ -98,8 +89,7 @@
             <div class="item">
               <figure class="rounded shadow">
                 <img
-                  src="/assets/img/photos/about2.jpg"
-                  srcset="/assets/img/photos/about2@2x.jpg 2x"
+                  src="/assets/img/eschweger/ueber/bild1.jpg"
                   alt="image"
                 />
               </figure>
@@ -107,8 +97,7 @@
             <div class="item">
               <figure class="rounded shadow">
                 <img
-                  src="/assets/img/photos/about3.jpg"
-                  srcset="/assets/img/photos/about3@2x.jpg 2x"
+                  src="/assets/img/eschweger/ueber/bild2.JPG?url"
                   alt="image"
                 />
               </figure>
@@ -218,23 +207,23 @@ import { ref } from 'vue';
 
 const teamMembers = ref([
     {
-        avatarSrc: "",
-        name: "Max Mustermann",
-        position: "Chef",
-        description: "Nescjreonimg"
+        avatarSrc: "/assets/img/eschweger/ueber/team1.png",
+        name: "Udo Scharf",
+        position: "Geschäftsführer",
+        description: ""
     },
-    {
-        avatarSrc: "",
-        name: "Max Mustermann",
-        position: "Chef",
-        description: "Nescjreonimg"
-    },
-    {
-        avatarSrc: "",
-        name: "Max Mustermann",
-        position: "Chef",
-        description: "Nescjreonimg"
-    },
+    // {
+    //     avatarSrc: "",
+    //     name: "Max Mustermann",
+    //     position: "Chef",
+    //     description: "Nescjreonimg"
+    // },
+    // {
+    //     avatarSrc: "",
+    //     name: "Max Mustermann",
+    //     position: "Chef",
+    //     description: "Nescjreonimg"
+    // },
 ])
 </script>
 

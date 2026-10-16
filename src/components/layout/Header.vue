@@ -14,6 +14,7 @@
               <img
                 :src="meta.logo"
                 alt="photo"
+                style="width: 250px;"
               />
             </router-link>
           </div>
@@ -59,26 +60,20 @@
           </button>
 
           <ul class="custom-menu-nav">
-            <li class="nav-item mobile-only">
-              <a href="https://wannefredder.sumupstore.com/" target="_blank">Shop</a>
-            </li>
-            <li class="nav-item mobile-only">
+            <!-- <li class="nav-item mobile-only">
               <router-link to="/veranstaltungen" @click="menuClose">Veranstaltungen</router-link>
+            </li> -->
+            <li class="nav-item mobile-only">
+              <router-link to="/mitmachen" @click="menuClose">Mitmachen</router-link>
             </li>
             <li class="nav-item mobile-only">
-              <router-link to="/gewinnspiel" @click="menuClose">Gewinnspiel</router-link>
+              <router-link to="/ueber" @click="menuClose">Über</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/werbeanzeigen" @click="menuClose">Werbeanzeigen</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/abo" @click="menuClose">Abonnement</router-link>
+              <router-link to="/unterstuetzen" @click="menuClose">Unterstützen</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/kleinanzeigen" @click="menuClose">Kleinanzeigen</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/ausgaben" @click="menuClose">Ausgaben</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/radio" @click="menuClose">Radio</router-link>
@@ -88,6 +83,12 @@
             </li>
             <li class="nav-item">
               <router-link to="/galerie" @click="menuClose">Galerie</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/demo" @click="menuClose">Nullnummer/Demo</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/gewinnspiele" @click="menuClose">Gewinnspiele</router-link>
             </li>
           </ul>
 

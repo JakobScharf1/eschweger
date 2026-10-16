@@ -10,6 +10,20 @@
 #ofCanvasBody {
     height: 100vh;
 }
+.alert-primary {
+    background: color-mix(in srgb, var(--bs-primary-bg-subtle) 50%, transparent);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+@font-face {
+    font-family: 'LeJour';
+    src: url('/assets/fonts/custom/Le-Jour.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
 @media (max-width: 991.98px) {
     body .navbar-nav .active {
         color: var(--bs-navbar-active-color) !important;

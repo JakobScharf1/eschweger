@@ -13,7 +13,11 @@
     </section>
 
     <section class="wrapper bg-gray">
-        <Foerderer />
+        <div class="text-center p-15">
+            <h2 class="pb-0">Von Eschwegern für Eschweger: Eure Stadt, Eure Geschichten, Eure Zeitung!</h2>
+            <hr class="m-0" />
+        </div>
+        <!-- <Foerderer /> -->
     </section>
 
     <section class="wrapper bg-light">

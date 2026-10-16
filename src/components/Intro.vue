@@ -25,7 +25,7 @@
         <img src="/assets/img/icons/lineal/group-2.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
       </div>
       <h4>Unabhängiger Journalismus von Bürger:innen für Bürger:innen</h4>
-      <p class="mb-3">BESCHREIBUNG</p>
+      <p class="mb-3">DIE ESCHWEGER steht für Journalismus von unten: Wir wollen selbst erzählen, was uns bewegt, was gut läuft und wo es hakt. Von uns über uns – direkt aus dem Leben unserer Stadt. Wir sind unabhängig, weltoffen und demokratisch und stehen für positive, optimistische Inhalte, die Mut machen. Dabei schauen wir kritisch hin und sprechen Probleme offen an.</p>
     </div>
 
     <div class="col-md-4">
@@ -43,7 +43,8 @@
         <img src="/assets/img/icons/lineal/paper.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
       </div>
       <h4>Transparente und gemeinschaftliche Berichterstattung</h4>
-      <p class="mb-3">BESCHREIBUNG</p>
+      <p class="mb-3">Unsere Redaktion ist offen. Alle können mitmachen: mit einem Foto, einem Text, einer Idee, einem Vorschlag oder mit Kritik. Auch ein kleiner Beitrag zählt. Ihr müsst keine Profis sein – wir helfen einander. Gemeinsam geben wir Vereinen, engagierten Menschen und Organisationen eine Plattform. Wir zeigen, was in Eschwege los ist, hören unterschiedliche Stimmen und machen sichtbar, wie unsere Beiträge entstehen.<br/>
+        Veranstaltungshinweise und Einträge in den Veranstaltungskalender sind für gemeinnützige Institutionen oder Privatpersonen natürlich kostenfrei!</p>
     </div>
 
     <div class="col-md-4">
@@ -61,7 +62,8 @@
         <img src="/assets/img/icons/lineal/megaphone.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
       </div>
       <h4>Frei zugängliche, verlässliche Informationen für alle Haushalte</h4>
-      <p class="mb-3">BESCHREIBUNG</p>
+      <p class="mb-3">Wir wollen Informationen aus unserer Stadt für alle Haushalte frei zugänglich machen: verständlich, sorgfältig recherchiert und nah am Alltag. <b>Das Heft wird kostenlos an vielen Auslagestellen in der Stadt verfügbar sein</b>. Wir berichten über Veranstaltungen, Angebote und bürgerschaftliches Engagement – und erzählen von Menschen, die etwas bewegen.<br/>
+Dahinter steht die gemeinnützige <b>BrombeerLand gUG</b>, die bereits seit April 2024 erfolgreich die Bürgerzeitung <b>DER WANNEFREDDER</b> herausgibt. Diese Erfahrung bringen wir auch in DIE ESCHWEGER ein – gemeinsam mit euch.</p>
     </div>
     <!--/column -->
   </div>

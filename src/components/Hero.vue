@@ -8,12 +8,15 @@
           data-aos-once="true"
           data-aos-delay=""
         >
-          <h2 class="fs-16 text-uppercase ls-xl text-dark mb-4">
-            TOP-SUBTITLE
-          </h2>
-          <h1 class="display-1 fs-58 mb-7 text-uppercase">
-            {{ meta.title }}
-          </h1>
+          <img src="/assets/img/eschweger/head/eschweger_kommt.png" alt="Eschweger kommt" class="img-fluid d-block mx-auto mb-5 hero-logo">
+          <!-- <h1 class="display-1 fs-58 mb-7 headline">
+            {{ meta.title }} kommt!
+          </h1> -->
+          <div class="alert alert-primary" role="alert">
+            <b>Nächste offene Redaktionssitzung</b><br/>
+            Am 27.Oktober 2026, 19:30 Uhr<br/>
+            Bei Radio RFM, Mangelgasse 19, 37269 Eschwege
+          </div>
           <div
             class="d-flex justify-content-center mb-5 mb-md-0"
             data-aos="fade-up"
@@ -35,7 +38,7 @@
     </div>
     <!-- /.container -->
     <figure class="position-absolute hero-bg-image">
-      <img src="/assets/img/photos/bg11.jpg" alt="photo" />
+      <img src="/assets/img/eschweger/head/hero.jpeg?url" alt="photo" />
     </figure>
   </section>
 </template>
@@ -51,6 +54,13 @@ const meta = useMetaStore()
   position: relative;
   overflow: hidden;
   padding-bottom: 20rem;
+}
+
+.hero-logo {
+  max-width: 100%;
+  width: 700px;
+  height: auto;
+  filter: brightness(0) invert(1);
 }
 
 .hero-content {
@@ -72,6 +82,7 @@ const meta = useMetaStore()
   height: 100%;
   object-fit: cover;
   display: block;
+  filter: brightness(0.6);
 }
 
 @media (max-width: 991px) {
