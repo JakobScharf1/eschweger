@@ -75,7 +75,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-lg-6 col-sm-12">
           <div class="form-floating mb-4">
             <input
               type="text"
@@ -92,7 +92,7 @@
           </div>
         </div>
 
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-12">
           <div class="form-floating mb-4">
             <input
               type="text"
@@ -109,7 +109,7 @@
           </div>
         </div>
 
-        <div class="col-3">
+        <div class="col-lg-3 col-sm-12">
           <div class="form-floating mb-4">
             <input
               type="text"
@@ -129,13 +129,13 @@
         <div class="col-12 mb-4">
           <h4>Paket auswählen</h4>
           <div class="row">
-            <div class="col-3">
+            <div class="col-lg-3 col-md-6 col-sm-12">
               <div class="form-check" v-for="paket in pakete1">
                 <input class="form-check-input" type="checkbox" v-model="paket.chosen" :id="paket.label">
                 <label class="form-check-label" :for="paket.label">{{ paket.label }}</label>
               </div>
             </div>
-            <div class="col-9">
+            <div class="col-lg-9 col-md-6 col-sm-12">
               <div class="form-check" v-for="paket in pakete2">
                 <input class="form-check-input" type="checkbox" v-model="paket.chosen" :id="paket.label">
                 <label class="form-check-label" :for="paket.label">{{ paket.label }}</label>

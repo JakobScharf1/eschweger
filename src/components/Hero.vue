@@ -87,11 +87,15 @@ const meta = useMetaStore()
 
 @media (max-width: 991px) {
   .hero-section {
-    padding-bottom: 8rem;
+    padding-bottom: 4rem;
   }
 
   .hero-bg-image {
-    height: 40vh;
+    height: 12rem;
+  }
+
+  .hero-content .alert {
+    margin-top: 6rem;
   }
 }
 </style>
