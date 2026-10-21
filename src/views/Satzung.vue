@@ -76,25 +76,25 @@
               </p>
               <p>
                 (2) Zweck der Gesellschaft ist:
-                <ul>
-                    <li>die Förderung der Volks- und Berufsbildung</li>
-                    <li>die Förderung der Jugendhilfe und Kunst und Kultur</li>
-                    <li>die Förderung der Heimatpflege</li>
-                    <li>die Förderung der Toleranz auf allen Gebieten der Kultur und des Völkerverständigungsgedankens</li>
-                    <li>die Förderung der Verbraucherberatung und des Verbraucherschutzes</li>
-                    <li>sowie die Förderung des demokratischen Staatswesens im Geltungsbereich der Abgabenordnung</li>
-                </ul>
               </p>
+              <ul>
+                <li>die Förderung der Volks- und Berufsbildung</li>
+                <li>die Förderung der Jugendhilfe und Kunst und Kultur</li>
+                <li>die Förderung der Heimatpflege</li>
+                <li>die Förderung der Toleranz auf allen Gebieten der Kultur und des Völkerverständigungsgedankens</li>
+                <li>die Förderung der Verbraucherberatung und des Verbraucherschutzes</li>
+                <li>sowie die Förderung des demokratischen Staatswesens im Geltungsbereich der Abgabenordnung</li>
+              </ul>
               <p class="mb-0">
                 (3) Die Gesellschaft verwirklicht ihre Satzungszwecke insbesondere durch folgende Maßnahmen:
-                <ul>
-                    <li>durch objektive und neutrale Wissensvermittlung und Aufklärung über Hintergründe und Zusammenhänge zu wichtigen Gegenwarts- und Zukunftsthemen wie insbesondere Klimawandel, soziale Gerechtigkeit, Migration, bürgerschaftliches Handeln und politisches Engagement von Bürgern</li>
-                    <li>durch objektive und neutrale Nachrichtenaufbereitung und –beschaffung über vielfältige lokal- und allgemeinpolitische, gesellschaftliche, kulturelle und historische Zusammenhänge.</li>
-                    <li>durch eine kritische Funktion in Hinsicht auf Fehlentwicklungen und Missstände.</li>
-                    <li>durch die Archivierung und Veröffentlichung lokaler historischer Geschehnisse auch unter dem Aspekt der Heimatpflege.</li>
-                    <li>Im Sinne eines innovativen, gemeinwohlorientierten publizistischen Angebots zur Förderung einer lebendigen und vielfältigen Medienkultur in Deutschland durch eine Stärkung der überparteilichen, grundsätzlichen gesellschaftspolitischen Diskussion und Meinungsbildung in Deutschland, indem sie das Meinungsspektrum verbreitert und die Qualität der Meinungsbildung verbessert, mit dem Ziel, einen informierten Diskurs nachhaltig im Sinne einer aufgeklärten und verantwortungsbewussten Gesellschaft als zu wahrendes Kulturgut zu fördern.</li>
-                </ul>
               </p>
+              <ul>
+                <li>durch objektive und neutrale Wissensvermittlung und Aufklärung über Hintergründe und Zusammenhänge zu wichtigen Gegenwarts- und Zukunftsthemen wie insbesondere Klimawandel, soziale Gerechtigkeit, Migration, bürgerschaftliches Handeln und politisches Engagement von Bürgern</li>
+                <li>durch objektive und neutrale Nachrichtenaufbereitung und –beschaffung über vielfältige lokal- und allgemeinpolitische, gesellschaftliche, kulturelle und historische Zusammenhänge.</li>
+                <li>durch eine kritische Funktion in Hinsicht auf Fehlentwicklungen und Missstände.</li>
+                <li>durch die Archivierung und Veröffentlichung lokaler historischer Geschehnisse auch unter dem Aspekt der Heimatpflege.</li>
+                <li>Im Sinne eines innovativen, gemeinwohlorientierten publizistischen Angebots zur Förderung einer lebendigen und vielfältigen Medienkultur in Deutschland durch eine Stärkung der überparteilichen, grundsätzlichen gesellschaftspolitischen Diskussion und Meinungsbildung in Deutschland, indem sie das Meinungsspektrum verbreitert und die Qualität der Meinungsbildung verbessert, mit dem Ziel, einen informierten Diskurs nachhaltig im Sinne einer aufgeklärten und verantwortungsbewussten Gesellschaft als zu wahrendes Kulturgut zu fördern.</li>
+              </ul>
             </div>
             <!--/.card-body -->
           </div>
@@ -220,13 +220,12 @@
                 (1) Überschüsse der Gesellschaft dürfen ausschließlich für die gemeinnützigen Zwecke der Gesellschaft verwendet werden.
               </p>
               <p>
-                (2) Diese umfassen insbesondere:<br/>
-                <ul>
-                    <li>Finanzierung von Kultur- und Bildungsangeboten,</li>
-                    <li>Anschaffung gemeinnütziger Infrastruktur,</li>
-                    <li>Durchführung von Veranstaltungen mit Gemeinwohlbezug.</li>
-                </ul>
-              </p>
+                (2) Diese umfassen insbesondere:<br/></p>
+              <ul>
+                  <li>Finanzierung von Kultur- und Bildungsangeboten,</li>
+                  <li>Anschaffung gemeinnütziger Infrastruktur,</li>
+                  <li>Durchführung von Veranstaltungen mit Gemeinwohlbezug.</li>
+              </ul>
               <p class="mb-0">
                 (3) Über die konkrete Gewinnverwendung beschließt die Gesellschafterversammlung. Im steuerlich zulässigen Umfang dürfen Rücklagen gebildet werden, insbesondere sind die §§ 51-68 AO zu beachten. Im Übrigen sind die Mittel zeitnah für den Geschäftszweck gem. § 2 dieser Satzung zu verwenden.
               </p>

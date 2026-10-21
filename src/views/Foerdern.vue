@@ -2,7 +2,7 @@
   <section id="snippet-14" class="wrapper bg-gray wrapper-border">
     <div class="container pt-15 pt-md-17 pb-13 pb-md-15">
       <div class="row gx-md-8 gx-xl-12 gy-10 align-items-center">
-        <div class="col-md-8 col-lg-6 mx-auto">
+        <!-- <div class="col-md-8 col-lg-6 mx-auto">
           <div class="img-mask mask-3 px-xxl-5">
             <img
               :width="560"
@@ -11,16 +11,16 @@
               alt=""
             />
           </div>
-        </div>
+        </div> -->
         <!--/column -->
-        <div class="col-lg-6">
+        <div class="col-lg-12">
           <h2 class="display-2 mb-3">Fördermitglied werden</h2>
           <p>
             Sie können uns durch eine Fördermitgliedschaft unterstützen für die wir Ihnen auch eine Spendenbescheinigung ausstellen dürfen. Damit dies dauerhaft möglich ist, müssen die monatlichen Herstellungs- und Betriebskosten aufgebracht werden. Neben den Erlösen aus Werbeanzeigen sind wir auf die Unterstützung unserer Leser:innen angewiesen, damit wir das Projekt dauerhaft betreiben können. Dazu bieten wir Fördermitgliedschaften (nicht stimmberechtigte Fördermitglieder) an. Durch Ihre Zuwendungen unterstützen Sie unser Vorhaben und helfen dabei, das unsere Zeitung regelmäßig erscheinen kann.
-        <p>
+          </p>
+          <p>
             Die jährliche Mitgliedschaft verlängert sich automatisch um ein weiteres Jahr, wenn nicht bis eine Woche vor Ablauf des Jahres gekündigt wurde. Dazu werden Sie rechtzeitig per E-Mail informiert.
-        </p>
-      </p>
+          </p>
         </div>
         <!--/column -->
       </div>

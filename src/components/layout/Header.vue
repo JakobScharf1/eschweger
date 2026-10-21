@@ -75,7 +75,7 @@
             <li class="nav-item">
               <router-link to="/kleinanzeigen" @click="menuClose">Kleinanzeigen</router-link>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link to="/radio" @click="menuClose">Radio</router-link>
             </li>
             <li class="nav-item">
@@ -83,10 +83,10 @@
             </li>
             <li class="nav-item">
               <router-link to="/galerie" @click="menuClose">Galerie</router-link>
-            </li>
-            <li class="nav-item">
+            </li> -->
+            <!-- <li class="nav-item">
               <router-link to="/demo" @click="menuClose">Nullnummer/Demo</router-link>
-            </li>
+            </li> -->
             <li class="nav-item">
               <router-link to="/gewinnspiele" @click="menuClose">Gewinnspiele</router-link>
             </li>

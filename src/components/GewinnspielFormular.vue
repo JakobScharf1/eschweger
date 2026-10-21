@@ -95,12 +95,12 @@
         <div class="col-12">
           <div class="form-floating mb-4">
             <textarea
-              name="bemerkung"
+              name="loesung"
               class="form-control"
               placeholder="Lösung"
               v-model="form.loesung"
             ></textarea>
-            <label>Bemerkung *</label>
+            <label>Lösung *</label>
           </div>
         </div>
 
@@ -237,7 +237,7 @@ async function submitForm() {
     })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
-    successMessage.value = 'Erfolgreich eingtragen!'
+    successMessage.value = 'Erfolgreich eingetragen!'
     resetForm()
   } catch (e) {
     errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'

@@ -212,12 +212,12 @@ const teamMembers = ref([
         position: "Geschäftsführer",
         description: ""
     },
-    // {
-    //     avatarSrc: "",
-    //     name: "Max Mustermann",
-    //     position: "Chef",
-    //     description: "Nescjreonimg"
-    // },
+    {
+        avatarSrc: "/assets/img/eschweger/ueber/team2.png",
+        name: "Johanna Grüning",
+        position: "Ehrenamtliche Chefredakteurin",
+        description: ""
+    },
     // {
     //     avatarSrc: "",
     //     name: "Max Mustermann",

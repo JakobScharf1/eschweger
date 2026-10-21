@@ -98,6 +98,14 @@ export const routes = [
     }
   },
   {
+    path: "/demo",
+    name: "Nullnummer",
+    component: () => import("@/views/Demo.vue"),
+    meta: {
+      title: "Nullnummer || " + pageTitle
+    }
+  },
+  {
     path: "/satzung",
     name: "Satzung",
     component: () => import("@/views/Satzung.vue"),

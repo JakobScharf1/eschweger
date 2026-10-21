@@ -15,7 +15,7 @@
               class="form-control"
               :class="{ 'is-invalid': errors.spendenbetrag && (showErrors || touched.spendenbetrag) }"
               placeholder="Spendenbetrag"
-              :min="minAmount"
+              :min="minAmount ?? 12"
               step="0.01"
               required
               v-model.number="form.spendenbetrag"
@@ -164,9 +164,10 @@
             </select>
             <label>Zahlart *</label>
             <div class="form-text text-muted" v-if="form.zahlart === 'PayPal'">
-                <a href="https://paypal.me/brombeerland">
+                <a href="https://paypal.me/brombeerland" target="_blank">
                     Unser Paypal-Link
                 </a>
+                 / @brombeerland
             </div>
             <div class="form-text text-muted" v-if="form.zahlart === 'Überweisung'">
                 BrombeerLand gUG, FINOM PAYMENTS BANK, BIC: FNOMDEB2<br/>

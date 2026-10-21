@@ -4,6 +4,7 @@
     v-for="(socialMedia, index) in socialMediaLinks"
     :key="index"
     :href="socialMedia.href"
+    target="_blank"
   >
     <i :class="socialMedia.iconClass"></i>
   </a>
