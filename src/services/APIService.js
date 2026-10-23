@@ -1,7 +1,3 @@
-import { useAuthStore } from '@/store/auth'
-
-const BASE_URL = 'https://api.wannefredder.de'
-
 class ApiError extends Error {
   constructor(status, statusText, message) {
     super(message ?? `${status} ${statusText}`)
@@ -10,7 +6,7 @@ class ApiError extends Error {
 }
 
 async function request(method, path, body, options = {}) {
-  const url = new URL(BASE_URL + path)
+  const url = new URL(import.meta.env.VITE_BASE_URL + path)
 
   if (options.params) {
     for (const [key, value] of Object.entries(options.params)) {
@@ -22,6 +18,7 @@ async function request(method, path, body, options = {}) {
 
   const headers = {
     'Content-Type': 'application/json',
+    'Authentication': 'Bearer ' + import.meta.env.VITE_API_BEARER,
     ...(options.headers || {}),
   }
 

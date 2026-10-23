@@ -3310,7 +3310,6 @@ textarea.form-control-lg {
     font-size: 0.75rem;
     font-weight: 500;
     line-height: 1.7;
-    color: #959ca9;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -38290,7 +38289,7 @@ video.player {
 }
 @media (min-width: 1200px) {
     .pricing-wrapper [class*="col-"] .pricing.card .prices .price-value {
-        font-size: 2.4rem;
+        font-size: 1.6rem;
     }
 }
 .pricing-wrapper [class*="col-"] .pricing.card .prices .price-currency {
@@ -38780,6 +38779,7 @@ video.player {
 }
 .price {
     margin: 0;
+    text-wrap: nowrap;
 }
 .price del {
     color: #9499a3;

@@ -1,0 +1,305 @@
+<template>
+  <div class="w-100">
+    <h5 class="display-5">Jetzt Abo bestellen!</h5>
+    <form ref="formRef" class="contact-form needs-validation" @submit.prevent="submitForm" novalidate>
+      <div class="messages">
+        <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+      </div>
+
+      <div class="row gx-4">
+        <div class="col-12 mb-4">
+          <div class="form-check">
+            <input id="ist-geschenk" class="form-check-input" type="checkbox" v-model="form.ist_geschenk">
+            <label class="form-check-label" for="ist-geschenk">Dieses Abo ist ein Geschenk</label>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mb-3">
+            <div class="form-floating mb-4">
+                <select id="chosen-interval" name="chosenInterval" class="form-select" v-model="selectedActive" required>
+                    <option value="halbjahr">Halbjahres-Abo</option>
+                    <option value="ganzjahr">Ganzjahres-Abo</option>
+                </select>
+                <label for="chosen-interval">Intervall *</label>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6 mb-3">
+          <div class="form-floating mb-4">
+            <select
+              id="chosen-abo"
+              name="chosenAbo"
+              class="form-select"
+              :class="{ 'is-invalid': errors.chosenAbo && showErrors }"
+              v-model="selectedAbo"
+              required
+            >
+              <option value="" disabled>Bitte Abo auswählen</option>
+              <option v-for="abo in props.abos" :key="abo.id" :value="abo.id">
+                {{ abo.title }} – {{ props.active === 'ganzjahr' ? abo.price.ganz : abo.price.halb }} € / {{ props.active === 'ganzjahr' ? 'Jahr' : '6 Monate' }}
+              </option>
+            </select>
+            <label for="chosen-abo">Abo *</label>
+            <div v-if="errors.chosenAbo && showErrors" class="invalid-feedback">
+              {{ errors.chosenAbo }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12" v-if="form.ist_geschenk">
+          <h4 class="mb-4">Ihre Adresse (Rechnung)</h4>
+        </div>
+
+        <div
+          v-for="field in [
+            { key: 'name', label: 'Name', type: 'text', width: 'col-md-6' },
+            { key: 'email', label: 'E-Mail', type: 'email', width: 'col-md-6' },
+            { key: 'strasse', label: 'Straße und Hausnummer', type: 'text', width: 'col-md-6' },
+            { key: 'plz', label: 'PLZ', type: 'text', width: 'col-md-3' },
+            { key: 'ort', label: 'Ort', type: 'text', width: 'col-md-3' },
+          ]"
+          :key="`zahler-${field.key}`"
+          :class="field.width"
+        >
+          <div class="form-floating mb-4">
+            <input
+              :type="field.type"
+              :name="`zahler.${field.key}`"
+              class="form-control"
+              :class="{ 'is-invalid': errors.zahler[field.key] && showErrors }"
+              :placeholder="field.label"
+              required
+              v-model="form.zahler[field.key]"
+            />
+            <label>{{ field.label }} *</label>
+            <div v-if="errors.zahler[field.key] && showErrors" class="invalid-feedback">
+              {{ errors.zahler[field.key] }}
+            </div>
+          </div>
+        </div>
+
+        <template v-if="form.ist_geschenk">
+          <div class="col-12">
+            <h4 class="mb-4">Adresse des Empfängers</h4>
+          </div>
+
+          <div
+            v-for="field in [
+              { key: 'name', label: 'Name', type: 'text', width: 'col-md-6' },
+              { key: 'email', label: 'E-Mail', type: 'email', width: 'col-md-6' },
+              { key: 'strasse', label: 'Straße und Hausnummer', type: 'text', width: 'col-md-6' },
+              { key: 'plz', label: 'PLZ', type: 'text', width: 'col-md-3' },
+              { key: 'ort', label: 'Ort', type: 'text', width: 'col-md-3' },
+            ]"
+            :key="`empfaenger-${field.key}`"
+            :class="field.width"
+          >
+            <div class="form-floating mb-4">
+              <input
+                :type="field.type"
+                :name="`empfaenger.${field.key}`"
+                class="form-control"
+                :class="{ 'is-invalid': errors.empfaenger[field.key] && showErrors }"
+                :placeholder="field.label"
+                required
+                v-model="form.empfaenger[field.key]"
+              />
+              <label>{{ field.label }} *</label>
+              <div v-if="errors.empfaenger[field.key] && showErrors" class="invalid-feedback">
+                {{ errors.empfaenger[field.key] }}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-floating mb-4">
+              <textarea
+                name="grussnachricht"
+                class="form-control"
+                :class="{ 'is-invalid': errors.grussnachricht && showErrors }"
+                placeholder="Grußnachricht (optional)"
+                style="height: 150px"
+                v-model="form.grussnachricht"
+              ></textarea>
+              <label>Grußnachricht (optional)</label>
+              <div v-if="errors.grussnachricht && showErrors" class="invalid-feedback">
+                {{ errors.grussnachricht }}
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary rounded-pill btn-send mb-3" :disabled="submitting">
+            {{ submitting ? 'Sende...' : 'Absenden' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup>
+import { ApiService } from '@/services/APIService';
+import { computed, reactive, ref } from 'vue'
+
+const formRef = ref(null)
+const submitting = ref(false)
+const successMessage = ref('')
+const errorMessage = ref('')
+
+const props = defineProps({
+    active: { type: String, required: true },
+    chosenAbo: { type: String, default: null },
+    abos: { type: Array, required: true },
+})
+const emit = defineEmits(['update:active', 'update:chosenAbo'])
+const selectedActive = computed({
+  get: () => props.active,
+  set: (value) => emit('update:active', value),
+})
+const selectedAbo = computed({
+  get: () => props.chosenAbo ?? '',
+  set: (value) => {
+    errors.chosenAbo = ''
+    emit('update:chosenAbo', value || null)
+  },
+})
+
+const form = reactive({
+    ist_geschenk: false,
+    empfaenger: {
+        name: '',
+        strasse: '',
+        plz: '',
+        ort: '',
+        email: '',
+    },
+    zahler: {
+        name: '',
+        strasse: '',
+        plz: '',
+        ort: '',
+        email: '',
+    },
+    grussnachricht: '',
+})
+
+const errors = reactive({
+    chosenAbo: '',
+    ist_geschenk: '',
+    empfaenger: {
+        name: '',
+        strasse: '',
+        plz: '',
+        ort: '',
+        email: '',
+    },
+    zahler: {
+        name: '',
+        strasse: '',
+        plz: '',
+        ort: '',
+        email: '',
+    },
+    grussnachricht: '',
+})
+
+const showErrors = ref(false)
+
+const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function validate() {
+  errors.chosenAbo = ''
+  errors.ist_geschenk = ''
+  errors.grussnachricht = ''
+
+  for (const address of ['empfaenger', 'zahler']) {
+    for (const field of ['name', 'strasse', 'plz', 'ort', 'email']) {
+      errors[address][field] = ''
+    }
+  }
+
+  let isValid = true
+  const addressesToValidate = form.ist_geschenk ? ['empfaenger', 'zahler'] : ['zahler']
+
+  for (const address of addressesToValidate) {
+    for (const field of ['name', 'strasse', 'plz', 'ort', 'email']) {
+      const value = form[address][field].trim()
+      if (!value) {
+        errors[address][field] = `Bitte geben Sie ${field === 'plz' ? 'PLZ' : field === 'ort' ? 'Ort' : field === 'strasse' ? 'Straße und Hausnummer' : field === 'email' ? 'E-Mail-Adresse' : 'Namen'} an.`
+        isValid = false
+      } else if (field === 'email' && !emailRe.test(value)) {
+        errors[address][field] = 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
+        isValid = false
+      }
+    }
+  }
+
+  if (!props.chosenAbo) {
+    isValid = false
+    errors.chosenAbo = 'Bitte wählen Sie ein Abo aus.'
+  }
+
+  return isValid
+}
+
+function resetForm() {
+  form.ist_geschenk = false
+  for (const address of ['empfaenger', 'zahler']) {
+    for (const field of ['name', 'strasse', 'plz', 'ort', 'email']) {
+      form[address][field] = ''
+    }
+  }
+  form.grussnachricht = ''
+}
+
+async function submitForm() {
+  successMessage.value = ''
+  errorMessage.value = ''
+  showErrors.value = false
+
+  if (!validate()) {
+    showErrors.value = true
+    errorMessage.value = 'Bitte füllen Sie alle Pflichtfelder korrekt aus.'
+    formRef.value?.querySelector('.is-invalid')?.focus()
+    return
+  }
+
+  if (!form.ist_geschenk) {
+    Object.assign(form.empfaenger, form.zahler)
+  }
+
+  submitting.value = true
+  try {
+    const res = await ApiService.post('/abo-bestellung', {
+      publikation_id: import.meta.env.VITE_PUBLIKATION_ID,
+      angebot: "TODO",
+      ...form
+    })
+
+    successMessage.value = 'Erfolgreich bestellt!'
+    resetForm()
+  } catch (e) {
+    errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
+  } finally {
+    submitting.value = false
+  }
+}
+</script>
+
+<style scoped>
+.messages {
+  margin-bottom: 1rem;
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid,
+textarea.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+}
+</style>

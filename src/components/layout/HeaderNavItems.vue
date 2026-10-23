@@ -15,6 +15,13 @@
   </li>
   <li class="nav-item">
     <router-link
+      :class="['nav-link', { active: isActiveMenu('/abo') }]"
+      to="/abo"
+      >Abonnements</router-link
+    >
+  </li>
+  <li class="nav-item">
+    <router-link
       :class="['nav-link', { active: isActiveMenu('/ueber') }]"
       to="/ueber"
     >Über</router-link>
