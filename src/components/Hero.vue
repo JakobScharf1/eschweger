@@ -12,7 +12,7 @@
           <!-- <h1 class="display-1 fs-58 mb-7 headline">
             {{ meta.title }} kommt!
           </h1> -->
-          <div class="alert alert-primary" role="alert">
+          <div class="alert alert-primary" style="color: #133168" role="alert">
             <b>Nächste offene Redaktionssitzung</b><br/>
             Am 27.Oktober 2026, 19:30 Uhr<br/>
             Bei Radio RFM, Mangelgasse 19, 37269 Eschwege

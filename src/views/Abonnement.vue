@@ -49,25 +49,6 @@
         </ul>
         </div>
         <div class="row gy-6 pt-3 pt-md-5 justify-content-center">
-          <div class="col-12 col-lg-4">
-            <div class="pricing card h-100 text-center shadow-sm bg-gray">
-              <div class="card-body px-4 px-md-5 py-5">
-                <h4 class="card-title">Gratis-Abo</h4>
-                <div class="prices text-dark">
-                  <div class="price price-show justify-content-center">
-                    <span class="price-value">Kostenlos</span>
-                  </div>
-                </div>
-                <!--/.prices -->
-                <div class="mb-4">
-                  Für alle, die DIE ESCHWEGER lesen möchten, aber gerade keinen Beitrag bezahlen können.
-                </div>
-                <a href="https://wannefredder.sumupstore.com/" target="_blank" class="btn btn-primary rounded-pill">Zum Shop</a>
-              </div>
-              <!--/.card-body -->
-            </div>
-            <!--/.pricing -->
-          </div>
           <div class="col-12 col-lg-4" v-for="abo of abos" :key="abo.id">
             <div
               class="pricing card h-100 text-center shadow-sm bg-gray"
@@ -141,6 +122,12 @@ function chooseAbo(aboId) {
 }
 
 const abos = reactive([
+  {
+    id: 'pwyw_frei',
+    title: 'Gratis-Abo',
+    price: { ganz: '0,00', halb: '0,00' },
+    description: 'Für alle, die DIE ESCHWEGER lesen möchten, aber gerade keinen Beitrag bezahlen können.'
+  },
   {
     id: 'pwyw_12',
     title: 'Mitmach-Abo',
