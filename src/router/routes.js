@@ -6,7 +6,7 @@ export const routes = [
     name: "Startseite",
     component: () => import("@/views/Startseite.vue"),
     meta: {
-      title: "Startseite || " + pageTitle,
+      title: "Der Eschweger kommt - erfahren Sie mehr! || " + pageTitle,
     }
   },
   {
@@ -14,7 +14,7 @@ export const routes = [
     name: "Veranstaltungen",
     component: () => import("@/views/Veranstaltungen.vue"),
     meta: {
-      title: "Veranstaltungen || " + pageTitle
+      title: "Veranstaltungen in Eschwege und Umgebung || " + pageTitle
     }
   },
   {
@@ -22,7 +22,7 @@ export const routes = [
     name: "Werbeanzeigen",
     component: () => import("@/views/Werbeanzeigen.vue"),
     meta: {
-      title: "Werbeanzeigen || " + pageTitle
+      title: "Werbeanzeigen in DIE ESCHWEGER schalten || " + pageTitle
     }
   },
   {
@@ -30,7 +30,7 @@ export const routes = [
     name: "Abonnement",
     component: () => import("@/views/Abonnement.vue"),
     meta: {
-      title: "Abonnement || " + pageTitle
+      title: "Jetzt abonnieren und unterstützen || " + pageTitle
     }
   },
   {
@@ -38,7 +38,7 @@ export const routes = [
     name: "Unterstützen",
     component: () => import("@/views/Unterstuetzen.vue"),
     meta: {
-      title: "Unterstützen || " + pageTitle
+      title: "Unterstützen und Gutes fördern || " + pageTitle
     }
   },
   {
@@ -46,7 +46,7 @@ export const routes = [
     name: "Mitmachen",
     component: () => import("@/views/Mitmachen.vue"),
     meta: {
-      title: "Mitmachen || " + pageTitle
+      title: "Mitmachen und Teil werden || " + pageTitle
     }
   },
   {
@@ -54,7 +54,7 @@ export const routes = [
     name: "Fördern",
     component: () => import("@/views/Foerdern.vue"),
     meta: {
-      title: "Fördern || " + pageTitle
+      title: "Unsere Fördermitgliedschaften || " + pageTitle
     }
   },
   {
@@ -62,7 +62,7 @@ export const routes = [
     name: "Kleinanzeigen",
     component: () => import("@/views/Kleinanzeigen.vue"),
     meta: {
-      title: "Kleinanzeigen || " + pageTitle
+      title: "Kleinanzeigen für Eschwege und Umgebung || " + pageTitle
     }
   },
   {
@@ -70,7 +70,7 @@ export const routes = [
     name: "Gewinnspiele",
     component: () => import("@/views/Gewinnspiele.vue"),
     meta: {
-      title: "Gewinnspiele || " + pageTitle
+      title: "Jetzt am aktuellen Gewinnspiel teilnehmen! || " + pageTitle
     }
   },
   {
@@ -78,7 +78,7 @@ export const routes = [
     name: "Galerie",
     component: () => import("@/views/Galerie.vue"),
     meta: {
-      title: "Galerie || " + pageTitle
+      title: "Bildergalerie || " + pageTitle
     }
   },
   {
@@ -86,7 +86,7 @@ export const routes = [
     name: "Über uns",
     component: () => import("@/views/Ueber.vue"),
     meta: {
-      title: "Über uns || " + pageTitle
+      title: "Über DIE ESCHWEGER und was dahinter steckt... || " + pageTitle
     }
   },
   {
@@ -94,7 +94,7 @@ export const routes = [
     name: "Anzeigen",
     component: () => import("@/views/Anzeigen.vue"),
     meta: {
-      title: "Anzeigen || " + pageTitle
+      title: "Gedruckte Anzeigen für die Region schalten || " + pageTitle
     }
   },
   {
@@ -102,7 +102,7 @@ export const routes = [
     name: "Nullnummer",
     component: () => import("@/views/Demo.vue"),
     meta: {
-      title: "Nullnummer || " + pageTitle
+      title: "Unsere Nullnummer und Online-Demo || " + pageTitle
     }
   },
   {

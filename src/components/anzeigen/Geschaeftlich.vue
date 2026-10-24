@@ -155,7 +155,17 @@
                         <div v-if="errors.ausgabe && (showErrors || touched.ausgabe)" class="invalid-feedback">{{ errors.ausgabe }}</div>
                     </div>
                 </div>
-                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-4">
+                        <select class="form-select" id="preiskategorie">
+                            <option value="ort">Ortspreis</option>
+                            <option value="base">Basispreis</option>
+                            <option value="gamification">Social-Gamification</option>
+                        </select>
+                        <label for="preiskategorie">Preiskategorie</label>
+                        <small>Ortspreise gelten nur für Kunden mit Eschweger Postleitzahl</small>
+                    </div>
+                </div>
                 <div class="col-md-12 mt-4">
                     <div class="form-floating mb-4">
                         <input

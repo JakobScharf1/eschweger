@@ -6,8 +6,7 @@
           <figure>
             <img
               class="w-auto"
-              src="/assets/img/illustrations/i5.png"
-              srcset="/assets/img/illustrations/i5@2x.png 2x"
+              src="/assets/img/eschweger/kleinanzeigen.png"
               alt=""
             />
           </figure>
