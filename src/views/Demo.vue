@@ -1,10 +1,17 @@
 <template>
-    <div style="left: 0; width: 100%; height: 0; position: relative;">
-        <iframe src="https://heyzine.com/flip-book/09ee50cf51.html" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen scrolling="no">
-        </iframe>
-    </div>
+    <section class="wrapper bg-gray pt-5 pb-1 mb-0 text-center">
+        <h3 class="display-3">Ausgabe 00/2026</h3>
+    </section>
+
+    <section class="wrapper bg-gray mt-0 pb-10">
+        <div class="container">
+            <Flipbook src="/public/assets/files/magazin.pdf" :page-width="550"></Flipbook>
+        </div>
+    </section>
 </template>
 
 <script setup>
+import Flipbook from '@/components/Flipbook.vue';
+
 
 </script>
