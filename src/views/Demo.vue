@@ -5,7 +5,7 @@
 
     <section class="wrapper bg-gray mt-0 pb-10">
         <div class="container">
-            <Flipbook src="/public/assets/files/magazin.pdf" :page-width="550"></Flipbook>
+            <Flipbook src="/assets/files/magazin.pdf" :page-width="550"></Flipbook>
         </div>
     </section>
 </template>
