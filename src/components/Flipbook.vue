@@ -3,10 +3,10 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { PageFlip } from 'page-flip'
 import * as pdfjsLib from 'pdfjs-dist'
 import type { PDFDocumentProxy } from 'pdfjs-dist'
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
+import PdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?worker'
 import 'pdfjs-dist/web/pdf_viewer.css'
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl
+pdfjsLib.GlobalWorkerOptions.workerPort = new PdfWorker()
 
 const props = withDefaults(
   defineProps<{
