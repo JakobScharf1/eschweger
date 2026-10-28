@@ -218,12 +218,12 @@ const teamMembers = ref([
         position: "Ehrenamtliche Chefredakteurin",
         description: ""
     },
-    // {
-    //     avatarSrc: "",
-    //     name: "Max Mustermann",
-    //     position: "Chef",
-    //     description: "Nescjreonimg"
-    // },
+    {
+        avatarSrc: "/assets/img/eschweger/ueber/team3.jpeg",
+        name: "Joanna Kolloch",
+        position: "Mediaberatung",
+        description: ""
+    },
 ])
 </script>
 
