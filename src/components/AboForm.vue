@@ -272,7 +272,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await postAbo(props.active.value, props.chosenAbo.value, {
+    await postAbo(props.active, props.chosenAbo, {
       ...form,
     })
 
