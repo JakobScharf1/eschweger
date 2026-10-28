@@ -48,7 +48,6 @@
             <h4 class="widget-title text-white mb-3">Mehr erfahren</h4>
             <ul class="list-unstyled mb-0">
               <li><router-link class="d-block mb-1 text-sky" to="/satzung">Satzung</router-link></li>
-              <li><router-link class="d-block mb-1 text-sky" to="/info">Presse- und Infomaterial</router-link></li>
               <li><a class="d-block mb-1 text-sky" href="https://brombeerland.de/leitbild.html" target="_blank">Leitbild</a></li>
               <li><router-link class="d-block mb-1 text-sky" to="/datenschutz">Datenschutz</router-link></li>
               <li><router-link class="d-block text-sky" to="/impressum">Impressum</router-link></li>

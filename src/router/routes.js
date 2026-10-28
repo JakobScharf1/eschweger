@@ -18,14 +18,6 @@ export const routes = [
     }
   },
   {
-    path: "/werbeanzeigen",
-    name: "Werbeanzeigen",
-    component: () => import("@/views/Werbeanzeigen.vue"),
-    meta: {
-      title: "Werbeanzeigen in DIE ESCHWEGER schalten || " + pageTitle
-    }
-  },
-  {
     path: "/abo",
     name: "Abonnement",
     component: () => import("@/views/Abonnement.vue"),
@@ -99,10 +91,10 @@ export const routes = [
   },
   {
     path: "/demo",
-    name: "Nullnummer",
+    name: "Ausgaben",
     component: () => import("@/views/Demo.vue"),
     meta: {
-      title: "Unsere Nullnummer und Online-Demo || " + pageTitle
+      title: "Unsere Ausgaben und Online-Demo || " + pageTitle
     }
   },
   {

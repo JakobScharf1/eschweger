@@ -34,7 +34,7 @@
                   <HeaderSocials />
                 </nav>
               </li>
-              <li class="nav-item">
+              <li class="nav-item mobile-only">
                 <button @click="menuOpen" class="hamburger offcanvas-nav-btn">
                   <span></span>
                 </button>
@@ -63,14 +63,11 @@
             <!-- <li class="nav-item mobile-only">
               <router-link to="/veranstaltungen" @click="menuClose">Veranstaltungen</router-link>
             </li> -->
-            <li class="nav-item mobile-only">
-              <router-link to="/mitmachen" @click="menuClose">Mitmachen</router-link>
-            </li>
-            <li class="nav-item mobile-only">
-              <router-link to="/ueber" @click="menuClose">Über</router-link>
-            </li>
             <li class="nav-item">
               <router-link to="/unterstuetzen" @click="menuClose">Unterstützen</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/anzeigen" @click="menuClose">Anzeigen</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/kleinanzeigen" @click="menuClose">Kleinanzeigen</router-link>
@@ -85,10 +82,13 @@
               <router-link to="/galerie" @click="menuClose">Galerie</router-link>
             </li> -->
             <li class="nav-item">
-              <router-link to="/demo" @click="menuClose">Nullnummer/Demo</router-link>
+              <router-link to="/demo" @click="menuClose">Ausgaben</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/gewinnspiele" @click="menuClose">Gewinnspiele</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/ueber" @click="menuClose">Über</router-link>
             </li>
           </ul>
 

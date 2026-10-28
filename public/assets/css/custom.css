@@ -19,6 +19,11 @@
     text-align: justify;
     hyphens: auto;
 }
+
+.clickable:hover {
+    cursor: pointer;
+}
+
 @font-face {
     font-family: 'LeJour';
     src: url('/assets/fonts/custom/Le-Jour.woff') format('woff');

@@ -11,11 +11,15 @@ pdfjsLib.GlobalWorkerOptions.workerPort = new PdfWorker()
 const props = withDefaults(
   defineProps<{
     src: string | Uint8Array
-    pageWidth?: number // Basisbreite einer Seite in px (bestimmt Renderqualität + Seitenverhältnis-Basis)
+    pageWidth?: number // Basisbreite einer Einzelseite in px
     dragToFlip?: boolean // true = Seiten per Maus ziehen; kollidiert mit Textmarkieren
+    splitSpreads?: boolean // Querformat-Seiten (Doppelseiten) in zwei Hälften teilen
   }>(),
-  { pageWidth: 550, dragToFlip: false }
+  { pageWidth: 550, dragToFlip: false, splitSpreads: true }
 )
+
+// null = leere Füllseite (hält die Links/Rechts-Reihenfolge korrekt)
+type Slot = { page: number; half: 'full' | 'left' | 'right' } | null
 
 const host = ref<HTMLDivElement>()
 const current = ref(0)
@@ -25,11 +29,12 @@ const loading = ref(false)
 // Bewusst keine reaktiven Refs: pdf.js/PageFlip-Objekte nicht in Vue-Proxies wickeln
 let flip: PageFlip | null = null
 let pdf: PDFDocumentProxy | null = null
-let pageEls: HTMLElement[] = []
-let rendered = new Set<number>()
-let pdfPageWidth = 1
-let ro: ResizeObserver | null = null
 let task: ReturnType<typeof pdfjsLib.getDocument> | null = null
+let pageEls: HTMLElement[] = []
+let slots: Slot[] = []
+let sizes: { w: number; h: number }[] = []
+let rendered = new Set<number>()
+let ro: ResizeObserver | null = null
 
 function cleanup() {
   ro?.disconnect()
@@ -40,6 +45,8 @@ function cleanup() {
   task = null
   pdf = null
   pageEls = []
+  slots = []
+  sizes = []
   rendered = new Set()
   host.value?.replaceChildren()
 }
@@ -54,17 +61,36 @@ async function load() {
   )
   const doc = await task.promise
   pdf = doc
-  total.value = doc.numPages
 
-  const first = (await doc.getPage(1)).getViewport({ scale: 1 })
-  pdfPageWidth = first.width
-  const pageHeight = Math.round((props.pageWidth * first.height) / first.width)
+  for (let i = 1; i <= doc.numPages; i++) {
+    const v = (await doc.getPage(i)).getViewport({ scale: 1 })
+    sizes.push({ w: v.width, h: v.height })
+  }
+
+  // Doppelseite = Querformat. Ist schon die erste Seite eine Doppelseite, gibt es kein separates Cover.
+  const isSpread = (s: { w: number; h: number }) => props.splitSpreads && s.w > s.h
+  const firstIsSpread = isSpread(sizes[0])
+  const showCover = !firstIsSpread
+  const single = firstIsSpread ? { w: sizes[0].w / 2, h: sizes[0].h } : sizes[0]
+  const leftParity = showCover ? 1 : 0
+
+  sizes.forEach((s, i) => {
+    if (isSpread(s)) {
+      if (slots.length % 2 !== leftParity) slots.push(null) // linke Hälfte muss auf linker Seite landen
+      slots.push({ page: i, half: 'left' }, { page: i, half: 'right' })
+    } else {
+      slots.push({ page: i, half: 'full' })
+    }
+  })
+  total.value = slots.length
+
+  const pageHeight = Math.round((props.pageWidth * single.h) / single.w)
   host.value.style.setProperty('--fb-ratio', String(pageHeight / props.pageWidth))
 
-  pageEls = Array.from({ length: doc.numPages }, (_, i) => {
+  pageEls = slots.map((_, i) => {
     const el = document.createElement('div')
     el.className = 'fb-page'
-    if (i === 0 || i === doc.numPages - 1) el.dataset.density = 'hard'
+    if (showCover && (i === 0 || i === slots.length - 1)) el.dataset.density = 'hard'
     return el
   })
 
@@ -80,7 +106,7 @@ async function load() {
     maxWidth: 900,
     minHeight: 300,
     maxHeight: 1400,
-    showCover: true,
+    showCover,
     maxShadowOpacity: 0.4,
     mobileScrollSupport: false,
     useMouseEvents: props.dragToFlip,
@@ -102,20 +128,29 @@ async function load() {
 }
 
 function renderAround(i: number) {
-  for (let n = Math.max(0, i - 2); n <= Math.min(total.value - 1, i + 3); n++) renderPage(n)
+  for (let n = Math.max(0, i - 2); n <= Math.min(slots.length - 1, i + 3); n++) renderPage(n)
 }
 
 async function renderPage(i: number) {
   const doc = pdf
-  if (!doc || rendered.has(i)) return
+  const slot = slots[i]
+  if (!doc || !slot || rendered.has(i)) return
   rendered.add(i)
   try {
-    const page = await doc.getPage(i + 1)
+    const page = await doc.getPage(slot.page + 1)
     if (doc !== pdf) return
 
     const base = page.getViewport({ scale: 1 })
+    const factor = slot.half === 'full' ? 1 : 2 // Hälfte zeigt einen Ausschnitt der doppelt breiten Seite
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
-    const vp = page.getViewport({ scale: (props.pageWidth / base.width) * dpr })
+    const vp = page.getViewport({ scale: ((props.pageWidth * factor) / base.width) * dpr })
+
+    const inner = document.createElement('div')
+    inner.className = 'fb-inner'
+    if (slot.half !== 'full') {
+      inner.style.width = '200%'
+      inner.style.left = slot.half === 'left' ? '0' : '-100%'
+    }
 
     const canvas = document.createElement('canvas')
     canvas.width = vp.width
@@ -124,10 +159,11 @@ async function renderPage(i: number) {
 
     const textDiv = document.createElement('div')
     textDiv.className = 'textLayer'
-    pageEls[i].append(canvas, textDiv)
+
+    inner.append(canvas, textDiv)
+    pageEls[i].append(inner)
 
     await page.render({ canvas, viewport: vp }).promise
-    // Text-Layer in PDF-Einheiten (scale 1); die tatsächliche Größe steuert --scale-factor
     await new pdfjsLib.TextLayer({
       textContentSource: page.streamTextContent(),
       container: textDiv,
@@ -145,11 +181,12 @@ function updateScale() {
   if (!flip) return
   const w = flip.getRender().getRect().pageWidth
   if (!w) return
-  const s = String(w / pdfPageWidth)
-  for (const el of pageEls) {
-    el.style.setProperty('--scale-factor', s)
-    el.style.setProperty('--total-scale-factor', s)
-  }
+  slots.forEach((slot, i) => {
+    if (!slot) return
+    const s = String((w * (slot.half === 'full' ? 1 : 2)) / sizes[slot.page].w)
+    pageEls[i].style.setProperty('--scale-factor', s)
+    pageEls[i].style.setProperty('--total-scale-factor', s)
+  })
 }
 
 function onKey(e: KeyboardEvent) {
@@ -158,13 +195,13 @@ function onKey(e: KeyboardEvent) {
 }
 
 onMounted(load)
-watch(() => props.src, load)
+watch(() => [props.src, props.splitSpreads], load)
 onBeforeUnmount(cleanup)
 
 defineExpose({
   next: () => flip?.flipNext(),
   prev: () => flip?.flipPrev(),
-  goTo: (page: number) => flip?.turnToPage(page - 1),
+  goTo: (slotIndex: number) => flip?.turnToPage(slotIndex),
 })
 </script>
 
@@ -183,11 +220,11 @@ defineExpose({
 <style>
 .fb-root { outline: none; }
 .fb-host {
-  /* Doppelseite = 2 Seitenbreiten; Höhe soll max. 80vh sein */
   width: min(100%, calc(80vh * 2 / var(--fb-ratio, 1.414)));
   margin: 0 auto;
 }
 .fb-page { background: #fff; overflow: hidden; }
+.fb-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 .fb-controls { display: flex; gap: 1rem; justify-content: center; align-items: center; padding: .5rem; }
 .fb-loading { text-align: center; padding: 1rem; }
 
