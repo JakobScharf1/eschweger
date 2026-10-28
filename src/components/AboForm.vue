@@ -58,7 +58,6 @@
             { key: 'nr', label: 'Hausnummer', type: 'text', width: 'col-md-2' },
             { key: 'plz', label: 'PLZ', type: 'text', width: 'col-md-3' },
             { key: 'ort', label: 'Ort', type: 'text', width: 'col-md-3' },
-            { key: 'land', label: 'Land', type: 'text', width: 'col-md-6' },
           ]"
           :key="`zahler-${field.key}`"
           :class="field.width"
@@ -93,7 +92,6 @@
               { key: 'nr', label: 'Hausnummer', type: 'text', width: 'col-md-2' },
               { key: 'plz', label: 'PLZ', type: 'text', width: 'col-md-3' },
               { key: 'ort', label: 'Ort', type: 'text', width: 'col-md-3' },
-              { key: 'land', label: 'Land', type: 'text', width: 'col-md-6' },
             ]"
             :key="`empfaenger-${field.key}`"
             :class="field.width"
@@ -187,15 +185,23 @@ const selectedAbo = computed({
   },
 })
 
+const startAm = computed(() => {
+  const today = new Date()
+  return new Date(today.getFullYear(), today.getMonth() + 1, 1)
+    .toISOString()
+    .slice(0, 10)
+})
+
 const form = reactive({
     ist_geschenk: false,
+    start_am: startAm.value,
     empfaenger: {
         name: '',
         strasse: '',
         nr: '',
         plz: '',
         ort: '',
-        land: 'Deutschland',
+        land: 'DE',
         email: '',
     },
     zahler: {
@@ -204,7 +210,7 @@ const form = reactive({
         nr: '',
         plz: '',
         ort: '',
-        land: 'Deutschland',
+        land: 'DE',
         email: '',
     },
     grussnachricht: '',
@@ -220,7 +226,6 @@ const errors = reactive({
         nr: '',
         plz: '',
         ort: '',
-        land: '',
         email: '',
     },
     zahler: {
@@ -229,7 +234,6 @@ const errors = reactive({
         nr: '',
         plz: '',
         ort: '',
-        land: '',
         email: '',
     },
     grussnachricht: '',
@@ -245,7 +249,7 @@ function validate() {
   errors.grussnachricht = ''
 
   for (const address of ['empfaenger', 'zahler']) {
-    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'land', 'email']) {
+    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'email']) {
       errors[address][field] = ''
     }
   }
@@ -254,10 +258,10 @@ function validate() {
   const addressesToValidate = form.ist_geschenk ? ['empfaenger', 'zahler'] : ['zahler']
 
   for (const address of addressesToValidate) {
-    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'land', 'email']) {
+    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'email']) {
       const value = form[address][field].trim()
       if (!value) {
-        errors[address][field] = `Bitte geben Sie ${field === 'plz' ? 'PLZ' : field === 'ort' ? 'Ort' : field === 'strasse' ? 'Straße' : field === 'nr' ?  'Hausnummer' : field === 'land' ? 'Land' : field === 'email' ? 'E-Mail-Adresse' : 'Namen'} an.`
+        errors[address][field] = `Bitte geben Sie ${field === 'plz' ? 'PLZ' : field === 'ort' ? 'Ort' : field === 'strasse' ? 'Straße' : field === 'nr' ?  'Hausnummer' : field === 'email' ? 'E-Mail-Adresse' : 'Namen'} an.`
         isValid = false
       } else if (field === 'email' && !emailRe.test(value)) {
         errors[address][field] = 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
@@ -277,14 +281,15 @@ function validate() {
 function resetForm() {
   form.ist_geschenk = false
   for (const address of ['empfaenger', 'zahler']) {
-    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'land', 'email']) {
+    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'email']) {
       form[address][field] = ''
     }
   }
   form.grussnachricht = ''
   form.notiz_vom_besteller = ''
-  form.empfaenger.land = 'Deutschland'
-  form.zahler.land = 'Deutschland'
+  form.empfaenger.land = 'DE'
+  form.zahler.land = 'DE'
+  form.start_am = startAm.value
 }
 
 async function submitForm() {
