@@ -110,7 +110,7 @@
 import AboForm from '@/components/AboForm.vue';
 import { nextTick, reactive, ref } from 'vue';
 
-const active = ref('halbjahr')
+const active = ref('ganzjahr')
 const chosenAbo = ref(null)
 const aboFormSection = ref(null)
 

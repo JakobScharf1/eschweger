@@ -49,7 +49,7 @@ import { reactive, ref, computed } from 'vue'
 import Privat from '@/components/anzeigen/Privat.vue'
 import Geschaeftlich from '@/components/anzeigen/Geschaeftlich.vue'
 
-const active = ref('privat')
+const active = ref('geschaeftlich')
 
 const tabs = reactive([
     { key: 'privat', label: 'Ich bin Privatkunde' },
