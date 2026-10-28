@@ -54,9 +54,11 @@
           v-for="field in [
             { key: 'name', label: 'Name', type: 'text', width: 'col-md-6' },
             { key: 'email', label: 'E-Mail', type: 'email', width: 'col-md-6' },
-            { key: 'strasse', label: 'Straße und Hausnummer', type: 'text', width: 'col-md-6' },
+            { key: 'strasse', label: 'Straße', type: 'text', width: 'col-md-4' },
+            { key: 'nr', label: 'Hausnummer', type: 'text', width: 'col-md-2' },
             { key: 'plz', label: 'PLZ', type: 'text', width: 'col-md-3' },
             { key: 'ort', label: 'Ort', type: 'text', width: 'col-md-3' },
+            { key: 'land', label: 'Land', type: 'text', width: 'col-md-6' },
           ]"
           :key="`zahler-${field.key}`"
           :class="field.width"
@@ -87,9 +89,11 @@
             v-for="field in [
               { key: 'name', label: 'Name', type: 'text', width: 'col-md-6' },
               { key: 'email', label: 'E-Mail', type: 'email', width: 'col-md-6' },
-              { key: 'strasse', label: 'Straße und Hausnummer', type: 'text', width: 'col-md-6' },
+              { key: 'strasse', label: 'Straße', type: 'text', width: 'col-md-4' },
+              { key: 'nr', label: 'Hausnummer', type: 'text', width: 'col-md-2' },
               { key: 'plz', label: 'PLZ', type: 'text', width: 'col-md-3' },
               { key: 'ort', label: 'Ort', type: 'text', width: 'col-md-3' },
+              { key: 'land', label: 'Land', type: 'text', width: 'col-md-6' },
             ]"
             :key="`empfaenger-${field.key}`"
             :class="field.width"
@@ -128,6 +132,23 @@
             </div>
           </div>
         </template>
+
+        <div class="col-12 mt-3">
+          <div class="form-floating mb-4">
+            <textarea
+              name="notiz_vom_besteller"
+              class="form-control"
+              :class="{ 'is-invalid': errors.notiz_vom_besteller && showErrors }"
+              placeholder="Notiz vom Besteller (optional)"
+              style="height: 50px"
+              v-model="form.notiz_vom_besteller"
+            ></textarea>
+            <label>Notizen</label>
+            <div v-if="errors.notiz_vom_besteller && showErrors" class="invalid-feedback">
+              {{ errors.notiz_vom_besteller }}
+            </div>
+          </div>
+        </div>
 
         <div class="col-12">
           <button type="submit" class="btn btn-primary rounded-pill btn-send mb-3" :disabled="submitting">
@@ -171,18 +192,23 @@ const form = reactive({
     empfaenger: {
         name: '',
         strasse: '',
+        nr: '',
         plz: '',
         ort: '',
+        land: 'Deutschland',
         email: '',
     },
     zahler: {
         name: '',
         strasse: '',
+        nr: '',
         plz: '',
         ort: '',
+        land: 'Deutschland',
         email: '',
     },
     grussnachricht: '',
+    notiz_vom_besteller: '',
 })
 
 const errors = reactive({
@@ -191,15 +217,19 @@ const errors = reactive({
     empfaenger: {
         name: '',
         strasse: '',
+        nr: '',
         plz: '',
         ort: '',
+        land: '',
         email: '',
     },
     zahler: {
         name: '',
         strasse: '',
+        nr: '',
         plz: '',
         ort: '',
+        land: '',
         email: '',
     },
     grussnachricht: '',
@@ -215,7 +245,7 @@ function validate() {
   errors.grussnachricht = ''
 
   for (const address of ['empfaenger', 'zahler']) {
-    for (const field of ['name', 'strasse', 'plz', 'ort', 'email']) {
+    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'land', 'email']) {
       errors[address][field] = ''
     }
   }
@@ -224,10 +254,10 @@ function validate() {
   const addressesToValidate = form.ist_geschenk ? ['empfaenger', 'zahler'] : ['zahler']
 
   for (const address of addressesToValidate) {
-    for (const field of ['name', 'strasse', 'plz', 'ort', 'email']) {
+    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'land', 'email']) {
       const value = form[address][field].trim()
       if (!value) {
-        errors[address][field] = `Bitte geben Sie ${field === 'plz' ? 'PLZ' : field === 'ort' ? 'Ort' : field === 'strasse' ? 'Straße und Hausnummer' : field === 'email' ? 'E-Mail-Adresse' : 'Namen'} an.`
+        errors[address][field] = `Bitte geben Sie ${field === 'plz' ? 'PLZ' : field === 'ort' ? 'Ort' : field === 'strasse' ? 'Straße' : field === 'nr' ?  'Hausnummer' : field === 'land' ? 'Land' : field === 'email' ? 'E-Mail-Adresse' : 'Namen'} an.`
         isValid = false
       } else if (field === 'email' && !emailRe.test(value)) {
         errors[address][field] = 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
@@ -247,11 +277,14 @@ function validate() {
 function resetForm() {
   form.ist_geschenk = false
   for (const address of ['empfaenger', 'zahler']) {
-    for (const field of ['name', 'strasse', 'plz', 'ort', 'email']) {
+    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'land', 'email']) {
       form[address][field] = ''
     }
   }
   form.grussnachricht = ''
+  form.notiz_vom_besteller = ''
+  form.empfaenger.land = 'Deutschland'
+  form.zahler.land = 'Deutschland'
 }
 
 async function submitForm() {
@@ -276,7 +309,7 @@ async function submitForm() {
       ...form,
     })
 
-    successMessage.value = 'Erfolgreich bestellt!'
+    successMessage.value = 'Erfolgreich gesendet! Bitte überprüfen Sie Ihre E-Mails, um die Bestellung zu bestätigen.'
     resetForm()
   } catch (e) {
     console.error(e)
