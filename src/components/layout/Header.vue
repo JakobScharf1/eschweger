@@ -64,6 +64,9 @@
               <router-link to="/veranstaltungen" @click="menuClose">Veranstaltungen</router-link>
             </li> -->
             <li class="nav-item">
+              <router-link to="/abo" @click="menuClose">Abonnement</router-link>
+            </li>
+            <li class="nav-item">
               <router-link to="/unterstuetzen" @click="menuClose">Unterstützen</router-link>
             </li>
             <li class="nav-item">

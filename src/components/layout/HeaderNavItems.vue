@@ -15,6 +15,7 @@
         aria-label="Untermenü öffnen"
       >Hefte</button>
       <ul class="dropdown-menu">
+        <li><router-link class="dropdown-item" to="/abo">Abonnement</router-link></li>
         <li><router-link class="dropdown-item" to="/demo">Alle Hefte</router-link></li>
         <li><router-link class="dropdown-item" to="/gewinnspiele">Gewinnen</router-link></li>
         <li><span class="dropdown-item clickable" @click="openPopup">Newsletter</span></li>

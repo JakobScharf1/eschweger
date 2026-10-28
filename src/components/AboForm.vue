@@ -140,7 +140,7 @@
 </template>
 
 <script setup>
-import { ApiService } from '@/services/APIService';
+import { postAbo } from '@/services/AboService.js'
 import { computed, reactive, ref } from 'vue'
 
 const formRef = ref(null)
@@ -272,15 +272,14 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    const res = await ApiService.post('/abo-bestellung', {
-      publikation_id: import.meta.env.VITE_PUBLIKATION_ID,
-      angebot: "TODO",
-      ...form
+    await postAbo(props.active.value, props.chosenAbo.value, {
+      ...form,
     })
 
     successMessage.value = 'Erfolgreich bestellt!'
     resetForm()
   } catch (e) {
+    console.error(e)
     errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
   } finally {
     submitting.value = false
