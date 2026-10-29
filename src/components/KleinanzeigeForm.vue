@@ -157,6 +157,7 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import FileUpload from './FileUpload.vue'
+import { sendKleinanzeige } from '@/services/MailService.js'
 
 const formRef = ref(null)
 const submitting = ref(false)
@@ -279,13 +280,11 @@ async function submitForm() {
   submitting.value = true
   try {
     const payload = new FormData()
-    Object.entries(form).forEach(([key, value]) => payload.append(key, value))
     if (uploadedFiles.value[0]) {
       payload.append('datei', uploadedFiles.value[0])
     }
 
-    // TODO: an Backend senden, z.B.
-    // await axios.post('/api/kleinanzeigen', payload)
+    await sendKleinanzeige(form.name, form.email, form.strasse, form.plz, form.ort, form.rubrik, form.text)
 
     successMessage.value = 'Ihre Anzeige wurde erfolgreich eingereicht!'
     resetForm()

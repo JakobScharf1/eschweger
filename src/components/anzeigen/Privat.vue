@@ -214,6 +214,7 @@
 import { ref, reactive, computed } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
+import { sendAnzeigePrivat } from '@/services/MailService'
 
 const selectedId = ref("")
 
@@ -374,11 +375,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    const res = await fetch('/messages/werbung-privat.php', {
-    method: 'POST',
-    body: new FormData(formRef.value),
-    })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    await sendAnzeigePrivat(form.format, form.ausgabe, { name: form.name, email: form.email, tel: form.telefon, adresse: form.adresse }, form.uebernahme, form.korrekturabzug, form.platzierung, form.notizen)
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()

@@ -108,7 +108,7 @@
               v-model="form.hausnr"
               @blur="setTouched('hausnr')"
             />
-            <label>Straße / Hausnr. *</label>
+            <label>Hausnr. *</label>
             <div v-if="errors.hausnr && (showErrors || touched.hausnr)" class="invalid-feedback">{{ errors.hausnr }}</div>
           </div>
         </div>
@@ -189,9 +189,9 @@
 </template>
 
 <script setup>
+import { sendFoerder } from '@/services/MailService'
 import { computed, reactive, ref } from 'vue'
 
-const emit = defineEmits(['submit'])
 const formRef = ref(null)
 const submitting = ref(false)
 const successMessage = ref('')
@@ -332,7 +332,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    emit('submit', { ...form })
+    await sendFoerder(form.spendenbetrag, form.personentyp, form.email, form.name, form.strasse, form.plz, form.ort, form.zahlart)
     successMessage.value = 'Spende erfolgreich übermittelt.'
     resetForm()
   } catch (e) {

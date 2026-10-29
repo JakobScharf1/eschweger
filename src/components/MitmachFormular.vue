@@ -168,7 +168,8 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { sendMitmachen } from '@/services/MailService'
+import { computed, reactive, ref } from 'vue'
 
 const formRef = ref(null)
 const submitting = ref(false)
@@ -220,6 +221,12 @@ const pakete2 = reactive([
     chosen: false,
   },
 ])
+
+const chosenPakete = computed(() => {
+  const chosenPakete1 = pakete1.filter((p1) => p1.chosen === true)
+  const chosenPakete2 = pakete2.filter((p2) => p2.chosen === true)
+  return [ ...chosenPakete1, ...chosenPakete2 ]
+})
 
 const form = reactive({
   vorname: '',
@@ -330,7 +337,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    
+    await sendMitmachen(form.vorname, form.nachname, form.email, form.telefon, form.strasse, form.plz, form.ort, chosenPakete, form.bemerkung)
 
     successMessage.value = 'Erfolgreich eingtragen!'
     resetForm()

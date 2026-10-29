@@ -157,7 +157,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating mb-4">
-                        <select class="form-select" id="preiskategorie">
+                        <select class="form-select" id="preiskategorie" v-model="form.kategorie">
                             <option value="ort">Ortspreis</option>
                             <option value="base">Basispreis</option>
                             <option value="gamification">Social-Gamification</option>
@@ -326,6 +326,7 @@
 import { ref, reactive, computed } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
+import { sendAnzeigeGeschaeftlich } from '@/services/MailService'
 
 const selectedId = ref("")
 
@@ -376,6 +377,7 @@ const form = reactive({
     vorlage: '',
     format: '',
     newsletter: '',
+    kategorie: 'ort',
 })
 
 const errors = reactive({
@@ -472,6 +474,7 @@ function resetForm() {
   form.notizen = ''
   form.vorlage = ''
   form.format = ''
+  form.kategorie = 'ort'
 }
 
 async function submitForm() {
@@ -495,11 +498,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    const res = await fetch('/messages/werbung-privat.php', {
-    method: 'POST',
-    body: new FormData(formRef.value),
-    })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    await sendAnzeigeGeschaeftlich(form.format, form.ausgabe, form.kategorie, form.kategorie, form.uebernahme, form.korrekturabzug, form.platzierung, form.notizen)
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()

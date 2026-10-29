@@ -229,6 +229,7 @@
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
+import { sendContact } from '@/services/MailService';
 
 const props = defineProps(['preselection'])
 
@@ -330,8 +331,10 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    // Weitergabe der Daten: emitten, Verarbeitung extern
-    
+    await sendContact(
+      { vorname: form.vorname, nachname: form.nachname, email: form.email, strasse: form.strasse, ort: form.ort, plz: form.plz }, 
+      form.message
+    )
     successMessage.value = 'Kontaktanfrage erfolgreich verschickt.'
     resetForm()
   } catch (e) {

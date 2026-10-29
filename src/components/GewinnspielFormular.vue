@@ -125,6 +125,7 @@ Datenschutz: Die erfassten Adressen werden bei uns gespeichert und nicht an Drit
 </template>
 
 <script setup>
+import { sendGewinnspiel } from '@/services/MailService'
 import { reactive, ref } from 'vue'
 
 const formRef = ref(null)
@@ -231,12 +232,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    const res = await fetch('/messages/gewinnspiel.php', {
-    method: 'POST',
-    body: new FormData(formRef.value),
-    })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-
+    await sendGewinnspiel({ vorname: form.vorname, nachname: form.nachname, email: form.email, tel: form.telefon, ort: form.ort }, form.loesung)
     successMessage.value = 'Erfolgreich eingetragen!'
     resetForm()
   } catch (e) {
