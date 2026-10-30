@@ -334,7 +334,7 @@ const preise = reactive({
     jahresrabatte: [],
 })
 
-function getPreisInfos() {
+function getInfos() {
     getPreisInfos().then((res) => {
         infos.auflage = res.publikation.auflage
         infos.erscheinungsweise = res.publikation.erscheinungsweise
@@ -348,7 +348,7 @@ function getPreisInfos() {
 }
 
 onMounted(() => {
-    getPreisInfos()
+    getInfos()
 })
 
 // ### FORM ###
