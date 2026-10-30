@@ -342,7 +342,7 @@ function getPreisInfos() {
         infos.auslage = res.publikation.auslage
         preise.newsletter.preisPro1000 = res.newsletter.preis_pro_1000
         preise.platzierungswunsch = res.platzierungswunsch
-        preise.jahresrabatte = res.jahresfrabatte
+        preise.jahresrabatte = res.jahresrabatte
         infos.sonderaktionen = res.sonderaktionen
     })
 }
