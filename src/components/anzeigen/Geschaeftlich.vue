@@ -301,12 +301,11 @@
 
                 <em class="mb-3">Falls keine Vorlage vorliegt, kann diese nachgereicht werden. Entsprechend bitte in den Notizen anmerken.</em>
 
-                <input type="hidden" name="gewinnspiel" value="00_2026" />
-
                 <div class="col-12 justify-content-center mb-3">
                     <button type="submit" class="btn btn-primary rounded-pill btn-send" :disabled="submitting">
                         {{ submitting ? 'Sende...' : 'Absenden' }}
                     </button>
+                    <small class="ms-3">Test</small>
                 </div>
             </div>
         </form>
@@ -314,11 +313,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
 import { sendAnzeigeGeschaeftlich } from '@/services/MailService'
-import { getPreisinfos } from '@/services/AnzeigeService'
+import { getLivePreis, getPreisinfos } from '@/services/AnzeigeService'
 
 // ### METAINFOS ###
 const infos = reactive({
@@ -337,19 +336,33 @@ const preise = reactive({
 
 function getInfos() {
     getPreisinfos().then((res) => {
-        infos.auflage = res.publikation.auflage
-        infos.erscheinungsweise = res.publikation.erscheinungsweise
-        infos.verbreitung = res.publikation.verbreitung
-        infos.auslage = res.publikation.auslage
-        preise.newsletter.preisPro1000 = res.newsletter.preis_pro_1000
-        preise.platzierungswunsch = res.platzierungswunsch
-        preise.jahresrabatte = res.jahresrabatte
-        infos.sonderaktionen = res.sonderaktionen
+        infos.auflage = res.data.publikation.auflage
+        infos.erscheinungsweise = res.data.publikation.erscheinungsweise
+        infos.verbreitung = res.data.publikation.verbreitung
+        infos.auslage = res.data.publikation.auslage
+        preise.newsletter.preisPro1000 = res.data.newsletter.preis_pro_1000
+        preise.platzierungswunsch = res.data.platzierungswunsch
+        preise.jahresrabatte = res.data.jahresrabatte
+        infos.sonderaktionen = res.data.sonderaktionen
     })
 }
 
 onMounted(() => {
     getInfos()
+})
+
+// ### LIVE-PREIS ###
+let timer = null
+const livePreis = ref(null)
+watch([form.kategorie, form.newsletter, form.format, form.platzierung], () => {
+    if (form.kategorie && form.format) {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            getLivePreis(form.format.id, form.kategorie, form.platzierung, form.newsletter).then(res => {
+                livePreis = res.data.summe_netto
+            })
+        }, 2000)
+    } else livePreis.value = null
 })
 
 // ### FORM ###
