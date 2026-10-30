@@ -318,6 +318,7 @@ import { ref, reactive, onMounted } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
 import { sendAnzeigeGeschaeftlich } from '@/services/MailService'
+import { getPreisinfos } from '@/services/AnzeigeService'
 
 // ### METAINFOS ###
 const infos = reactive({
@@ -335,7 +336,7 @@ const preise = reactive({
 })
 
 function getInfos() {
-    getPreisInfos().then((res) => {
+    getPreisinfos().then((res) => {
         infos.auflage = res.publikation.auflage
         infos.erscheinungsweise = res.publikation.erscheinungsweise
         infos.verbreitung = res.publikation.verbreitung
