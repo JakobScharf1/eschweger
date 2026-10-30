@@ -1,6 +1,7 @@
 import { ApiService } from "./APIService";
 
 export async function getAnzeigenKatalog() {
+    /** Unterscheidung Privat/Geschäftlich? */
     return await ApiService.get(`/publikationen/${import.meta.env.VITE_PUBLIKATION_ID}/anzeigen-katalog`)
 }
 

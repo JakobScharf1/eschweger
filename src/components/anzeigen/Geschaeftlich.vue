@@ -1,15 +1,16 @@
 <template>    
     <section class="mb-5">
-        <strong>Auslage: </strong>Das Heft wird im Einzelhandel, Arztpraxen, Tankstellen uvm. zur kostenlosen Mitnahme ausgelegt.<br/>
-        <strong>Erscheinungsweise: </strong>monatlich<br/>
-        <strong>Auflage: </strong>5.000 Exemplare<br/>
-        <strong>Verbreitung: </strong>Kostenlos an vielen Verteilstellen<br/>
+        <strong>Auslage: </strong>{{ infos.auslage }}<br/>
+        <strong>Erscheinungsweise: </strong>{{ infos.erscheinungsweise }}<br/>
+        <strong>Auflage: </strong>{{ infos.auflage }} Exemplare<br/>
+        <strong>Verbreitung: </strong>{{ infos.verbreitung }}<br/>
     </section>
 
-    <div class="alert alert-primary" role="alert">
-        <b>Einführungsrabatt</b><br/>
-        25% für die ersten drei Ausgaben: November und Dezember 2026, Januar 2027! Informieren Sie sich über unsere Adventskalender-Aktion!
-    </div>
+    <template v-if="infos.sonderaktionen.length > 0">
+        <div class="alert alert-primary" role="alert" v-for="aktion of infos.sonderaktionen">
+            {{ aktion.text }}
+        </div>
+    </template>
 
     <section>
         <h2 class="mb-0">Format auswählen</h2>
@@ -82,7 +83,7 @@
                 title="Newsletter"
                 value="newsletter"
                 subtitle="Pro 1.000 Abonnenten"
-                price="30"
+                :price="preise.newsletter.preisPro1000"
                 :selected="selectedId === 'newsletter'"
                 @select="setSelectedId('newsletter')"
                 >
@@ -105,25 +106,15 @@
                 <h3 class="mb-0 mt-3">Jahresrabatte</h3>
                 <table class="table">
                     <thead>
-                        <th>Schaltungen</th>
-                        <th>Rückerstattungen</th>
+                        <tr>
+                            <th>Schaltungen</th>
+                            <th>Rückerstattungen</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>3</td>
-                            <td>5 %</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>10 %</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>15 %</td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td>25 %</td>
+                        <tr v-for="item of preise.jahresrabatte">
+                            <td>{{ item.schaltungen }}</td>
+                            <td>{{ item.prozent }} %</td>
                         </tr>
                     </tbody>
                 </table>
@@ -323,15 +314,49 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
 import { sendAnzeigeGeschaeftlich } from '@/services/MailService'
 
+// ### METAINFOS ###
+const infos = reactive({
+    auflage: "",
+    erscheinungsweise: "",
+    verbreitung: "",
+    auslage: "",
+    sonderaktionen: []
+})
+
+const preise = reactive({
+    newsletter: { preisPro1000: 0 },
+    platzierungswunsch: { zuschlagProzent: 0, rubriken: [] },
+    jahresrabatte: [],
+})
+
+function getPreisInfos() {
+    getPreisInfos().then((res) => {
+        infos.auflage = res.publikation.auflage
+        infos.erscheinungsweise = res.publikation.erscheinungsweise
+        infos.verbreitung = res.publikation.verbreitung
+        infos.auslage = res.publikation.auslage
+        preise.newsletter.preisPro1000 = res.newsletter.preis_pro_1000
+        preise.platzierungswunsch = res.platzierungswunsch
+        preise.jahresrabatte = res.jahresfrabatte
+        infos.sonderaktionen = res.sonderaktionen
+    })
+}
+
+onMounted(() => {
+    getPreisInfos()
+})
+
+// ### FORM ###
+
 const selectedId = ref("")
 
 function setSelectedId(id) {
-    console.log("SELECTED ID:", id)
+  console.log("SELECTED ID:", id)
   selectedId.value = id
 }
 
