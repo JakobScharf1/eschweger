@@ -351,20 +351,6 @@ onMounted(() => {
     getInfos()
 })
 
-// ### LIVE-PREIS ###
-let timer = null
-const livePreis = ref(null)
-watch([form.kategorie, form.newsletter, form.format, form.platzierung], () => {
-    if (form.kategorie && form.format) {
-        clearTimeout(timer)
-        timer = setTimeout(() => {
-            getLivePreis(form.format.id, form.kategorie, form.platzierung, form.newsletter).then(res => {
-                livePreis = res.data.summe_netto
-            })
-        }, 2000)
-    } else livePreis.value = null
-})
-
 // ### FORM ###
 
 const selectedId = ref("")
@@ -403,6 +389,8 @@ const errorMessage = ref('')
 const formRef = ref(null)
 const submitting = ref(false)
 
+const uploadedFiles = ref([]) // TODO
+
 const form = reactive({
     ausgabe: '',
     name: '',
@@ -418,6 +406,20 @@ const form = reactive({
     newsletter: '',
     kategorie: 'ort',
 })
+
+// ### LIVE-PREIS ###
+let timer = null
+const livePreis = ref(null)
+watch(form, () => {
+    if (form.kategorie && form.format) {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            getLivePreis(form.format.id, form.kategorie, form.platzierung, form.newsletter).then(res => {
+                livePreis = res.data.summe_netto
+            })
+        }, 2000)
+    } else livePreis.value = null
+}, { deep: true })
 
 const errors = reactive({
     ausgabe: '',

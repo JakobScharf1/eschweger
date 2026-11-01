@@ -24,7 +24,7 @@
             >
               <div class="card-header">
                 <button
-                  :class="`${!i ? 'accordion-button' : 'collapsed'}`"
+                  class="accordion-button"
                   data-bs-toggle="collapse"
                   :data-bs-target="`#collapse1`"
                   aria-expanded="true"
@@ -36,7 +36,7 @@
               <!--/.card-header -->
               <div
                 :id="`collapse1`"
-                :class="`accordion-collapse collapse ${!i ? 'show' : ''} `"
+                class="accordion-collapse collapse show"
                 :aria-labelledby="`heading1`"
                 data-bs-parent="#accordionExample-1"
               >
@@ -55,7 +55,7 @@
             >
               <div class="card-header">
                 <button
-                  :class="`${!i ? 'accordion-button' : 'collapsed'}`"
+                  class="accordion-button"
                   data-bs-toggle="collapse"
                   :data-bs-target="`#collapse2`"
                   aria-expanded="true"
@@ -67,7 +67,7 @@
               <!--/.card-header -->
               <div
                 :id="`collapse2`"
-                :class="`accordion-collapse collapse ${!i ? 'show' : ''} `"
+                class="accordion-collapse collapse show"
                 :aria-labelledby="`heading2`"
                 data-bs-parent="#accordionExample-2"
               >
