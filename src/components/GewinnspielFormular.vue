@@ -7,6 +7,12 @@
       </div>
 
       <div class="row gx-4">
+        <!-- <div class="col-12 mb-4">
+          <div class="form-check">
+            <label for="gewinnspiel-1" class="form-check-label">Online-Gewinnspiel</label>
+            <input id="gewinnspiel-1" type="checkbox" class="form-check-input">
+          </div>
+        </div> -->
         <div class="col-md-6">
           <div class="form-floating mb-4">
             <input
@@ -125,7 +131,7 @@ Datenschutz: Die erfassten Adressen werden bei uns gespeichert und nicht an Drit
 </template>
 
 <script setup>
-import { sendGewinnspiel } from '@/services/MailService'
+import { sendLoesung } from '@/services/GewinnspielService'
 import { reactive, ref } from 'vue'
 
 const formRef = ref(null)
@@ -232,7 +238,10 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await sendGewinnspiel({ vorname: form.vorname, nachname: form.nachname, email: form.email, tel: form.telefon, ort: form.ort }, form.loesung)
+    await sendLoesung(
+      { anrede: null, titel: null, vorname: form.vorname, name: form.nachname, strasse: "", nr: "", zusatz: null, plz: "", ort: form.ort, land: "DE", email: form.email, telefon: form.telefon },
+      [ { gewinnspiel_id: 2, antwort: form.loesung } ]
+    )
     successMessage.value = 'Erfolgreich eingetragen!'
     resetForm()
   } catch (e) {

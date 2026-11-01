@@ -4,10 +4,6 @@ export async function sendContact(from, message) {
   return await ApiService.post('/mail/contact', { publikation_id: import.meta.env.VITE_PUBLIKATION_ID, from: from, message: message }, {})
 }
 
-export async function sendGewinnspiel(from, loesung) {
-  return await ApiService.post('/mail/gewinnspiel', { publikation_id: import.meta.env.VITE_PUBLIKATION_ID, from: from, loesung: loesung }, {})
-}
-
 export async function sendAnzeigeGeschaeftlich(format, ausgabe, kategorie, from, uebernahme, korrektur, platzierung, notiz) {
   return await ApiService.post('/mail/anzeige-geschaeft', { publikation_id: import.meta.env.VITE_PUBLIKATION_ID, from: from, format: format, ausgabe: ausgabe, kategorie: kategorie, uebernahme: uebernahme, korrektur: korrektur, platzierung: platzierung, notiz: notiz }, {})
 }
