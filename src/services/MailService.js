@@ -30,11 +30,11 @@ export async function sendKleinanzeige(name, email, strasse, plz, ort, rubrik, t
 
 export async function sendMitmachen(vorname, nachname, email, tel, strasse, plz, ort, pakete, bemerkung) {
   let paketeString = ""
-  if (pakete.length > 1) {
-    pakete.forEach(p => {
+  if (pakete.value.length > 1) {
+    pakete.value.forEach(p => {
       paketeString = paketeString + ", " + p.label
     })
-  } else paketeString = pakete[0].label
+  } else paketeString = pakete.value[0].label
   return await sendMail(
     "redaktion@die-eschweger.de", 
     "Mitmachen Formular - DIE ESCHWEGER Website", 

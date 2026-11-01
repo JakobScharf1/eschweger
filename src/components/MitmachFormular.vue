@@ -339,7 +339,7 @@ async function submitForm() {
   try {
     await sendMitmachen(form.vorname, form.nachname, form.email, form.telefon, form.strasse, form.plz, form.ort, chosenPakete, form.bemerkung)
 
-    successMessage.value = 'Erfolgreich eingtragen!'
+    successMessage.value = 'Erfolgreich eingetragen!'
     resetForm()
   } catch (e) {
     errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
