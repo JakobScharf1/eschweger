@@ -1,7 +1,7 @@
 import { ApiService } from './APIService.js'
 
 async function sendMail(to, subject, html) {
-  return await ApiService.post("/email", { profil: "Eschweger automailer", to: "jaki.scharf@gmail.com", subject: subject, html: html })
+  return await ApiService.post("/email", { profil: "Eschweger automailer", to: "redaktion@die-eschweger.de", subject: subject, html: html })
 }
 
 export async function sendContact(from, message) {
@@ -32,7 +32,7 @@ export async function sendMitmachen(vorname, nachname, email, tel, strasse, plz,
   let paketeString = ""
   if (pakete.value.length > 1) {
     pakete.value.forEach(p => {
-      paketeString = paketeString + ", " + p.label
+      paketeString = paketeString + p.label + ", "
     })
   } else paketeString = pakete.value[0].label
   return await sendMail(
