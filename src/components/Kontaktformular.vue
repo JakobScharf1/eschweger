@@ -134,6 +134,18 @@
                       <div class="invalid-feedback">{{ errors.message || 'Bitte geben Sie eine Nachricht an.' }}</div>
                     </div>
                   </div>
+
+                  <!-- HONEYPOT -->
+                  <input
+                      v-model="honeypot"
+                      type="text"
+                      name="website"
+                      tabindex="-1"
+                      autocomplete="off"
+                      aria-hidden="true"
+                      style="position:absolute; left:-9999px"
+                  />
+
                   <!-- /column -->
                   <div class="col-12">
                     <div class="form-check mb-4">
@@ -238,6 +250,9 @@ const submitting = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
 
+const honeypot = ref("")
+const startTime = Date.now()
+
 const form = reactive({
   vorname: '',
   nachname: '',
@@ -317,6 +332,10 @@ async function submitForm() {
   successMessage.value = ''
   errorMessage.value = ''
 
+  if (honeypot.value || Date.now() - startTime < 3000) {
+    return
+  }
+  
   if (!validate()) {
     errorMessage.value = 'Bitte alle Pflichtfelder ausfüllen.'
     // focus first invalid field

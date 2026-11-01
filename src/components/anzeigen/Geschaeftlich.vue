@@ -299,6 +299,17 @@
                     </div>
                 </div>
 
+                <!-- HONEYPOT -->
+                <input
+                    v-model="honeypot"
+                    type="text"
+                    name="website"
+                    tabindex="-1"
+                    autocomplete="off"
+                    aria-hidden="true"
+                    style="position:absolute; left:-9999px"
+                />
+
                 <em class="mb-3">Falls keine Vorlage vorliegt, kann diese nachgereicht werden. Entsprechend bitte in den Notizen anmerken.</em>
 
                 <div class="col-12 justify-content-center mb-3">
@@ -318,6 +329,9 @@ import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
 import { sendAnzeigeGeschaeftlich } from '@/services/MailService'
 import { getLivePreis, getPreisinfos } from '@/services/AnzeigeService'
+
+const honeypot = ref("")
+const startTime = Date.now()
 
 // ### METAINFOS ###
 const infos = reactive({
@@ -522,6 +536,10 @@ async function submitForm() {
   successMessage.value = ''
   errorMessage.value = ''
   showErrors.value = false
+
+  if (honeypot.value || Date.now() - startTime < 3000) {
+    return
+  }
 
   if (!validate()) {
     showErrors.value = true

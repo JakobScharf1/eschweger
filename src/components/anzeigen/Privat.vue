@@ -195,6 +195,17 @@
                     </div>
                 </div>
 
+                <!-- HONEYPOT -->
+                <input
+                    v-model="honeypot"
+                    type="text"
+                    name="website"
+                    tabindex="-1"
+                    autocomplete="off"
+                    aria-hidden="true"
+                    style="position:absolute; left:-9999px"
+                />
+
                 <em class="mb-3">Falls keine Vorlage vorliegt, kann diese nachgereicht werden. Entsprechend bitte in den Notizen anmerken.</em>
 
                 <input type="hidden" name="gewinnspiel" value="00_2026" />
@@ -215,6 +226,9 @@ import { ref, reactive, computed } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
 import { sendAnzeigePrivat } from '@/services/MailService'
+
+const honeypot = ref("")
+const startTime = Date.now()
 
 const selectedId = ref("")
 
@@ -358,6 +372,10 @@ async function submitForm() {
   successMessage.value = ''
   errorMessage.value = ''
   showErrors.value = false
+
+  if (honeypot.value || Date.now() - startTime < 3000) {
+    return
+  }
 
   if (!validate()) {
     showErrors.value = true

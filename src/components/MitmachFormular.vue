@@ -157,6 +157,17 @@
           </div>
         </div>
 
+        <!-- HONEYPOT -->
+        <input
+            v-model="honeypot"
+            type="text"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            style="position:absolute; left:-9999px"
+        />
+
         <div class="col-12">
           <button type="submit" class="btn btn-primary rounded-pill btn-send mb-3" :disabled="submitting">
             {{ submitting ? 'Sende...' : 'Absenden' }}
@@ -175,6 +186,9 @@ const formRef = ref(null)
 const submitting = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
+
+const honeypot = ref("")
+const startTime = Date.now()
 
 const pakete1 = reactive([
   {
@@ -320,6 +334,10 @@ async function submitForm() {
   successMessage.value = ''
   errorMessage.value = ''
   showErrors.value = false
+
+  if (honeypot.value || Date.now() - startTime < 3000) {
+    return
+  }
 
   if (!validate()) {
     showErrors.value = true
