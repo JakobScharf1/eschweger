@@ -456,11 +456,11 @@ const form = reactive({
 // ### LIVE-PREIS ###
 let timer = null
 const livePreis = ref(0)
-watch(form, () => {
-    if (form.kategorie && form.format) {
+watch([form, selectedId], () => {
+    if (form.kategorie && selectedId.value) {
         clearTimeout(timer)
         timer = setTimeout(() => {
-            getLivePreis(form.format.id, form.kategorie, form.platzierung, form.newsletter).then(res => {
+            getLivePreis(selectedId.value, form.kategorie, form.platzierung, form.newsletter).then(res => {
                 livePreis = res.data.summe_netto
             })
         }, 2000)
