@@ -124,16 +124,11 @@
 
     <section>
         <form ref="formRef" class="contact-form needs-validation" @submit.prevent="submitForm" novalidate>
-            <div class="messages">
-                <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-                <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-            </div>
-
             <div class="row mt-4 mb-6">
                 <div class="col-12">
                     <strong v-if="selectedId === 'newsletter'">Ausgewähltes Format: Newsletter</strong>
                     <strong v-else-if="selectedFormat">Ausgewähltes Format: {{ selectedFormat.title }} <span v-if="selectedFormat.subtitle !== ''">| {{ selectedFormat.subtitle }}</span></strong>
-                    <strong v-else>Bitte Format auswählen!</strong>
+                    <strong class="text-red" v-else>Bitte Format auswählen!</strong>
                 </div>
             </div>
 
@@ -421,6 +416,11 @@
                     </button>
                     <small class="ms-3">{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis},-- € exkl. MwSt.` }}</small>
                 </div>
+            </div>
+
+            <div class="messages">
+                <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+                <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
             </div>
         </form>
     </section>
@@ -724,7 +724,7 @@ async function submitForm() {
         await uploadVorlage(res.bestellung_id, uploadedFile.value)
     }
 
-    successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
+    successMessage.value = 'Erfolgreich abgesendet! Bitte bestätigen Sie Ihre Email-Adresse, damit wir Ihre Anfrage bearbeiten können.'
     resetForm()
   } catch (e) {
     errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'

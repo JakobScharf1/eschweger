@@ -61,7 +61,7 @@ export const ApiService = {
   },
 
   uploadFile(path, file, options = {}) {
-    const { fieldName = 'file', data, ...requestOptions } = options
+    const { fieldName = 'datei', data, ...requestOptions } = options
 
     const formData = new FormData()
     formData.append(fieldName, file)
