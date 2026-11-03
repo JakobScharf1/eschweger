@@ -81,7 +81,58 @@
           </div>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 col-md-10">
+          <div class="form-floating mb-4">
+            <input
+              type="text"
+              name="strasse"
+              class="form-control"
+              :class="{ 'is-invalid': errors.strasse && (showErrors || touched.strasse) }"
+              placeholder="Straße"
+              required
+              v-model="form.strasse"
+              @blur="setTouched('strasse')"
+            />
+            <label>Straße *</label>
+            <div v-if="errors.strasse && (showErrors || touched.strasse)" class="invalid-feedback">{{ errors.strasse }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-2">
+          <div class="form-floating mb-4">
+            <input
+              type="text"
+              name="hausnr"
+              class="form-control"
+              :class="{ 'is-invalid': errors.hausnr && (showErrors || touched.hausnr) }"
+              placeholder="Hausnr."
+              required
+              v-model="form.hausnr"
+              @blur="setTouched('hausnr')"
+            />
+            <label>Hausnr. *</label>
+            <div v-if="errors.hausnr && (showErrors || touched.hausnr)" class="invalid-feedback">{{ errors.hausnr }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="form-floating mb-4">
+            <input
+              type="text"
+              name="plz"
+              class="form-control"
+              :class="{ 'is-invalid': errors.plz && (showErrors || touched.plz) }"
+              placeholder="PLZ"
+              required
+              v-model="form.plz"
+              @blur="setTouched('plz')"
+            />
+            <label>PLZ *</label>
+            <div v-if="errors.plz && (showErrors || touched.plz)" class="invalid-feedback">{{ errors.plz }}</div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-8">
           <div class="form-floating mb-4">
             <input
               type="text"
@@ -156,6 +207,9 @@ const form = reactive({
   nachname: '',
   email: '',
   telefon: '',
+  strasse: '',
+  hausnr: '',
+  plz: '',
   ort: '',
   loesung: '',
 })
@@ -165,6 +219,9 @@ const errors = reactive({
   nachname: '',
   email: '',
   telefon: '',
+  strasse: '',
+  hausnr: '',
+  plz: '',
   ort: '',
   loesung: '',
 })
@@ -174,6 +231,9 @@ const touched = reactive({
   nachname: false,
   email: false,
   telefon: false,
+  strasse: false,
+  hausnr: false,
+  plz: false,
   ort: false,
   loesung: false,
 })
@@ -202,6 +262,18 @@ function validate() {
     errors.telefon = 'Bitte Telefonnummer angeben.'
     ok = false
   }
+  if (!form.strasse || !form.strasse.trim()) {
+    errors.strasse = 'Bitte Straße angeben.'
+    ok = false
+  }
+  if (!form.hausnr || !form.hausnr.trim()) {
+    errors.hausnr = 'Bitte Hausnummer angeben.'
+    ok = false
+  }
+  if (!form.plz || !form.plz.trim()) {
+    errors.plz = 'Bitte PLZ angeben.'
+    ok = false
+  }
   if (!form.ort || !form.ort.trim()) {
     errors.ort = 'Bitte Ort angeben.'
     ok = false
@@ -225,6 +297,9 @@ function resetForm() {
   form.nachname = ''
   form.email = ''
   form.telefon = ''
+  form.strasse = ''
+  form.hausnr = ''
+  form.plz = ''
   form.ort = ''
   form.loesung = ''
 }
@@ -255,7 +330,7 @@ async function submitForm() {
   submitting.value = true
   try {
     await sendLoesung(
-      { anrede: null, titel: null, vorname: form.vorname, name: form.nachname, strasse: "", nr: "", zusatz: null, plz: "", ort: form.ort, land: "DE", email: form.email, telefon: form.telefon },
+      { anrede: null, titel: null, vorname: form.vorname, name: form.nachname, strasse: form.strasse, nr: form.hausnr, zusatz: null, plz: form.plz, ort: form.ort, land: "DE", email: form.email, telefon: form.telefon },
       [ { gewinnspiel_id: 2, antwort: form.loesung } ]
     )
     successMessage.value = 'Erfolgreich eingetragen!'

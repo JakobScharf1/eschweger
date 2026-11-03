@@ -1,7 +1,7 @@
 import { ApiService } from './APIService.js'
 
 async function sendMail(to, subject, html) {
-  return await ApiService.post("/email", { profil: "Eschweger automailer", to: "redaktion@die-eschweger.de", subject: subject, html: html })
+  return await ApiService.post("/email", { profil: "Eschweger automailer", to: to, subject: subject, html: html })
 }
 
 export async function sendContact(from, message) {
