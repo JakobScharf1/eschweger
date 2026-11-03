@@ -206,7 +206,7 @@
                         v-model="uploadedFile"
                         name="vorlage"
                         label="Vorlage (kann nachgereicht werden, max. 10MB)"
-                        :accepted-file-types="['image/png', 'image/jpeg', 'application/pdf']"
+                        :accepted-file-types="['image/*', 'application/pdf']"
                         :allow-multiple="false"
                         max-file-size="10MB"
                     />
@@ -255,8 +255,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
-import { sendBestellung } from '@/services/AnzeigeService.js'
-import { getLivePreis } from '@/services/AnzeigeService.js'
+import { sendBestellung, uploadVorlage, getLivePreis } from '@/services/AnzeigeService.js'
 
 const honeypot = ref("")
 const startTime = Date.now()
@@ -440,7 +439,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await sendBestellung(
+    const res = await sendBestellung(
         form.kundennummer,
         form.ausgabe,
         form.newsletter ? 'newsletter' : selectedId.value,
@@ -457,6 +456,9 @@ async function submitForm() {
             email: form.email
         }
     )
+    if (res.status === "ok") {
+        await uploadVorlage(res.bestellung_id, uploadedFile.value)
+    }
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()
