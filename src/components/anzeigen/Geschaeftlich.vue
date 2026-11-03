@@ -341,8 +341,7 @@
 import { ref, reactive, onMounted, watch } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
-import { getLivePreis, getPreisinfos } from '@/services/AnzeigeService'
-import sendBestellung from '@/services/AnzeigeService'
+import { getLivePreis, getPreisinfos, sendBestellung } from '@/services/AnzeigeService'
 
 const honeypot = ref("")
 const startTime = Date.now()

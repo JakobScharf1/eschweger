@@ -53,7 +53,8 @@
                     </div>
                 </div>
                 <div class="col-md-6"></div>
-                <div class="col-md-12 mt-4">
+                <hr class="mb-2">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -67,6 +68,19 @@
                         />
                         <label>Name *</label>
                         <div v-if="errors.name && (showErrors || touched.name)" class="invalid-feedback">{{ errors.name }}</div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="kundennummer"
+                        class="form-control"
+                        placeholder="Kundennummer"
+                        v-model="form.kundennummer"
+                        />
+                        <label>Kundennummer</label>
                     </div>
                 </div>
 
@@ -120,8 +134,8 @@
                         <div v-if="errors.telefon && (showErrors || touched.telefon)" class="invalid-feedback">{{ errors.telefon }}</div>
                     </div>
                 </div>
-
-                <div class="col-md-6 mt-4">
+                <hr class="mb-2">
+                <div class="col-md-6">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -137,7 +151,7 @@
                         <div v-if="errors.uebernahme && (showErrors || touched.uebernahme)" class="invalid-feedback">{{ errors.uebernahme }}</div>
                     </div>
                 </div>
-                <div class="col-md-6 mt-4">
+                <div class="col-md-6">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -225,7 +239,7 @@
 import { ref, reactive, computed } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
-import { sendAnzeigePrivat } from '@/services/MailService'
+import { sendBestellung } from '@/services/AnzeigeService.js'
 
 const honeypot = ref("")
 const startTime = Date.now()
@@ -265,6 +279,7 @@ const submitting = ref(false)
 const form = reactive({
     ausgabe: '',
     name: '',
+    kundennummer: '',
     adresse: '',
     telefon: '',
     email: '',
@@ -357,6 +372,7 @@ function setTouched(field) {
 function resetForm() {
   form.ausgabe = ''
   form.name = ''
+  form.kundennummer = ''
   form.adresse = ''
   form.telefon = ''
   form.email = ''
@@ -393,7 +409,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await sendAnzeigePrivat(form.format, form.ausgabe, { name: form.name, email: form.email, tel: form.telefon, adresse: form.adresse }, form.uebernahme, form.korrekturabzug, form.platzierung, form.notizen)
+    await sendBestellung(form.kundennummer, form.ausgabe, form.newsletter ? 'newsletter' : selectedId.value, form.kategorie, form.platzierung, form.uebernahme, form.korrekturabzug, form.notizen)
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()
