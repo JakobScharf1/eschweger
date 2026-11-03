@@ -58,16 +58,28 @@
                     <div class="form-floating mb-4">
                         <input
                         type="text"
-                        name="name"
+                        name="kundennummer"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.name && (showErrors || touched.name) }"
-                        placeholder="Name"
-                        required
-                        v-model="form.name"
-                        @blur="setTouched('name')"
+                        placeholder="Kundennummer"
+                        v-model="form.kundennummer"
                         />
-                        <label>Name *</label>
-                        <div v-if="errors.name && (showErrors || touched.name)" class="invalid-feedback">{{ errors.name }}</div>
+                        <label>Kundennummer (falls vorhanden)</label>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="vorname"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.vorname && (showErrors || touched.vorname) }"
+                        placeholder="Vorname"
+                        required
+                        v-model="form.vorname"
+                        @blur="setTouched('vorname')"
+                        />
+                        <label>Vorname *</label>
+                        <div v-if="errors.vorname && (showErrors || touched.vorname)" class="invalid-feedback">{{ errors.vorname }}</div>
                     </div>
                 </div>
 
@@ -75,12 +87,16 @@
                     <div class="form-floating mb-4">
                         <input
                         type="text"
-                        name="kundennummer"
+                        name="nachname"
                         class="form-control"
-                        placeholder="Kundennummer"
-                        v-model="form.kundennummer"
+                        :class="{ 'is-invalid': errors.nachname && (showErrors || touched.nachname) }"
+                        placeholder="Nachname"
+                        required
+                        v-model="form.nachname"
+                        @blur="setTouched('nachname')"
                         />
-                        <label>Kundennummer</label>
+                        <label>Nachname *</label>
+                        <div v-if="errors.nachname && (showErrors || touched.nachname)" class="invalid-feedback">{{ errors.nachname }}</div>
                     </div>
                 </div>
 
@@ -228,7 +244,7 @@
                     <button type="submit" class="btn btn-primary rounded-pill btn-send" :disabled="submitting">
                         {{ submitting ? 'Sende...' : 'Absenden' }}
                     </button>
-                    <small class="ms-3">{{ selectedFormatPrice === 0 ? 'Bitte wählen Sie ein Format aus' : `${selectedFormatPrice},-- € inkl. MwSt.` }}</small>
+                    <small class="ms-3">{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis},-- € inkl. MwSt.` }}</small>
                 </div>
             </div>
         </form>
@@ -240,6 +256,7 @@ import { ref, reactive, computed } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
 import { sendBestellung } from '@/services/AnzeigeService.js'
+import { getLivePreis } from '@/services/AnzeigeService.js'
 
 const honeypot = ref("")
 const startTime = Date.now()
@@ -278,7 +295,8 @@ const submitting = ref(false)
 
 const form = reactive({
     ausgabe: '',
-    name: '',
+    vorname: '',
+    nachname: '',
     kundennummer: '',
     adresse: '',
     telefon: '',
@@ -293,7 +311,8 @@ const form = reactive({
 
 const errors = reactive({
     ausgabe: '',
-    name: '',
+    vorname: '',
+    nachname: '',
     adresse: '',
     telefon: '',
     email: '',
@@ -307,7 +326,8 @@ const errors = reactive({
 
 const touched = reactive({
     ausgabe: false,
-    name: false,
+    vorname: false,
+    nachname: false,
     adresse: false,
     telefon: false,
     email: false,
@@ -318,6 +338,20 @@ const touched = reactive({
     vorlage: false,
     format: false,
 })
+
+// ### LIVE-PREIS ###
+let timer = null
+const livePreis = ref(0)
+watch(form, () => {
+    if (form.kategorie && form.format) {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            getLivePreis(form.format.id, form.kategorie, form.platzierung, form.newsletter).then(res => {
+                livePreis = res.data.summe_netto
+            })
+        }, 2000)
+    } else livePreis.value = 0
+}, { deep: true })
 
 const showErrors = ref(false)
 
@@ -331,8 +365,12 @@ function validate() {
         errors.ausgabe = 'Bitte geben Sie die gewünschte Ausgabe an.'
         ok = false
     }
-    if (!form.name || !form.name.trim()) {
-        errors.name = 'Bitte geben Sie Ihren Namen an.'
+    if (!form.vorname || !form.vorname.trim()) {
+        errors.vorname = 'Bitte geben Sie Ihren Vornamen an.'
+        ok = false
+    }
+    if (!form.nachname || !form.nachname.trim()) {
+        errors.nachname = 'Bitte geben Sie Ihren Nachnamen an.'
         ok = false
     }
     if (!form.adresse || !form.adresse.trim()) {
@@ -351,10 +389,6 @@ function validate() {
         errors.korrekturabzug = 'Bitte geben Sie eine Adresse für den Korrekturabzug an.'
         ok = false
     }
-    if (!form.vorlage || !form.vorlage.trim()) {
-        // TODO
-        ok = false
-    }
     if (selectedId.value === '') {
         errors.format = 'Bitte wählen Sie ein Format aus.'
         ok = false
@@ -371,7 +405,8 @@ function setTouched(field) {
 
 function resetForm() {
   form.ausgabe = ''
-  form.name = ''
+  form.vorname = ''
+  form.nachname = ''
   form.kundennummer = ''
   form.adresse = ''
   form.telefon = ''
@@ -409,7 +444,23 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await sendBestellung(form.kundennummer, form.ausgabe, form.newsletter ? 'newsletter' : selectedId.value, form.kategorie, form.platzierung, form.uebernahme, form.korrekturabzug, form.notizen)
+    await sendBestellung(
+        form.kundennummer,
+        form.ausgabe,
+        form.newsletter ? 'newsletter' : selectedId.value,
+        form.kategorie,
+        form.platzierung,
+        form.uebernahme,
+        form.korrekturabzug,
+        form.notizen,
+        {
+            vorname: form.vorname,
+            name: form.nachname,
+            adresse: form.adresse,
+            telefon: form.telefon,
+            email: form.email
+        }
+    )
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()

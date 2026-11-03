@@ -157,24 +157,8 @@
                         <small>Ortspreise gelten nur für Kunden mit Eschweger Postleitzahl</small>
                     </div>
                 </div>
-                <div class="col-md-12 col-lg-6 mt-4">
-                    <div class="form-floating mb-4">
-                        <input
-                        type="text"
-                        name="name"
-                        class="form-control"
-                        :class="{ 'is-invalid': errors.name && (showErrors || touched.name) }"
-                        placeholder="Name"
-                        required
-                        v-model="form.name"
-                        @blur="setTouched('name')"
-                        />
-                        <label>Name *</label>
-                        <div v-if="errors.name && (showErrors || touched.name)" class="invalid-feedback">{{ errors.name }}</div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-lg-6 mt-4">
+                <hr class="mb-2">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -184,7 +168,41 @@
                         required
                         v-model="form.kundennummer"
                         />
-                        <label>Kundennummer</label>
+                        <label>Kundennummer (falls vorhanden)</label>
+                    </div>
+                </div>
+                <div class="col-lg-6"></div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="vorname"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.vorname && (showErrors || touched.vorname) }"
+                        placeholder="Vorname"
+                        required
+                        v-model="form.vorname"
+                        @blur="setTouched('vorname')"
+                        />
+                        <label>Vorname *</label>
+                        <div v-if="errors.vorname && (showErrors || touched.vorname)" class="invalid-feedback">{{ errors.vorname }}</div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="nachname"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.nachname && (showErrors || touched.nachname) }"
+                        placeholder="Nachname"
+                        required
+                        v-model="form.nachname"
+                        @blur="setTouched('nachname')"
+                        />
+                        <label>Nachname *</label>
+                        <div v-if="errors.nachname && (showErrors || touched.nachname)" class="invalid-feedback">{{ errors.nachname }}</div>
                     </div>
                 </div>
 
@@ -205,7 +223,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="email"
@@ -222,7 +240,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="tel"
@@ -238,8 +256,8 @@
                         <div v-if="errors.telefon && (showErrors || touched.telefon)" class="invalid-feedback">{{ errors.telefon }}</div>
                     </div>
                 </div>
-
-                <div class="col-md-6 mt-4">
+                <hr class="mb-2">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -255,7 +273,7 @@
                         <div v-if="errors.uebernahme && (showErrors || touched.uebernahme)" class="invalid-feedback">{{ errors.uebernahme }}</div>
                     </div>
                 </div>
-                <div class="col-md-6 mt-4">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -330,7 +348,7 @@
                     <button type="submit" class="btn btn-primary rounded-pill btn-send" :disabled="submitting">
                         {{ submitting ? 'Sende...' : 'Absenden' }}
                     </button>
-                    <small class="ms-3">Test</small>
+                    <small class="ms-3">{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis},-- € exkl. MwSt.` }}</small>
                 </div>
             </div>
         </form>
@@ -420,7 +438,8 @@ const uploadedFiles = ref([]) // TODO
 
 const form = reactive({
     ausgabe: '',
-    name: '',
+    vorname: '',
+    nachname: '',
     adresse: '',
     telefon: '',
     email: '',
@@ -436,7 +455,7 @@ const form = reactive({
 
 // ### LIVE-PREIS ###
 let timer = null
-const livePreis = ref(null)
+const livePreis = ref(0)
 watch(form, () => {
     if (form.kategorie && form.format) {
         clearTimeout(timer)
@@ -445,12 +464,13 @@ watch(form, () => {
                 livePreis = res.data.summe_netto
             })
         }, 2000)
-    } else livePreis.value = null
+    } else livePreis.value = 0
 }, { deep: true })
 
 const errors = reactive({
     ausgabe: '',
-    name: '',
+    vorname: '',
+    nachname: '',
     adresse: '',
     telefon: '',
     email: '',
@@ -464,7 +484,8 @@ const errors = reactive({
 
 const touched = reactive({
     ausgabe: false,
-    name: false,
+    vorname: false,
+    nachname: false,
     adresse: false,
     telefon: false,
     email: false,
@@ -488,8 +509,12 @@ function validate() {
         errors.ausgabe = 'Bitte geben Sie die gewünschte Ausgabe an.'
         ok = false
     }
-    if (!form.name || !form.name.trim()) {
-        errors.name = 'Bitte geben Sie Ihren Namen an.'
+    if (!form.vorname || !form.vorname.trim()) {
+        errors.vorname = 'Bitte geben Sie Ihren Vornamen an.'
+        ok = false
+    }
+    if (!form.nachname || !form.nachname.trim()) {
+        errors.nachname = 'Bitte geben Sie Ihren Nachnamen an.'
         ok = false
     }
     if (!form.adresse || !form.adresse.trim()) {
@@ -532,7 +557,8 @@ function setTouched(field) {
 
 function resetForm() {
   form.ausgabe = ''
-  form.name = ''
+  form.vorname = ''
+  form.nachname = ''
   form.adresse = ''
   form.telefon = ''
   form.email = ''
@@ -570,7 +596,22 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await sendBestellung(form.kundennummer, form.ausgabe, form.newsletter ? 'newsletter' : selectedId.value, form.kategorie, form.platzierung, form.uebernahme, form.korrekturabzug, form.notizen)
+    await sendBestellung(
+      form.kundennummer,
+      form.ausgabe,
+      form.newsletter ? 'newsletter' : selectedId.value,
+      form.kategorie,
+      form.platzierung,
+      form.uebernahme,
+      form.korrekturabzug,
+      form.notizen,
+      {
+        name: `${form.vorname.trim()} ${form.nachname.trim()}`,
+        adresse: form.adresse,
+        telefon: form.telefon,
+        email: form.email,
+      },
+    )
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()
