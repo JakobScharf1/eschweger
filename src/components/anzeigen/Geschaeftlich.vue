@@ -149,9 +149,9 @@
                 <div class="col-md-6">
                     <div class="form-floating mb-4">
                         <select class="form-select" id="preiskategorie" v-model="form.kategorie">
-                            <option value="ort">Ortspreis</option>
-                            <option value="base">Basispreis</option>
-                            <option value="gamification">Social-Gamification</option>
+                            <option value="ortspreis">Ortspreis</option>
+                            <option value="grundpreis">Basispreis</option>
+                            <option value="social_gamification">Social-Gamification</option>
                         </select>
                         <label for="preiskategorie">Preiskategorie</label>
                         <small>Ortspreise gelten nur für Kunden mit Eschweger Postleitzahl</small>
@@ -309,10 +309,10 @@
 
                 <div class="col-md-6">
                     <FileUpload
-                        v-model="uploadedFiles"
+                        v-model="uploadedFile"
                         name="vorlage"
                         label="Vorlage (kann nachgereicht werden, max. 10MB)"
-                        :accepted-file-types="['image/png', 'image/jpeg', 'application/pdf']"
+                        :accepted-file-types="['image/*', 'application/pdf']"
                         :allow-multiple="false"
                         max-file-size="10MB"
                     />
@@ -359,7 +359,7 @@
 import { ref, reactive, onMounted, watch } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
-import { getLivePreis, getPreisinfos, sendBestellung } from '@/services/AnzeigeService'
+import { getLivePreis, getPreisinfos, sendBestellung, uploadVorlage } from '@/services/AnzeigeService'
 
 const honeypot = ref("")
 const startTime = Date.now()
@@ -406,27 +406,27 @@ function setSelectedId(id) {
 }
 
 const formats = [
-  { id: '1_1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch (+3mm Beschnitt)", priceBusiness: { ort: 700, base: 875, social: 525 } },
-  { id: '1_2_q', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ort: 386, base: 482, social: 289 } },
-  { id: '1_2_h', title: '1/2 Seite', width: 92.5, height: 264, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 386, base: 482, social: 289 } },
-  { id: '1_3_q', title: '1/3 Seite', width: 190.3, height: 89, subtitle: "4-spaltig, quer", priceBusiness: { ort: 269, base: 336, social: 202 } },
-  { id: '1_4_q4', title: '1/4 Seite', width: 190, height: 65.5, subtitle: "4-spaltig, quer", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: '1_4_h2', title: '1/4 Seite', width: 92.5, height: 129.5, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: '1_4_q3', title: '1/4 Seite', width: 141.2, height: 92.5, subtitle: "3-spaltig, quer", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: '1_4_h1', title: '1/4 Seite', width: 43.7, height: 264, subtitle: "1-spaltig, hoch", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: '1_6', title: '1/6 Seite', width: 92.5, height: 89, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 143, base: 179, social: 108 } },
-  { id: '1_8_q4', title: '1/8 Seite', width: 190, height: 30.3, subtitle: "4-spaltig, quer", priceBusiness: { ort: 110, base: 137, social: 83 } },
-  { id: '1_8_q2', title: '1/8 Seite', width: 92.5, height: 65.5, subtitle: "2-spaltig, quer", priceBusiness: { ort: 110, base: 137, social: 83 } },
+  { id: '1_1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch (+3mm Beschnitt)", priceBusiness: { ortspreis: 700, grundpreis: 875, social_gamification: 525 } },
+  { id: '1_2_q', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ortspreis: 386, grundpreis: 482, social_gamification: 289 } },
+  { id: '1_2_h', title: '1/2 Seite', width: 92.5, height: 264, subtitle: "2-spaltig, hoch", priceBusiness: { ortspreis: 386, grundpreis: 482, social_gamification: 289 } },
+  { id: '1_3_q', title: '1/3 Seite', width: 190.3, height: 89, subtitle: "4-spaltig, quer", priceBusiness: { ortspreis: 269, grundpreis: 336, social_gamification: 202 } },
+  { id: '1_4_q4', title: '1/4 Seite', width: 190, height: 65.5, subtitle: "4-spaltig, quer", priceBusiness: { ortspreis: 210, grundpreis: 263, social_gamification: 158 } },
+  { id: '1_4_h2', title: '1/4 Seite', width: 92.5, height: 129.5, subtitle: "2-spaltig, hoch", priceBusiness: { ortspreis: 210, grundpreis: 263, social_gamification: 158 } },
+  { id: '1_4_q3', title: '1/4 Seite', width: 141.2, height: 92.5, subtitle: "3-spaltig, quer", priceBusiness: { ortspreis: 210, grundpreis: 263, social_gamification: 158 } },
+  { id: '1_4_h1', title: '1/4 Seite', width: 43.7, height: 264, subtitle: "1-spaltig, hoch", priceBusiness: { ortspreis: 210, grundpreis: 263, social_gamification: 158 } },
+  { id: '1_6', title: '1/6 Seite', width: 92.5, height: 89, subtitle: "2-spaltig, hoch", priceBusiness: { ortspreis: 143, grundpreis: 179, social_gamification: 108 } },
+  { id: '1_8_q4', title: '1/8 Seite', width: 190, height: 30.3, subtitle: "4-spaltig, quer", priceBusiness: { ortspreis: 110, grundpreis: 137, social_gamification: 83 } },
+  { id: '1_8_q2', title: '1/8 Seite', width: 92.5, height: 65.5, subtitle: "2-spaltig, quer", priceBusiness: { ortspreis: 110, grundpreis: 137, social_gamification: 83 } },
 ]
 
 const gewinnspiele = [
-    { id: 'gs_1_1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch", priceBusiness: { ort: 560, base: 700 } },
-    { id: 'gs_1_2_q', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ort: 308, base: 386 } },
+    { id: 'gs_1_1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch", priceBusiness: { ortspreis: 560, grundpreis: 700 } },
+    { id: 'gs_1_2_q', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ortspreis: 308, grundpreis: 386 } },
 ]
 
 const umschlagseiten = [
-    { id: 'u4', title: 'Umschlagseite 4', width: 210, height: 279, subtitle: "", priceBusiness: { ort: 875, base: 1093 } },
-    { id: 'u2_3', title: 'Umschlagseite 2 oder 3', width: 210, height: 279, subtitle: "", priceBusiness: { ort: 805, base: 1006 } },
+    { id: 'u4', title: 'Umschlagseite 4', width: 210, height: 279, subtitle: "", priceBusiness: { ortspreis: 875, grundpreis: 1093 } },
+    { id: 'u2_3', title: 'Umschlagseite 2 oder 3', width: 210, height: 279, subtitle: "", priceBusiness: { ortspreis: 805, grundpreis: 1006 } },
 ]
 
 const successMessage = ref('')
@@ -434,7 +434,7 @@ const errorMessage = ref('')
 const formRef = ref(null)
 const submitting = ref(false)
 
-const uploadedFiles = ref([]) // TODO
+const uploadedFile = ref(null) // TODO
 
 const form = reactive({
     ausgabe: '',
@@ -447,7 +447,6 @@ const form = reactive({
     korrekturabzug: '',
     platzierung: '',
     notizen: '',
-    vorlage: '',
     format: '',
     newsletter: '',
     kategorie: 'ort',
@@ -461,7 +460,7 @@ watch([form, selectedId], () => {
         clearTimeout(timer)
         timer = setTimeout(() => {
             getLivePreis(selectedId.value, form.kategorie, form.platzierung, form.newsletter).then(res => {
-                livePreis = res.data.summe_netto
+                livePreis.value = res.data.summe_netto
             })
         }, 2000)
     } else livePreis.value = 0
@@ -477,7 +476,6 @@ const errors = reactive({
     korrekturabzug: '',
     platzierung: '',
     notizen: '',
-    vorlage: '',
     format: '',
     newsletter: '',
 })
@@ -492,7 +490,6 @@ const touched = reactive({
     korrekturabzug: false,
     platzierung: false,
     notizen: false,
-    vorlage: false,
     format: false,
     newsletter: false,
 })
@@ -533,10 +530,6 @@ function validate() {
         errors.korrekturabzug = 'Bitte geben Sie eine Adresse für den Korrekturabzug an.'
         ok = false
     }
-    if (!form.vorlage || !form.vorlage.trim()) {
-        // TODO
-        ok = false
-    }
     if (selectedId.value === '') {
         errors.format = 'Bitte wählen Sie ein Format aus.'
         ok = false
@@ -566,7 +559,6 @@ function resetForm() {
   form.korrekturabzug = ''
   form.platzierung = ''
   form.notizen = ''
-  form.vorlage = ''
   form.format = ''
   form.kategorie = 'ort'
 }
@@ -596,7 +588,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await sendBestellung(
+    const res = await sendBestellung(
       form.kundennummer,
       form.ausgabe,
       form.newsletter ? 'newsletter' : selectedId.value,
@@ -612,6 +604,9 @@ async function submitForm() {
         email: form.email,
       },
     )
+    if (res.status === "ok") {
+        await uploadVorlage(res.bestellung_id, uploadedFile.value)
+    }
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()

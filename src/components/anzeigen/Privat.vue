@@ -203,7 +203,7 @@
 
                 <div class="col-md-6">
                     <FileUpload
-                        v-model="uploadedFiles"
+                        v-model="uploadedFile"
                         name="vorlage"
                         label="Vorlage (kann nachgereicht werden, max. 10MB)"
                         :accepted-file-types="['image/png', 'image/jpeg', 'application/pdf']"
@@ -264,7 +264,6 @@ const startTime = Date.now()
 const selectedId = ref("")
 
 function setSelectedId(id) {
-    console.log("SELECTED ID:", id)
   selectedId.value = id
 }
 
@@ -283,15 +282,12 @@ const formats = [
   { id: '1/16', title: '1/16 Seite', width: 43.7, height: 65.5, subtitle: "1-spaltig", price: 20 },
 ]
 
-const selectedFormatPrice = computed(() => {
-  const format = formats.find(f => f.id === selectedId.value)
-  return format ? format.price : 0
-})
-
 const successMessage = ref('')
 const errorMessage = ref('')
 const formRef = ref(null)
 const submitting = ref(false)
+
+const uploadedFile = ref(null) // TODO
 
 const form = reactive({
     ausgabe: '',
@@ -343,11 +339,11 @@ const touched = reactive({
 let timer = null
 const livePreis = ref(0)
 watch(form, () => {
-    if (form.kategorie && form.format) {
+    if (selectedId.value) {
         clearTimeout(timer)
         timer = setTimeout(() => {
-            getLivePreis(form.format.id, form.kategorie, form.platzierung, form.newsletter).then(res => {
-                livePreis = res.data.summe_netto
+            getLivePreis(selectedId.value, "privatpreis", form.platzierung, form.newsletter).then(res => {
+                livePreis.value = res.data.summe_netto
             })
         }, 2000)
     } else livePreis.value = 0
@@ -448,7 +444,7 @@ async function submitForm() {
         form.kundennummer,
         form.ausgabe,
         form.newsletter ? 'newsletter' : selectedId.value,
-        form.kategorie,
+        "privatpreis",
         form.platzierung,
         form.uebernahme,
         form.korrekturabzug,

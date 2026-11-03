@@ -33,3 +33,7 @@ export async function sendBestellung(kundennummer, ausgabeAm, formatCode, preisk
         besteller: besteller,
     })
 }
+
+export async function uploadVorlage(id, file) {
+    return await ApiService.uploadFile(`/anzeigen-bestellung/${id}/vorlage`, file)
+}

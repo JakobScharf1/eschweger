@@ -16,8 +16,10 @@ async function request(method, path, body, options = {}) {
     }
   }
 
+  const isFormData = body instanceof FormData
+
   const headers = {
-    'Content-Type': 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     'Authorization': 'Bearer ' + import.meta.env.VITE_API_BEARER,
     ...(options.headers || {}),
   }
@@ -25,7 +27,7 @@ async function request(method, path, body, options = {}) {
   const response = await fetch(url.toString(), {
     method,
     headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
   })
 
   if (response.status !== 200 && response.status !== 201 && response.status !== 204) {
@@ -56,6 +58,23 @@ export const ApiService = {
 
   delete(path, options) {
     return request('DELETE', path, undefined, options)
+  },
+
+  uploadFile(path, file, options = {}) {
+    const { fieldName = 'file', data, ...requestOptions } = options
+
+    const formData = new FormData()
+    formData.append(fieldName, file)
+
+    if (data) {
+      for (const [key, value] of Object.entries(data)) {
+        if (value !== null && value !== undefined) {
+          formData.append(key, value)
+        }
+      }
+    }
+
+    return request('POST', path, formData, requestOptions)
   },
 }
 
