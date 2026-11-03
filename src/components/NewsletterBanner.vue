@@ -1,31 +1,51 @@
 <template>
 <div class="container pt-15 pt-md-17 pb-13 pb-md-15">
-    <div class="card bg-soft-primary">
-        <div class="card-body p-12">
-            <div class="row gx-md-8 gx-xl-12 gy-10">
-            <div class="col-lg-6">
-                <img
-                src="/assets/img/icons/lineal/email.svg"
-                class="icon-svg icon-svg-sm mb-4"
-                alt=""
-                />
-                <h2 class="display-4 mb-3 pe-lg-10">
-                Unser Newsletter
-                </h2>
-                <p class="lead pe-lg-12 mb-0">
-                Abonnieren Sie unseren Newsletter und erhalten Sie die neuesten Informationen und Gewinnspiele direkt in Ihren Posteingang.
-                </p>
-                <button class="btn btn-primary mt-5" @click="openPopup()">Jetzt abonnieren</button>
-
-            </div>
-            <!-- /column -->
+    <div class="row gx-md-8 gx-xl-12 gy-10">
+        <div class="col-lg-6 col-md-12">
+            <div class="card bg-pale-blue">
+                <div class="card-body p-12">
+                    <img
+                    src="/assets/img/icons/lineal/email.svg"
+                    class="icon-svg icon-svg-sm mb-4"
+                    alt=""
+                    />
+                    <h2 class="display-4 mb-3 pe-lg-10">
+                    Unser Newsletter
+                    </h2>
+                    <p class="lead pe-lg-12 mb-0">
+                    Abonnieren Sie unseren Newsletter und erhalten Sie die neuesten Informationen und Gewinnspiele direkt in Ihren Posteingang.
+                    </p>
+                    <button class="btn btn-primary mt-5" @click="openPopup()">Jetzt abonnieren</button>
+                </div>
+                <!-- /column -->
             </div>
             <!-- /.row -->
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+            <div class="card bg-pale-red">
+                <div class="card-body p-12">
+                    <img
+                    src="/assets/img/icons/lineal/award-2.svg"
+                    class="icon-svg icon-svg-sm mb-4"
+                    alt=""
+                    />
+                    <h2 class="display-4 mb-3 pe-lg-10">
+                    Gewinnspiele
+                    </h2>
+                    <p class="lead pe-lg-12 mb-0">
+                    Nehmen Sie jetzt an unserem aktuellen Gewinnspiele teil und gewinnen Sie Preise aus der Region!
+                    </p>
+                    <router-link class="btn btn-primary mt-5" to="/gewinnspiele">Jetzt gewinnen!</router-link>
+                    <!-- /column -->
+                </div>
+            </div>
         </div>
         <!--/.card-body -->
     </div>
     <!--/.card -->
 </div>
+
 <RapidMailPopup ref="popup"></RapidMailPopup>
 </template>
 
