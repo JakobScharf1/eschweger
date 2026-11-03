@@ -179,7 +179,22 @@
                         <label>Kundennummer (falls vorhanden)</label>
                     </div>
                 </div>
-                <div class="col-lg-6"></div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="firma"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.firma && (showErrors || touched.firma) }"
+                        placeholder="Firma"
+                        required
+                        v-model="form.firma"
+                        @blur="setTouched('firma')"
+                        />
+                        <label>Firmenname *</label>
+                        <div v-if="errors.firma && (showErrors || touched.firma)" class="invalid-feedback">{{ errors.firma }}</div>
+                    </div>
+                </div>
                 <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
@@ -214,20 +229,68 @@
                     </div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-12 col-md-10">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
-                        name="adresse"
+                        name="strasse"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.adresse && (showErrors || touched.adresse) }"
-                        placeholder="Adresse"
+                        :class="{ 'is-invalid': errors.strasse && (showErrors || touched.strasse) }"
+                        placeholder="Straße"
                         required
-                        v-model="form.adresse"
-                        @blur="setTouched('adresse')"
+                        v-model="form.strasse"
+                        @blur="setTouched('strasse')"
                         />
-                        <label>Adresse *</label>
-                        <div v-if="errors.adresse && (showErrors || touched.adresse)" class="invalid-feedback">{{ errors.adresse }}</div>
+                        <label>Straße *</label>
+                        <div v-if="errors.strasse && (showErrors || touched.strasse)" class="invalid-feedback">{{ errors.strasse }}</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="hausnr"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.hausnr && (showErrors || touched.hausnr) }"
+                        placeholder="Hausnr."
+                        required
+                        v-model="form.hausnr"
+                        @blur="setTouched('hausnr')"
+                        />
+                        <label>Hausnr. *</label>
+                        <div v-if="errors.hausnr && (showErrors || touched.hausnr)" class="invalid-feedback">{{ errors.hausnr }}</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="plz"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.plz && (showErrors || touched.plz) }"
+                        placeholder="PLZ"
+                        required
+                        v-model="form.plz"
+                        @blur="setTouched('plz')"
+                        />
+                        <label>PLZ *</label>
+                        <div v-if="errors.plz && (showErrors || touched.plz)" class="invalid-feedback">{{ errors.plz }}</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="ort"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.ort && (showErrors || touched.ort) }"
+                        placeholder="Ort"
+                        required
+                        v-model="form.ort"
+                        @blur="setTouched('ort')"
+                        />
+                        <label>Ort *</label>
+                        <div v-if="errors.ort && (showErrors || touched.ort)" class="invalid-feedback">{{ errors.ort }}</div>
                     </div>
                 </div>
 
@@ -454,7 +517,10 @@ const form = reactive({
     ausgabe: '',
     vorname: '',
     nachname: '',
-    adresse: '',
+    strasse: '',
+    hausnr: '',
+    plz: '',
+    ort: '',
     telefon: '',
     email: '',
     uebernahme: '',
@@ -464,6 +530,7 @@ const form = reactive({
     format: '',
     newsletter: '',
     kategorie: 'ortspreis',
+    firma: '',
 })
 
 // ### LIVE-PREIS ###
@@ -484,7 +551,10 @@ const errors = reactive({
     ausgabe: '',
     vorname: '',
     nachname: '',
-    adresse: '',
+    strasse: '',
+    hausnr: '',
+    plz: '',
+    ort: '',
     telefon: '',
     email: '',
     korrekturabzug: '',
@@ -492,13 +562,17 @@ const errors = reactive({
     notizen: '',
     format: '',
     newsletter: '',
+    firma: '',
 })
 
 const touched = reactive({
     ausgabe: false,
     vorname: false,
     nachname: false,
-    adresse: false,
+    strasse: false,
+    hausnr: false,
+    plz: false,
+    ort: false,
     telefon: false,
     email: false,
     korrekturabzug: false,
@@ -506,6 +580,7 @@ const touched = reactive({
     notizen: false,
     format: false,
     newsletter: false,
+    firma: false,
 })
 
 const showErrors = ref(false)
@@ -528,12 +603,28 @@ function validate() {
         errors.nachname = 'Bitte geben Sie Ihren Nachnamen an.'
         ok = false
     }
-    if (!form.adresse || !form.adresse.trim()) {
-        errors.adresse = 'Bitte geben Sie Ihre Adresse an.'
+    if (!form.strasse || !form.strasse.trim()) {
+        errors.strasse = 'Bitte geben Sie Ihre Straße an.'
+        ok = false
+    }
+    if (!form.hausnr || !form.hausnr.trim()) {
+        errors.hausnr = 'Bitte geben Sie Ihre Hausnummer an.'
+        ok = false
+    }
+    if (!form.plz || !form.plz.trim()) {
+        errors.plz = 'Bitte geben Sie Ihre Postleitzahl an.'
+        ok = false
+    }
+    if (!form.ort || !form.ort.trim()) {
+        errors.ort = 'Bitte geben Sie Ihren Ort an.'
         ok = false
     }
     if (!form.telefon || !form.telefon.trim()) {
         errors.telefon = 'Bitte geben Sie Ihre Telefonnummer an.'
+        ok = false
+    }
+    if (!form.firma || !form.firma.trim()) {
+        errors.firma = 'Bitte geben Sie den Firmennamen an.'
         ok = false
     }
     if (!form.email || !emailRe.test(form.email)) {
@@ -566,7 +657,10 @@ function resetForm() {
   form.ausgabe = ''
   form.vorname = ''
   form.nachname = ''
-  form.adresse = ''
+  form.strasse = ''
+  form.hausnr = ''
+  form.plz = ''
+  form.ort = ''
   form.telefon = ''
   form.email = ''
   form.uebernahme = ''
@@ -575,6 +669,7 @@ function resetForm() {
   form.notizen = ''
   form.format = ''
   form.kategorie = 'ortspreis'
+  form.firma = ''
 }
 
 async function submitForm() {
@@ -612,8 +707,15 @@ async function submitForm() {
       form.korrekturabzug,
       form.notizen,
       {
-        name: `${form.vorname.trim()} ${form.nachname.trim()}`,
-        adresse: form.adresse,
+        firma: form.firma,
+        vorname: form.vorname,
+        name: form.nachname,
+        strasse: form.strasse,
+        nr: form.hausnr,
+        zusatz: null,
+        plz: form.plz,
+        ort: form.ort,
+        land: "DE",
         telefon: form.telefon,
         email: form.email,
       },
