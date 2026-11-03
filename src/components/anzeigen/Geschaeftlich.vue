@@ -157,7 +157,7 @@
                         <small>Ortspreise gelten nur für Kunden mit Eschweger Postleitzahl</small>
                     </div>
                 </div>
-                <div class="col-md-12 mt-4">
+                <div class="col-md-12 col-lg-6 mt-4">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -171,6 +171,20 @@
                         />
                         <label>Name *</label>
                         <div v-if="errors.name && (showErrors || touched.name)" class="invalid-feedback">{{ errors.name }}</div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-6 mt-4">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="kundennummer"
+                        class="form-control"
+                        placeholder="Kundennummer"
+                        required
+                        v-model="form.kundennummer"
+                        />
+                        <label>Kundennummer</label>
                     </div>
                 </div>
 
@@ -327,8 +341,8 @@
 import { ref, reactive, onMounted, watch } from 'vue'
 import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
-import { sendAnzeigeGeschaeftlich } from '@/services/MailService'
 import { getLivePreis, getPreisinfos } from '@/services/AnzeigeService'
+import sendBestellung from '@/services/AnzeigeService'
 
 const honeypot = ref("")
 const startTime = Date.now()
@@ -350,14 +364,14 @@ const preise = reactive({
 
 function getInfos() {
     getPreisinfos().then((res) => {
-        infos.auflage = res.data.publikation.auflage
-        infos.erscheinungsweise = res.data.publikation.erscheinungsweise
-        infos.verbreitung = res.data.publikation.verbreitung
-        infos.auslage = res.data.publikation.auslage
-        preise.newsletter.preisPro1000 = res.data.newsletter.preis_pro_1000
-        preise.platzierungswunsch = res.data.platzierungswunsch
-        preise.jahresrabatte = res.data.jahresrabatte
-        infos.sonderaktionen = res.data.sonderaktionen
+        infos.auflage = res.publikation.auflage
+        infos.erscheinungsweise = res.publikation.erscheinungsweise
+        infos.verbreitung = res.publikation.verbreitung
+        infos.auslage = res.publikation.auslage
+        preise.newsletter.preisPro1000 = res.newsletter.preis_pro_1000
+        preise.platzierungswunsch = res.platzierungswunsch
+        preise.jahresrabatte = res.jahresrabatte
+        infos.sonderaktionen = res.sonderaktionen
     })
 }
 
@@ -375,27 +389,27 @@ function setSelectedId(id) {
 }
 
 const formats = [
-  { id: 'a-1/1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch (+3mm Beschnitt)", priceBusiness: { ort: 700, base: 875, social: 525 } },
-  { id: 'a-1/2-4-quer', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ort: 386, base: 482, social: 289 } },
-  { id: 'a-1/2-2-hoch', title: '1/2 Seite', width: 92.5, height: 264, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 386, base: 482, social: 289 } },
-  { id: 'a-1/3-4-quer', title: '1/3 Seite', width: 190.3, height: 89, subtitle: "4-spaltig, quer", priceBusiness: { ort: 269, base: 336, social: 202 } },
-  { id: 'a-1/4-4-quer', title: '1/4 Seite', width: 190, height: 65.5, subtitle: "4-spaltig, quer", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: 'a-1/4-2-hoch', title: '1/4 Seite', width: 92.5, height: 129.5, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: 'a-1/4-3-quer', title: '1/4 Seite', width: 141.2, height: 92.5, subtitle: "3-spaltig, quer", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: 'a-1/4-1-hoch', title: '1/4 Seite', width: 43.7, height: 264, subtitle: "1-spaltig, hoch", priceBusiness: { ort: 210, base: 263, social: 158 } },
-  { id: 'a-1/6-2-hoch', title: '1/6 Seite', width: 92.5, height: 89, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 143, base: 179, social: 108 } },
-  { id: 'a-1/8-4-quer', title: '1/8 Seite', width: 190, height: 30.3, subtitle: "4-spaltig, quer", priceBusiness: { ort: 110, base: 137, social: 83 } },
-  { id: 'a-1/8-2-quer', title: '1/8 Seite', width: 92.5, height: 65.5, subtitle: "2-spaltig, quer", priceBusiness: { ort: 110, base: 137, social: 83 } },
+  { id: '1_1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch (+3mm Beschnitt)", priceBusiness: { ort: 700, base: 875, social: 525 } },
+  { id: '1_2_q', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ort: 386, base: 482, social: 289 } },
+  { id: '1_2_h', title: '1/2 Seite', width: 92.5, height: 264, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 386, base: 482, social: 289 } },
+  { id: '1_3_q', title: '1/3 Seite', width: 190.3, height: 89, subtitle: "4-spaltig, quer", priceBusiness: { ort: 269, base: 336, social: 202 } },
+  { id: '1_4_q4', title: '1/4 Seite', width: 190, height: 65.5, subtitle: "4-spaltig, quer", priceBusiness: { ort: 210, base: 263, social: 158 } },
+  { id: '1_4_h2', title: '1/4 Seite', width: 92.5, height: 129.5, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 210, base: 263, social: 158 } },
+  { id: '1_4_q3', title: '1/4 Seite', width: 141.2, height: 92.5, subtitle: "3-spaltig, quer", priceBusiness: { ort: 210, base: 263, social: 158 } },
+  { id: '1_4_h1', title: '1/4 Seite', width: 43.7, height: 264, subtitle: "1-spaltig, hoch", priceBusiness: { ort: 210, base: 263, social: 158 } },
+  { id: '1_6', title: '1/6 Seite', width: 92.5, height: 89, subtitle: "2-spaltig, hoch", priceBusiness: { ort: 143, base: 179, social: 108 } },
+  { id: '1_8_q4', title: '1/8 Seite', width: 190, height: 30.3, subtitle: "4-spaltig, quer", priceBusiness: { ort: 110, base: 137, social: 83 } },
+  { id: '1_8_q2', title: '1/8 Seite', width: 92.5, height: 65.5, subtitle: "2-spaltig, quer", priceBusiness: { ort: 110, base: 137, social: 83 } },
 ]
 
 const gewinnspiele = [
-    { id: 'g-1/1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch", priceBusiness: { ort: 560, base: 700 } },
-    { id: 'g-1/2', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ort: 308, base: 386 } },
+    { id: 'gs_1_1', title: '1/1 Seite', width: 210, height: 279, subtitle: "4-spaltig, hoch", priceBusiness: { ort: 560, base: 700 } },
+    { id: 'gs_1_2_q', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", priceBusiness: { ort: 308, base: 386 } },
 ]
 
 const umschlagseiten = [
-    { id: 'u-4', title: 'Umschlagseite 4', width: 210, height: 279, subtitle: "", priceBusiness: { ort: 875, base: 1093 } },
-    { id: 'u-2/3', title: 'Umschlagseite 2 oder 3', width: 210, height: 279, subtitle: "", priceBusiness: { ort: 805, base: 1006 } },
+    { id: 'u4', title: 'Umschlagseite 4', width: 210, height: 279, subtitle: "", priceBusiness: { ort: 875, base: 1093 } },
+    { id: 'u2_3', title: 'Umschlagseite 2 oder 3', width: 210, height: 279, subtitle: "", priceBusiness: { ort: 805, base: 1006 } },
 ]
 
 const successMessage = ref('')
@@ -557,7 +571,7 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    await sendAnzeigeGeschaeftlich(form.format, form.ausgabe, form.kategorie, form.kategorie, form.uebernahme, form.korrekturabzug, form.platzierung, form.notizen)
+    await sendBestellung(form.kundennummer, form.ausgabe, form.newsletter ? 'newsletter' : selectedId.value, form.kategorie, form.platzierung, form.uebernahme, form.korrekturabzug, form.notizen)
 
     successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
     resetForm()

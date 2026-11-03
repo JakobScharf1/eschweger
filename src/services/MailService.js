@@ -12,15 +12,6 @@ export async function sendContact(from, message) {
   )
 }
 
-// Zu AnzeigenService
-export async function sendAnzeigeGeschaeftlich(format, ausgabe, kategorie, from, uebernahme, korrektur, platzierung, notiz) {
-  return await ApiService.post('/mail/anzeige-geschaeft', { publikation_id: import.meta.env.VITE_PUBLIKATION_ID, from: from, format: format, ausgabe: ausgabe, kategorie: kategorie, uebernahme: uebernahme, korrektur: korrektur, platzierung: platzierung, notiz: notiz }, {})
-}
-
-export async function sendAnzeigePrivat(format, ausgabe, from, uebernahme, korrektur, platzierung, notiz) {
-  return await ApiService.post('/mail/anzeige-geschaeft', { publikation_id: import.meta.env.VITE_PUBLIKATION_ID, from: from, format: format, ausgabe: ausgabe, uebernahme: uebernahme, korrektur: korrektur, platzierung: platzierung, notiz: notiz }, {})
-}
-
 // Ggf. zu KleinanzeigenService
 export async function sendKleinanzeige(name, email, strasse, plz, ort, rubrik, text) {
   const subject = ""
