@@ -721,7 +721,7 @@ async function submitForm() {
       },
     )
     if (res.status === "ok") {
-        await uploadVorlage(res.bestellung_id, toRaw(uploadedFile.value))
+        await uploadVorlage(res.bestellung_id, uploadedFile.value[0])
     }
 
     successMessage.value = 'Erfolgreich abgesendet! Bitte bestätigen Sie Ihre Email-Adresse, damit wir Ihre Anfrage bearbeiten können.'
