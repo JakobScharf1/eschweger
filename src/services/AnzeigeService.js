@@ -21,6 +21,7 @@ export async function getLivePreis(formatCode, preiskategorie, platzierungswunsc
 
 export async function sendBestellung(kundennummer, ausgabeAm, formatCode, preiskategorie, platzierungswunsch, uebernahmeAus, korrekturabzug, notizen, besteller) {
     return await ApiService.post("/anzeigen-bestellung", {
+        publikation_id: import.meta.env.VITE_PUBLIKATION_ID,
         kundennummer: kundennummer,
         ausgabe_am: ausgabeAm,
         format_code: formatCode,

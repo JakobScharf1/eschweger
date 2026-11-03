@@ -449,7 +449,7 @@ const form = reactive({
     notizen: '',
     format: '',
     newsletter: '',
-    kategorie: 'ort',
+    kategorie: 'ortspreis',
 })
 
 // ### LIVE-PREIS ###
@@ -560,7 +560,7 @@ function resetForm() {
   form.platzierung = ''
   form.notizen = ''
   form.format = ''
-  form.kategorie = 'ort'
+  form.kategorie = 'ortspreis'
 }
 
 async function submitForm() {
