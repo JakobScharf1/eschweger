@@ -16,7 +16,7 @@
   <div class="container">
     <div class="row gx-0">
       <aside
-        class="col-xl-3 sidebar sticky-sidebar mt-md-0 py-16 d-none d-xl-block"
+        class="col-xl-3 sidebar sticky-sidebar mt-md-0 pt-16 d-none d-xl-block"
       >
         <div class="widget">
           <nav id="sidebar-nav">
@@ -137,7 +137,7 @@
           </div>
           <!--/.card -->
         </section>
-        <section id="fuehrung" class="wrapper py-16 scrollSpysection">
+        <section id="fuehrung" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 5 Geschäftsführung und Vertretung</h2>
@@ -178,7 +178,7 @@
           <!--/.card -->
         </section>
 
-         <section id="foerdermitglieder" class="wrapper py-16 scrollSpysection">
+         <section id="foerdermitglieder" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 7 Fördermitglieder</h2>
@@ -212,7 +212,7 @@
           <!--/.card -->
         </section>
 
-        <section id="verwendung" class="wrapper py-16 scrollSpysection">
+        <section id="verwendung" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 8 Verwendung von Überschüssen</h2>
@@ -235,7 +235,7 @@
           <!--/.card -->
         </section>
 
-        <section id="abtretung" class="wrapper py-16 scrollSpysection">
+        <section id="abtretung" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 9 Abtretung und Vererbung von Anteilen</h2>
@@ -251,7 +251,7 @@
           <!--/.card -->
         </section>
 
-        <section id="aufloesung" class="wrapper py-16 scrollSpysection">
+        <section id="aufloesung" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 10 Auflösung der Gesellschaft, Vermögensbindung</h2>
@@ -270,7 +270,7 @@
           <!--/.card -->
         </section>
 
-        <section id="kuendigung" class="wrapper py-16 scrollSpysection">
+        <section id="kuendigung" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 11 Kündigung von Gesellschaftern</h2>
@@ -292,7 +292,7 @@
           <!--/.card -->
         </section>
 
-        <section id="dauer" class="wrapper py-16 scrollSpysection">
+        <section id="dauer" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 12 Dauer, Bekanntmachungen</h2>
@@ -308,7 +308,7 @@
           <!--/.card -->
         </section>
 
-        <section id="dauer" class="wrapper py-16 scrollSpysection">
+        <section id="dauer" class="wrapper pt-16 scrollSpysection">
           <div class="card">
             <div class="card-body p-10">
               <h2 class="mb-3">§ 13 Satzungsänderungen</h2>

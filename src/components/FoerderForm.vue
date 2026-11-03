@@ -1,11 +1,6 @@
 <template>
   <div class="foerder-form">
     <form ref="formRef" class="contact-form needs-validation" @submit.prevent="submitForm" novalidate>
-      <div class="messages">
-        <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-      </div>
-
       <div class="row gx-4">
         <div class="col-md-6">
           <div class="form-floating mb-4">
@@ -196,6 +191,11 @@
         </div>
       </div>
     </form>
+
+    <div class="messages">
+      <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    </div>
   </div>
 </template>
 

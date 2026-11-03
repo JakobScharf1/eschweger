@@ -12,13 +12,6 @@ export async function sendContact(from, message) {
   )
 }
 
-// Ggf. zu KleinanzeigenService
-export async function sendKleinanzeige(name, email, strasse, plz, ort, rubrik, text) {
-  const subject = ""
-  const message = ""
-  return await ApiService.post('/mail/kleinanzeige', { publikation_id: import.meta.env.VITE_PUBLIKATION_ID, subject: subject, message: message }, {})
-}
-
 export async function sendMitmachen(vorname, nachname, email, tel, strasse, plz, ort, pakete, bemerkung) {
   let paketeString = ""
   if (pakete.value.length > 1) {
@@ -33,9 +26,20 @@ export async function sendMitmachen(vorname, nachname, email, tel, strasse, plz,
   )
 }
 
+// Zu KleinanzeigenService
+export async function sendKleinanzeige(name, email, strasse, plz, ort, rubrik, text) {
+  return await sendMail(
+    "redaktion@die-eschweger.de", 
+    "Kleinanzeigen Formular - DIE ESCHWEGER Website",
+    `Name: ${name}<br/>E-Mail: ${email}<br/>Adresse: ${strasse}, ${plz} ${ort}<br/>Rubrik: ${rubrik}<br>Beschreibung: ${text}`
+  )
+}
+
 // Zu FoerderService
 export async function sendFoerder(betrag, typ, email, name, strasse, plz, ort, zahlart) {
-  const subject = ""
-  const message = ""
-  return await ApiService.post('/mail/foerder', { publikation_id: import.meta.env.VITE_PUBLIKATION_ID, subject: subject, message: message }, {})
+  return await sendMail(
+    "redaktion@die-eschweger.de",
+    "Fördermitgliedschaft - DIE ESCHWEGER Website",
+    `Betrag: ${betrag}<br/>Typ: ${typ}<br/>E-Mail: ${email}<br/>Name: ${name}<br/>Adresse: ${strasse}, ${plz} ${ort}<br/>Zahlart: ${zahlart}`
+  )
 }

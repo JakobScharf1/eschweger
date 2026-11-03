@@ -129,16 +129,16 @@
           </div>
         </div>
 
-        <div class="col-12">
+        <!-- <div class="col-12">
           <FileUpload
             v-model="uploadedFiles"
             name="datei"
-            label="Bild (optional, max. 5MB)"
-            :accepted-file-types="['image/png', 'image/jpeg']"
+            label="Bild (optional, max. 10MB)"
+            :accepted-file-types="['image/*']"
             :allow-multiple="false"
-            max-file-size="5MB"
+            max-file-size="10MB"
           />
-        </div>
+        </div> -->
 
         <!-- HONEYPOT -->
         <input
@@ -297,10 +297,10 @@ async function submitForm() {
 
   submitting.value = true
   try {
-    const payload = new FormData()
-    if (uploadedFiles.value[0]) {
-      payload.append('datei', uploadedFiles.value[0])
-    }
+    // const payload = new FormData()
+    // if (uploadedFiles.value[0]) {
+    //   payload.append('datei', uploadedFiles.value[0])
+    // }
 
     await sendKleinanzeige(form.name, form.email, form.strasse, form.plz, form.ort, form.rubrik, form.text)
 

@@ -3,10 +3,6 @@
     <h5 class="display-5">Jetzt Abo bestellen!</h5>
     <small>Das Startdatum des Abonnements ist der erste Tag des nächsten Monats.</small>
     <form ref="formRef" class="contact-form needs-validation" @submit.prevent="submitForm" novalidate>
-      <div class="messages mt-2">
-        <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-      </div>
 
       <div class="row gx-4">
         <div class="col-12 mb-4">
@@ -165,6 +161,11 @@
             {{ submitting ? 'Sende...' : 'Absenden' }}
           </button>
         </div>
+      </div>
+
+      <div class="messages mt-2">
+        <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
       </div>
     </form>
   </div>
