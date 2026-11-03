@@ -412,7 +412,7 @@ watch([form, selectedId], () => {
     if (selectedId.value) {
         clearTimeout(timer)
         timer = setTimeout(() => {
-            getLivePreis(selectedId.value, "privatpreis", form.platzierung, form.newsletter).then(res => {
+            getLivePreis(selectedId.value, "privatpreis", form.platzierung !== "" ? form.platzierung : null, form.newsletter).then(res => {
                 livePreis.value = res.summe_netto
             })
         }, 2000)
@@ -530,7 +530,7 @@ async function submitForm() {
         form.ausgabe,
         form.newsletter ? 'newsletter' : selectedId.value,
         "privatpreis",
-        form.platzierung,
+        form.platzierung !== "" ? form.platzierung : null,
         form.uebernahme,
         form.korrekturabzug,
         form.notizen,

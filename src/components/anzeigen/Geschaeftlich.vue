@@ -540,7 +540,7 @@ watch([form, selectedId], () => {
     if (form.kategorie && selectedId.value) {
         clearTimeout(timer)
         timer = setTimeout(() => {
-            getLivePreis(selectedId.value, form.kategorie, form.platzierung !== "", form.newsletter).then(res => {
+            getLivePreis(selectedId.value, form.kategorie, form.platzierung !== "" ? form.platzierung : null, form.newsletter).then(res => {
                 livePreis.value = res.summe_netto
             })
         }, 2000)
