@@ -241,23 +241,6 @@
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="form-floating mb-4">
-                        <input
-                        type="text"
-                        name="platzierung"
-                        class="form-control"
-                        :class="{ 'is-invalid': errors.platzierung && (showErrors || touched.platzierung) }"
-                        placeholder="Platzierungswunsch"
-                        required
-                        v-model="form.platzierung"
-                        @blur="setTouched('platzierung')"
-                        />
-                        <label>Platzierungswunsch</label>
-                        <div v-if="errors.platzierung && (showErrors || touched.platzierung)" class="invalid-feedback">{{ errors.platzierung }}</div>
-                    </div>
-                </div>
-
                 <div class="col-md-6">
                     <FileUpload
                         v-model="uploadedFile"
@@ -363,7 +346,6 @@ const form = reactive({
     email: '',
     uebernahme: '',
     korrekturabzug: '',
-    platzierung: '',
     notizen: '',
     vorlage: '',
     format: '',
@@ -381,7 +363,6 @@ const errors = reactive({
     email: '',
     uebernahme: '',
     korrekturabzug: '',
-    platzierung: '',
     notizen: '',
     vorlage: '',
     format: '',
@@ -399,7 +380,6 @@ const touched = reactive({
     email: false,
     uebernahme: false,
     korrekturabzug: false,
-    platzierung: false,
     notizen: false,
     vorlage: false,
     format: false,
@@ -412,7 +392,7 @@ watch([form, selectedId], () => {
     if (selectedId.value) {
         clearTimeout(timer)
         timer = setTimeout(() => {
-            getLivePreis(selectedId.value, "privatpreis", form.platzierung !== "" ? form.platzierung : null, form.newsletter).then(res => {
+            getLivePreis(selectedId.value, "privatpreis", false, form.newsletter).then(res => {
                 livePreis.value = res.summe_netto
             })
         }, 2000)
@@ -494,7 +474,6 @@ function resetForm() {
   form.email = ''
   form.uebernahme = ''
   form.korrekturabzug = ''
-  form.platzierung = ''
   form.notizen = ''
   form.vorlage = ''
   form.format = ''
@@ -530,7 +509,7 @@ async function submitForm() {
         form.ausgabe,
         form.newsletter ? 'newsletter' : selectedId.value,
         "privatpreis",
-        form.platzierung !== "" ? form.platzierung : null,
+        null,
         form.uebernahme,
         form.korrekturabzug,
         form.notizen,

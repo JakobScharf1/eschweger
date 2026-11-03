@@ -378,7 +378,7 @@
                         v-model="uploadedFile"
                         name="vorlage"
                         label="Vorlage (kann nachgereicht werden, max. 10MB)"
-                        :accepted-file-types="['image/*', 'application/pdf']"
+                        :accepted-file-types="['image/jpg', 'image/png', 'application/pdf', 'application/octet-stream']"
                         :allow-multiple="false"
                         max-file-size="10MB"
                     />
@@ -540,7 +540,7 @@ watch([form, selectedId], () => {
     if (form.kategorie && selectedId.value) {
         clearTimeout(timer)
         timer = setTimeout(() => {
-            getLivePreis(selectedId.value, form.kategorie, form.platzierung !== "" ? form.platzierung : null, form.newsletter).then(res => {
+            getLivePreis(selectedId.value, form.kategorie, form.platzierung !== "", form.newsletter).then(res => {
                 livePreis.value = res.summe_netto
             })
         }, 2000)
@@ -721,7 +721,7 @@ async function submitForm() {
       },
     )
     if (res.status === "ok") {
-        await uploadVorlage(res.bestellung_id, uploadedFile.value)
+        await uploadVorlage(res.bestellung_id, toRaw(uploadedFile.value))
     }
 
     successMessage.value = 'Erfolgreich abgesendet! Bitte bestätigen Sie Ihre Email-Adresse, damit wir Ihre Anfrage bearbeiten können.'
