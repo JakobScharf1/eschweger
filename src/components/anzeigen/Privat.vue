@@ -284,7 +284,12 @@
                     <button type="submit" class="btn btn-primary rounded-pill btn-send" :disabled="submitting">
                         {{ submitting ? 'Sende...' : 'Absenden' }}
                     </button>
-                    <small class="ms-3">{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis},-- € inkl. MwSt.` }}</small>
+                    <small class="ms-3" v-if="livePreisLoading">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Lädt...</span>
+                        </div>
+                    </small>
+                    <small class="ms-3" v-else>{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis} € inkl. MwSt.` }}</small>
                 </div>
             </div>
         </form>
@@ -388,8 +393,10 @@ const touched = reactive({
 // ### LIVE-PREIS ###
 let timer = null
 const livePreis = ref(0)
+const livePreisLoading = ref(false)
 watch([form, selectedId], () => {
     if (selectedId.value) {
+        livePreisLoading.value = true
         clearTimeout(timer)
         timer = setTimeout(() => {
             getLivePreis(selectedId.value, "privatpreis", false, form.newsletter).then(res => {
@@ -397,6 +404,7 @@ watch([form, selectedId], () => {
             })
         }, 2000)
     } else livePreis.value = 0
+    livePreisLoading.value = false
 }, { deep: true })
 
 const showErrors = ref(false)
