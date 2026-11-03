@@ -29,7 +29,7 @@ export async function sendBestellung(kundennummer, ausgabeAm, formatCode, preisk
         newsletter_abonnenten: null,
         platzierungswunsch: platzierungswunsch,
         uebernahme_aus: uebernahmeAus,
-        korrekturabzug: korrekturabzug,
+        korrekturabzug_an: korrekturabzug,
         notizen: notizen,
         besteller: besteller,
     })

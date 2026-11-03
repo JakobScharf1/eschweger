@@ -35,6 +35,14 @@
                 <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
             </div>
 
+            <div class="row mt-4 mb-6">
+                <div class="col-12">
+                    <strong v-if="selectedId === 'newsletter'">Ausgewähltes Format: Newsletter</strong>
+                    <strong v-else-if="selectedFormat">Ausgewähltes Format: {{ selectedFormat.title }} <span v-if="selectedFormat.subtitle !== ''">| {{ selectedFormat.subtitle }}</span></strong>
+                    <strong v-else>Bitte Format auswählen!</strong>
+                </div>
+            </div>
+
             <div class="row gx-4">
                 <div class="col-md-6">
                     <div class="form-floating mb-4">
@@ -170,7 +178,7 @@
                 <div class="col-md-6">
                     <div class="form-floating mb-4">
                         <input
-                        type="text"
+                        type="email"
                         name="korrekturabzug"
                         class="form-control"
                         :class="{ 'is-invalid': errors.korrekturabzug && (showErrors || touched.korrekturabzug) }"
@@ -179,7 +187,7 @@
                         v-model="form.korrekturabzug"
                         @blur="setTouched('korrekturabzug')"
                         />
-                        <label>Korrekturabzug an *</label>
+                        <label>Korrekturabzug an (Email)*</label>
                         <div v-if="errors.korrekturabzug && (showErrors || touched.korrekturabzug)" class="invalid-feedback">{{ errors.korrekturabzug }}</div>
                     </div>
                 </div>
@@ -280,6 +288,11 @@ const formats = [
   { id: '1/8-2-quer', title: '1/8 Seite', width: 92.5, height: 65.5, subtitle: "2-spaltig, quer", price: 50 },
   { id: '1/16', title: '1/16 Seite', width: 43.7, height: 65.5, subtitle: "1-spaltig", price: 20 },
 ]
+
+const selectedFormat = computed(() => {
+    let format = formats.find(f => f.id === selectedId.value)
+    return format ? format : null
+})
 
 const successMessage = ref('')
 const errorMessage = ref('')

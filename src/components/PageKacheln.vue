@@ -65,26 +65,26 @@
 
 <script setup>
 const cards = [
-  {
-    id: 1,
-    classes: "col-md-5 offset-md-1 align-self-end",
-    cardClass: "bg-pale-yellow",
-    iconSrc: "/assets/img/icons/lineal/calendar.svg",
-    iconClass: "icon-svg icon-svg-md text-yellow mb-3",
-    title: "Veranstaltungs-kalender",
-    description:
-      "Entdecken Sie alle Veranstaltungen in der Umgebung!",
-    path: "/veranstaltungen"
-  },
+  // {
+  //   id: 1,
+  //   classes: "col-md-5 offset-md-1 align-self-end",
+  //   cardClass: "bg-pale-yellow",
+  //   iconSrc: "/assets/img/icons/lineal/calendar.svg",
+  //   iconClass: "icon-svg icon-svg-md text-yellow mb-3",
+  //   title: "Veranstaltungs-kalender",
+  //   description:
+  //     "Entdecken Sie alle Veranstaltungen in der Umgebung!",
+  //   path: "/veranstaltungen"
+  // },
   {
     id: 2,
     classes: "col-md-6 align-self-end",
     cardClass: "bg-pale-red",
-    iconSrc: "/assets/img/icons/lineal/puzzle-2.svg",
+    iconSrc: "/assets/img/icons/lineal/award-2.svg",
     iconClass: "icon-svg icon-svg-md text-red mb-3",
     title: "Gewinnspiele",
     description:
-      "Gewinne bis zum 1.1.2027 eine Drohne!",
+      "Gewinnen Sie spannende Preise aus der Region!",
     path: "/gewinnspiele"
   },
   // {
@@ -100,7 +100,7 @@ const cards = [
   {
     id: 3,
     classes: "col-md-6 align-self-start",
-    cardClass: "bg-pale-primary",
+    cardClass: "bg-pale-yellow",
     iconSrc: "/assets/img/icons/lineal/pin.svg",
     iconClass: "icon-svg icon-svg-md text-primary mb-3",
     title: "Kostenlose Kleinanzeigen",
