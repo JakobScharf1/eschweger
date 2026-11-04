@@ -25,10 +25,9 @@
                                 Unter den Weiden 5<br/>
                                 37281 Wanfried<br/>
                                 USt.-ID: DE459600389<br/>
-                                Tel: (05655) 32 000 00<br/>
-                                Fax: (05655) 32 000 24<br/>
-                                Mobil: (01573) 96 22 11 5<br/>
-                                E-Email <a href="mailto:redaktion@die-eschweger.de">redaktion@die-eschweger.de</a>
+                                <!-- Tel: (05655) 32 000 00<br/>-->
+                                Mobil: (0160) 89 89 401<br/>
+                                E-Email <a href="mailto:info@brombeerland.de">info@brombeerland.de</a>
                             </p>
                         </div>
                     </div>
@@ -43,15 +42,14 @@
                                 Verantwortlich nach § 55 Abs.2 RStV<br/>
                                 c/o Udo Scharf<br/>
                                 <strong>DIE ESCHWEGER</strong><br/>
-                                Marktstraße 19<br/>
-                                37281 Wanfried<br/>
+                                Marktstraße 29<br/>
+                                37269 Eschwege<br/>
                                 ISSN 3052-3079<br/>
-                                Tel: (05655) 32 000 00<br/>
+                                <!-- Tel: (05655) 32 000 00<br/> -->
                                 USt.-ID: DE459600389<br/>
-                                Fax: (05655) 32 000 24<br/>
-                                Mobil: (01573) 96 22 11 5<br/>
+                                Mobil: (0160) 89 89 401<br/>
                                 E-Email <a href="mailto:redaktion@die-eschweger.de">redaktion@die-eschweger.de</a><br/>
-                                DIE ESCHWEGER ist Mitglied im <a href="https://www.mvfp.de/" target="_blank">Medienverband der freien Presse e.V.</a>
+                                Die Brombeerland gUG ist Mitglied im <a href="https://www.mvfp.de/" target="_blank">Medienverband der freien Presse e.V.</a>
                             </p>
                         </div>
                     </div>

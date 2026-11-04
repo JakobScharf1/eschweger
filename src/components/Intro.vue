@@ -25,7 +25,7 @@
         <img src="/assets/img/icons/lineal/group-2.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
       </div>
       <h4>Unabhängiger Journalismus von Bürger:innen für Bürger:innen</h4>
-      <p class="mb-3 text-block">DIE ESCHWEGER steht für Journalismus von unten: Wir wollen selbst erzählen, was uns bewegt, was gut läuft und wo es hakt. Von uns über uns – direkt aus dem Leben unserer Stadt. Wir sind unabhängig, weltoffen und demokratisch und stehen für positive, optimistische Inhalte, die Mut machen. Dabei schauen wir kritisch hin und sprechen Probleme offen an.</p>
+      <span class="mb-3 text-block">DIE ESCHWEGER steht für Journalismus von unten: Wir wollen selbst erzählen, was uns bewegt, was gut läuft und wo es hakt. Von uns über uns – direkt aus dem Leben unserer Stadt. Wir sind unabhängig, weltoffen und demokratisch und stehen für positive, optimistische Inhalte, die Mut machen. Dabei schauen wir kritisch hin und sprechen Probleme offen an.<br/>Wir orientieren uns bei der Erstellung an den Prinzipien des <a href="https://up2date.uni-bremen.de/artikel/konstruktiver-journalismus-wenn-medien-nach-loesungen-suchen" target="_blank">konstruktiven Journalismus</a>.</span>
     </div>
 
     <div class="col-md-4">
