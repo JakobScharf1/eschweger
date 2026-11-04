@@ -11,7 +11,7 @@
     height: 100vh;
 }
 .alert-primary {
-    background: color-mix(in srgb, var(--bs-primary-bg-subtle) 50%, transparent);
+    background: color-mix(in srgb, var(--bs-primary-bg-subtle) 70%, transparent);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
 }

@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper bg-gray hero-section mt-n5">
-    <div class="container pt-12 pt-md-16 text-center hero-content">
+    <div class="container text-center hero-content" :class="redaktionssitzung !== '' ? 'pt-12 pt-md-16' : 'pt-21 pb-17'">
       <div class="row justify-content-center">
         <div
           class="col-lg-8 col-xxl-7 mx-auto text-center"
@@ -12,10 +12,9 @@
           <!-- <h1 class="display-1 fs-58 mb-7 headline">
             {{ meta.title }} kommt!
           </h1> -->
-          <div class="alert alert-primary" style="color: #133168" role="alert">
+          <div v-if="redaktionssitzung !== ''" class="alert alert-primary" style="color: #133168" role="alert">
             <b>Nächste offene Redaktionssitzung</b><br/>
-            Am 27.Oktober 2026, 19:30 Uhr<br/>
-            Bei Radio RFM, Mangelgasse 19, 37269 Eschwege
+            {{ redaktionssitzung }}
           </div>
           <div
             class="d-flex justify-content-center mb-5 mb-md-0"
@@ -44,9 +43,19 @@
 </template>
 
 <script setup>
+import { getNaechsteRedaktionssitzung } from '@/services/RedaktionssitzungService';
 import { useMetaStore } from '@/stores/metadata';
+import { onMounted, ref } from 'vue';
 
 const meta = useMetaStore()
+const redaktionssitzung = ref("")
+
+onMounted(async () => {
+  const res = await getNaechsteRedaktionssitzung()
+  if (res.text) {
+    redaktionssitzung.value = res.text
+  }
+})
 </script>
 
 <style lang="scss" scoped>
