@@ -172,7 +172,7 @@
                         <select class="form-select" id="preiskategorie" v-model="form.kategorie">
                             <option value="ortspreis">Ortspreis</option>
                             <option value="grundpreis">Basispreis</option>
-                            <option value="social_gamification">Social-Gamification</option>
+                            <option v-if="selectedFormat.startsWith('1')" value="social_gamification">Social-Gamification</option>
                         </select>
                         <label for="preiskategorie">Preiskategorie</label>
                         <small>Ortspreise gelten nur für Kunden mit Eschweger Postleitzahl</small>
