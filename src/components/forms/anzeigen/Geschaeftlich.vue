@@ -133,6 +133,19 @@
 
             <div v-if="ausgaben.length" class="row mb-5">
                 <h4>Gewünschte Ausgabe/n</h4>
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-check">
+                        <input v-model="yearAusgabenSelected" id="selectAusgabenYear" class="form-check-input" type="checkbox" >
+                        <label for="selectAusgabenYear">12 Monate</label>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-check">
+                        <input v-model="halfyearAusgabenSelected" id="selectAusgabenHalfyear" class="form-check-input" type="checkbox" >
+                        <label for="selectAusgabenHalfyear">6 Monate</label>
+                    </div>
+                </div>
+                <hr class="my-2" />
                 <div v-for="(column, columnIndex) in ausgabenColumns" :key="columnIndex" class="col-12 col-md-4">
                     <div v-for="(ausgabe, optionIndex) in column" :key="ausgabe.erscheinungsdatum" class="form-check">
                         <input
@@ -458,12 +471,7 @@ const preise = reactive({
     jahresrabatte: [],
 })
 
-const ausgaben = ref([ {
-            erscheinungsdatum: "2027-01-01",
-            label: "Januar 2027",
-            kurz: "01/2027",
-            intervall_monate: 1
-        },])
+const ausgaben = ref([])
 
 function getInfos() {
     getPreisinfos().then((res) => {
@@ -496,6 +504,30 @@ const ausgabenColumns = computed(() => {
     })
 
     return columns
+})
+
+const yearAusgabenSelected = computed({
+    get: () => ausgaben.value.length >= 12 && ausgaben.value.slice(0, 12).every(ausgabe => ausgabe.selected),
+    set: selected => ausgaben.value.slice(0, 12).forEach(ausgabe => {
+        ausgabe.selected = selected
+    }),
+})
+
+const halfyearAusgabenSelected = computed({
+    get: () => !yearAusgabenSelected.value
+        && ausgaben.value.length >= 6
+        && ausgaben.value.slice(0, 6).every(ausgabe => ausgabe.selected),
+    set: selected => {
+        ausgaben.value.slice(0, 6).forEach(ausgabe => {
+            ausgabe.selected = selected
+        })
+
+        if (selected) {
+            ausgaben.value.slice(6, 12).forEach(ausgabe => {
+                ausgabe.selected = false
+            })
+        }
+    },
 })
 
 function setSelectedId(id) {
