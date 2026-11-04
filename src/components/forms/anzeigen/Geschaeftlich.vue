@@ -133,12 +133,8 @@
 
             <div v-if="ausgaben.length" class="row mb-5">
                 <h4>Gewünschte Ausgabe/n</h4>
-                <div
-                    v-for="(column, columnIndex) in ausgabenColumns"
-                    :key="columnIndex"
-                    class="col-12 col-md-4"
-                >
-                    <div v-for="(ausgabe, optionIndex) in ausgaben" :key="`${columnIndex}-${optionIndex}`" class="form-check">
+                <div v-for="(column, columnIndex) in ausgabenColumns" :key="columnIndex" class="col-12 col-md-4">
+                    <div v-for="(ausgabe, optionIndex) in column" :key="ausgabe.erscheinungsdatum" class="form-check">
                         <input
                             :id="`ausgabe-${columnIndex}-${optionIndex}`"
                             v-model="ausgabe.selected"
@@ -146,10 +142,7 @@
                             type="checkbox"
                             :value="ausgabe.erscheinungsdatum"
                         />
-                        <label
-                            class="form-check-label"
-                            :for="`ausgabe-${columnIndex}-${optionIndex}`"
-                        >
+                        <label class="form-check-label" :for="`ausgabe-${columnIndex}-${optionIndex}`">
                             {{ ausgabe.label }}
                         </label>
                     </div>

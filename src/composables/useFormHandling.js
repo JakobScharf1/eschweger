@@ -37,7 +37,9 @@ export function useAnzeigeForm({
             validateForm({ form, errors })
         } else {
             for (const [field, message] of Object.entries(requiredFields ?? {})) {
-                if (typeof form[field] !== 'string' || !form[field].trim()) {
+                if (typeof form[field] === 'Array' && form[field].length === 0) {
+                    errors[field] = message
+                } else if (typeof form[field] !== 'string' || !form[field].trim()) {
                     errors[field] = message
                 }
             }
