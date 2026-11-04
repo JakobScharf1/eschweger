@@ -110,7 +110,7 @@ import FoerderForm from '@/components/forms/FoerderForm.vue';
 
 @media (max-width: 767px) {
   .stamp {
-    right: 50%;
+    right: 30%;
     transform: translateX(50%) rotate(-8deg);
     top: -45px;
     width: 105px;

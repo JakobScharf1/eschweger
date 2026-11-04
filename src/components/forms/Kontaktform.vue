@@ -1,6 +1,6 @@
 <template>
       <div class="row">
-        <div class="col-10 mx-12">
+        <div class="col-12">
           <div class="row gy-10 gx-lg-8 gx-xl-12">
             <div class="col-lg-8">
               <form
@@ -200,8 +200,8 @@
                   <h5>Adresse</h5>
 
                   <address>
-                    Unter den Weiden 5<br class="d-none d-md-block" />
-                    37281 Wanfried
+                    Marktstraße 29<br class="d-none d-md-block" />
+                    37269 Eschwege
                   </address>
                 </div>
               </div>

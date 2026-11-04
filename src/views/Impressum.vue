@@ -11,7 +11,7 @@
 
     <section class="wrapper bg-gray pb-16">
         <div class="container">
-            <div class="row">
+            <div class="row gy-4">
                 <div class="col-md-12 col-lg-6">
                     <div class="card bg-pale-blue">
                         <div class="card-body p-12">

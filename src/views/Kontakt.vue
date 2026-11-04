@@ -4,9 +4,7 @@
             <div class="row text-center mb-6 mb-md-8 mb-md-10">
                 <h2>Kontakt aufnehmen</h2>
             </div>
-            <div class="row">
-                <Kontaktformular></Kontaktformular>
-            </div>
+            <Kontaktformular></Kontaktformular>
         </div>
     </section>
 
@@ -29,7 +27,7 @@
 import { computed } from 'vue';
 import Kontaktformular from '@/components/forms/Kontaktform.vue';
 
-const adresse = "Unter den Weiden 5, 37281 Wanfried"
+const adresse = "Marktstraße 29, 37269 Eschwege"
 
 const mapSrc = computed(
     () => `https://www.google.com/maps?q=${encodeURIComponent(adresse)}&output=embed`
