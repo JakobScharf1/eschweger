@@ -589,7 +589,7 @@ const {
         }
     },
     onSubmit: async ({ form, selectedId }) => {
-        const selectedAusgaben = ausgaben.value.filter(ausgabe => ausgabe.selected)
+        const selectedAusgaben = ausgaben.value.filter(ausgabe => ausgabe.selected).map(a => a.erscheinungsdatum)
         await sendBestellung(
             form.kundennummer,
             selectedAusgaben,
