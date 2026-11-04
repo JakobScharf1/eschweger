@@ -38,24 +38,71 @@
                 </div>
             </div>
 
-            <div class="row gx-4">
-                <div class="col-md-6">
-                    <div class="form-floating mb-4">
+            <div class="row">
+                <h4>Gewünschte Ausgabe/n</h4>
+                <div class="col-auto d-flex flex-wrap">
+                    <div class="form-check me-5">
                         <input
-                            type="text"
-                            name="ausgabe"
-                            class="form-control"
-                            :class="{ 'is-invalid': errors.ausgabe && (showErrors || touched.ausgabe) }"
-                            placeholder="Gewünschte Ausgabe"
-                            required
-                            v-model="form.ausgabe"
-                            @blur="setTouched('ausgabe')"
+                            id="selectAusgabenYear"
+                            v-model="yearAusgabenSelected"
+                            class="form-check-input"
+                            type="checkbox"
                         />
-                        <label>Gewünschte Ausgabe *</label>
-                        <div v-if="errors.ausgabe && (showErrors || touched.ausgabe)" class="invalid-feedback">{{ errors.ausgabe }}</div>
+                        <label class="form-check-label" for="selectAusgabenYear">Nächsten 12 Ausgaben</label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                            id="selectAusgabenHalfyear"
+                            v-model="halfyearAusgabenSelected"
+                            class="form-check-input"
+                            type="checkbox"
+                        />
+                        <label class="form-check-label" for="selectAusgabenHalfyear">Nächsten 6 Ausgaben</label>
                     </div>
                 </div>
-                <div class="col-md-6"></div>
+                <div v-if="errors.ausgabe && (showErrors || touched.ausgabe)" class="col-12">
+                    <div class="text-danger">{{ errors.ausgabe }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <hr class="mt-1 mb-4">
+                </div>
+            </div>
+            <div v-if="ausgaben.length" class="row mb-5">
+                <div
+                    v-for="(column, columnIndex) in ausgabenColumns"
+                    :key="columnIndex"
+                    class="col-12 col-md-4"
+                >
+                    <div
+                        v-for="(ausgabe, optionIndex) in column"
+                        :key="ausgabe.erscheinungsdatum"
+                        class="form-check"
+                    >
+                        <input
+                            :id="`privat-ausgabe-${columnIndex}-${optionIndex}`"
+                            v-model="ausgabe.selected"
+                            class="form-check-input"
+                            type="checkbox"
+                            name="ausgabe"
+                            :value="ausgabe.erscheinungsdatum"
+                            @change="setTouched('ausgabe')"
+                        />
+                        <label
+                            class="form-check-label"
+                            :for="`privat-ausgabe-${columnIndex}-${optionIndex}`"
+                        >
+                            {{ ausgabe.label }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div v-else class="mb-5">
+                <p class="mb-0">Ausgaben werden geladen…</p>
+            </div>
+
+            <div class="row gx-4">
                 <hr class="mb-2">
                 <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
@@ -297,9 +344,9 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import AdFormatCard from '@/components/forms/anzeigen/AdFormatCard.vue'
-import { sendBestellung, getLivePreis } from '@/services/AnzeigeService.js'
+import { getPreisinfos, sendBestellung, getLivePreis } from '@/services/AnzeigeService.js'
 import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 import { privat as formats } from './anzeigenFormate'
 
@@ -307,6 +354,48 @@ const honeypot = ref("")
 const startTime = Date.now()
 
 const selectedId = ref("")
+const ausgaben = ref([])
+
+onMounted(async () => {
+    const res = await getPreisinfos()
+    ausgaben.value = res.ausgabenliste.map(ausgabe => ({ ...ausgabe, selected: false }))
+})
+
+const ausgabenColumns = computed(() => {
+    const columnCount = Math.min(3, ausgaben.value.length)
+    const columns = Array.from({ length: columnCount }, () => [])
+
+    ausgaben.value.forEach((ausgabe, index) => {
+        columns[index % columnCount].push(ausgabe)
+    })
+
+    return columns
+})
+
+const yearAusgabenSelected = computed({
+    get: () => ausgaben.value.length >= 12
+        && ausgaben.value.slice(0, 12).every(ausgabe => ausgabe.selected),
+    set: selected => ausgaben.value.slice(0, 12).forEach(ausgabe => {
+        ausgabe.selected = selected
+    }),
+})
+
+const halfyearAusgabenSelected = computed({
+    get: () => !yearAusgabenSelected.value
+        && ausgaben.value.length >= 6
+        && ausgaben.value.slice(0, 6).every(ausgabe => ausgabe.selected),
+    set: selected => {
+        ausgaben.value.slice(0, 6).forEach(ausgabe => {
+            ausgabe.selected = selected
+        })
+
+        if (selected) {
+            ausgaben.value.slice(6, 12).forEach(ausgabe => {
+                ausgabe.selected = false
+            })
+        }
+    },
+})
 
 function setSelectedId(id) {
   selectedId.value = id
@@ -327,11 +416,12 @@ const {
     errorMessage,
     submitting,
     showErrors,
+    formRef,
     setTouched,
     submitForm,
 } = useAnzeigeForm({
     initialValues: {
-        ausgabe: '',
+        ausgabe: [],
         vorname: '',
         nachname: '',
         kundennummer: '',
@@ -351,7 +441,6 @@ const {
     honeypot,
     startTime,
     requiredFields: {
-        ausgabe: 'Bitte geben Sie die gewünschte Ausgabe an.',
         vorname: 'Bitte geben Sie Ihren Vornamen an.',
         nachname: 'Bitte geben Sie Ihren Nachnamen an.',
         strasse: 'Bitte geben Sie Ihre Straße an.',
@@ -361,13 +450,22 @@ const {
         telefon: 'Bitte geben Sie Ihre Telefonnummer an.',
         korrekturabzug: 'Bitte geben Sie eine Email für den Korrekturabzug an.',
     },
+    validateAdditional: ({ errors }) => {
+        if (!ausgaben.value.some(ausgabe => ausgabe.selected)) {
+            errors.ausgabe = 'Bitte wählen Sie mindestens eine Ausgabe aus.'
+        }
+    },
     emailFields: {
         email: 'Bitte geben Sie eine gültige Email-Adresse an.',
     },
     onSubmit: async ({ form, selectedId }) => {
-        const res = await sendBestellung(
+        const selectedAusgaben = ausgaben.value
+            .filter(ausgabe => ausgabe.selected)
+            .map(ausgabe => ausgabe.erscheinungsdatum)
+
+        await sendBestellung(
             form.kundennummer,
-            form.ausgabe,
+            selectedAusgaben,
             form.newsletter ? 'newsletter' : selectedId,
             'privatpreis',
             null,
@@ -387,9 +485,6 @@ const {
                 email: form.email,
             },
         )
-        // if (res.status === 'ok') {
-        //     await uploadVorlage(res.bestellung_id, uploadedFile.value)
-        // }
     },
     successText: 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.',
 })

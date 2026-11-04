@@ -165,6 +165,9 @@
                     </div>
                 </div>
             </div>
+            <div v-else class="mb-5">
+                <p class="mb-0">Ausgaben werden geladen…</p>
+            </div>
 
             <div class="row gx-4">
                 <div class="col-md-6">
@@ -172,7 +175,7 @@
                         <select class="form-select" id="preiskategorie" v-model="form.kategorie">
                             <option value="ortspreis">Ortspreis</option>
                             <option value="grundpreis">Basispreis</option>
-                            <option v-if="selectedFormat.startsWith('1')" value="social_gamification">Social-Gamification</option>
+                            <option v-if="selectedFormat && selectedFormat.startsWith('1')" value="social_gamification">Social-Gamification</option>
                         </select>
                         <label for="preiskategorie">Preiskategorie</label>
                         <small>Ortspreise gelten nur für Kunden mit Eschweger Postleitzahl</small>
