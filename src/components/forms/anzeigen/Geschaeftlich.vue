@@ -131,21 +131,25 @@
                 </div>
             </div>
 
-            <div v-if="ausgaben.length" class="row mb-5">
+            <div class="row">
                 <h4>Gewünschte Ausgabe/n</h4>
-                <div class="col-md-3 col-sm-12">
-                    <div class="form-check">
+                <div class="col-auto d-flex">
+                    <div class="form-check me-5">
                         <input v-model="yearAusgabenSelected" id="selectAusgabenYear" class="form-check-input" type="checkbox" >
-                        <label for="selectAusgabenYear">12 Monate</label>
+                        <label for="selectAusgabenYear">Nächsten 12 Ausgaben</label>
                     </div>
-                </div>
-                <div class="col-md-3 col-sm-12">
                     <div class="form-check">
                         <input v-model="halfyearAusgabenSelected" id="selectAusgabenHalfyear" class="form-check-input" type="checkbox" >
-                        <label for="selectAusgabenHalfyear">6 Monate</label>
+                        <label for="selectAusgabenHalfyear">Nächsten 6 Ausgaben</label>
                     </div>
                 </div>
-                <hr class="my-2" />
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <hr class="mt-1 mb-4">
+                </div>
+            </div>
+            <div v-if="ausgaben.length" class="row mb-5">
                 <div v-for="(column, columnIndex) in ausgabenColumns" :key="columnIndex" class="col-12 col-md-4">
                     <div v-for="(ausgabe, optionIndex) in column" :key="ausgabe.erscheinungsdatum" class="form-check">
                         <input
@@ -561,7 +565,6 @@ const {
     honeypot,
     startTime,
     requiredFields: {
-        ausgabe: 'Bitte geben Sie die gewünschte/n Ausgabe/n an.',
         vorname: 'Bitte geben Sie Ihren Vornamen an.',
         nachname: 'Bitte geben Sie Ihren Nachnamen an.',
         strasse: 'Bitte geben Sie Ihre Straße an.',
@@ -574,14 +577,19 @@ const {
     },
     emailFields: {
         email: 'Bitte geben Sie eine gültige Email-Adresse an.',
+        korrekturabzug: 'Bitte geben Sie eine gültige Email-Adresse für den Korrekturabzug an.',
     },
     validateAdditional: ({ form, selectedId, errors }) => {
+        if (!ausgaben.value.some(ausgabe => ausgabe.selected)) {
+            errors.ausgabe = 'Bitte wählen Sie mindestens eine Ausgabe aus.'
+        }
+
         if (selectedId === 'newsletter' && !form.newsletter) {
             errors.newsletter = 'Bitte geben Sie die Anzahl der Wochen für den Newsletter an.'
         }
     },
-    onSubmit: async ({ form, selectedId, ausgaben }) => {
-        const selectedAusgaben = ausgaben.filter(a => a.selected)
+    onSubmit: async ({ form, selectedId }) => {
+        const selectedAusgaben = ausgaben.value.filter(ausgabe => ausgabe.selected)
         await sendBestellung(
             form.kundennummer,
             selectedAusgaben,
