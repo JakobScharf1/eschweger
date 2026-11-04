@@ -37,8 +37,8 @@
                     </li>
                 </ul>
 
-                <Privat v-if="active === 'privat'"></Privat>
-                <Geschaeftlich v-if="active === 'geschaeftlich'"></Geschaeftlich>
+                <Privat v-show="active === 'privat'"></Privat>
+                <Geschaeftlich v-show="active === 'geschaeftlich'"></Geschaeftlich>
             </div>
         </div>
     <!-- /.container -->
