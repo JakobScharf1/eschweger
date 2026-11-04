@@ -20,11 +20,11 @@
                         type="text"
                         name="vorname"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.vorname }
-                        "
+                        :class="{ 'is-invalid': errors.vorname && (showErrors || touched.vorname) }"
                         placeholder="Erika"
                         required
                         v-model="form.vorname"
+                        @blur="setTouched('vorname')"
                       />
                       <label>Vorname *</label>
                       <div class="valid-feedback">Passt!</div>
@@ -36,12 +36,13 @@
                     <div class="form-floating mb-4">
                       <input
                         type="text"
-                        name="name"
+                        name="nachname"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.nachname }"
+                        :class="{ 'is-invalid': errors.nachname && (showErrors || touched.nachname) }"
                         placeholder="Musterfrau"
                         required
                         v-model="form.nachname"
+                        @blur="setTouched('nachname')"
                       />
                       <label>Nachname *</label>
                       <div class="valid-feedback">Passt!</div>
@@ -55,10 +56,11 @@
                         type="email"
                         name="email"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.email }"
+                        :class="{ 'is-invalid': errors.email && (showErrors || touched.email) }"
                         placeholder="e.musterfrau@mail.de"
                         required
                         v-model="form.email"
+                        @blur="setTouched('email')"
                       />
                       <label>Email *</label>
                       <div class="valid-feedback">Passt!</div>
@@ -71,10 +73,11 @@
                         type="text"
                         name="strasse"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.strasse }"
+                        :class="{ 'is-invalid': errors.strasse && (showErrors || touched.strasse) }"
                         placeholder="Strasse & Hausnr."
                         required
                         v-model="form.strasse"
+                        @blur="setTouched('strasse')"
                       />
                       <label>Straße & Hausnr. *</label>
                       <div class="valid-feedback">Passt!</div>
@@ -88,11 +91,11 @@
                         type="text"
                         name="plz"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.plz }
-                        "
+                        :class="{ 'is-invalid': errors.plz && (showErrors || touched.plz) }"
                         placeholder="37281"
                         required
                         v-model="form.plz"
+                        @blur="setTouched('plz')"
                       />
                       <label>PLZ *</label>
                       <div class="valid-feedback">Passt!</div>
@@ -106,10 +109,11 @@
                         type="text"
                         name="ort"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.ort }"
+                        :class="{ 'is-invalid': errors.ort && (showErrors || touched.ort) }"
                         placeholder="Eschwege"
                         required
                         v-model="form.ort"
+                        @blur="setTouched('ort')"
                       />
                       <label>Ort *</label>
                       <div class="valid-feedback">Passt!</div>
@@ -123,11 +127,12 @@
                       <textarea
                         name="message"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.message }"
+                        :class="{ 'is-invalid': errors.message && (showErrors || touched.message) }"
                         placeholder="Ihre Nachricht"
                         style="height: 150px"
                         required
                         v-model="form.message"
+                        @blur="setTouched('message')"
                       ></textarea>
                       <label>Nachricht *</label>
                       <div class="valid-feedback">Passt!</div>
@@ -152,8 +157,10 @@
                       <input
                         class="form-check-input"
                         type="checkbox"
+                        name="accepted"
                         v-model="form.accepted"
-                        :class="{ 'is-invalid': errors.accepted }"
+                        :class="{ 'is-invalid': errors.accepted && (showErrors || touched.accepted) }"
+                        @blur="setTouched('accepted')"
                       />
                       <label class="form-check-label">
                         Ich akzeptiere die Datenschutzerklärung.
@@ -240,126 +247,62 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { sendContact } from '@/services/MailService';
+import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 
 const props = defineProps(['preselection'])
-
-const formRef = ref(null)
-const submitting = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
 
 const honeypot = ref("")
 const startTime = Date.now()
 
-const form = reactive({
-  vorname: '',
-  nachname: '',
-  email: '',
-  strasse: '',
-  plz: '',
-  ort: '',
-  message: '',
-  accepted: false,
-})
-
-const errors = reactive({
-  vorname: '',
-  nachname: '',
-  email: '',
-  strasse: '',
-  plz: '',
-  ort: '',
-  message: '',
-  accepted: '',
-})
-
-function validate() {
-  // clear
-  Object.keys(errors).forEach((k) => (errors[k] = ''))
-
-  let ok = true
-  if (!form.vorname || !form.vorname.trim()) {
-    errors.vorname = 'Bitte Vornamen angeben.'
-    ok = false
-  }
-  if (!form.nachname || !form.nachname.trim()) {
-    errors.nachname = 'Bitte Nachnamen angeben.'
-    ok = false
-  }
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!form.email || !emailRe.test(form.email)) {
-    errors.email = 'Bitte geben Sie eine gültige Email an.'
-    ok = false
-  }
-  if (!form.strasse || !form.strasse.trim()) {
-    errors.message = 'Bitte geben Sie eine Straße und Hausnummer ein.'
-    ok = false
-  }
-  if (!form.plz || !form.plz.trim()) {
-    errors.message = 'Bitte geben Sie eine gültige PLZ ein.'
-    ok = false
-  }
-  if (!form.ort || !form.ort.trim()) {
-    errors.message = 'Bitte geben Sie eine Ort ein.'
-    ok = false
-  }
-  if (!form.message || !form.message.trim()) {
-    errors.message = 'Bitte geben Sie eine Nachricht an.'
-    ok = false
-  }
-  if (!form.accepted) {
-    errors.accepted = 'Sie müssen die Datenschutzerklärung akzeptieren.'
-    ok = false
-  }
-
-  return ok
-}
-
-function resetForm() {
-  form.vorname = ''
-  form.nachname = ''
-  form.email = ''
-  form.strasse = ''
-  form.ort = ''
-  form.plz = ''
-  form.message = ''
-  form.accepted = false
-}
-
-async function submitForm() {
-  successMessage.value = ''
-  errorMessage.value = ''
-
-  if (honeypot.value || Date.now() - startTime < 3000) {
-    return
-  }
-  
-  if (!validate()) {
-    errorMessage.value = 'Bitte alle Pflichtfelder ausfüllen.'
-    // focus first invalid field
-    const first = Object.keys(errors).find((k) => errors[k])
-    if (first && formRef.value) {
-      const nameAttr = first === 'nachname' ? 'name' : first
-      const el = formRef.value.querySelector(`[name="${nameAttr}"]`)
-      el?.focus()
+const {
+  form,
+  errors,
+  touched,
+  showErrors,
+  formRef,
+  submitting,
+  successMessage,
+  errorMessage,
+  setTouched,
+  submitForm,
+} = useAnzeigeForm({
+  initialValues: {
+    vorname: '',
+    nachname: '',
+    email: '',
+    strasse: '',
+    plz: '',
+    ort: '',
+    message: '',
+    accepted: false,
+  },
+  honeypot,
+  startTime,
+  requiredFields: {
+    vorname: 'Bitte Vornamen angeben.',
+    nachname: 'Bitte Nachnamen angeben.',
+    strasse: 'Bitte geben Sie eine gültige Straße und Hausnummer an.',
+    plz: 'Bitte geben Sie eine gültige PLZ ein.',
+    ort: 'Bitte geben Sie eine Ort ein.',
+    message: 'Bitte geben Sie eine Nachricht an.',
+  },
+  emailFields: {
+    email: 'Bitte geben Sie eine gültige Email an.',
+  },
+  validateAdditional: ({ form, errors }) => {
+    if (!form.accepted) {
+      errors.accepted = 'Sie müssen die Datenschutzerklärung akzeptieren.'
     }
-    return
-  }
-
-  submitting.value = true
-  try {
+  },
+  onSubmit: async ({ form }) => {
     await sendContact(
       { vorname: form.vorname, nachname: form.nachname, email: form.email, strasse: form.strasse, ort: form.ort, plz: form.plz }, 
       form.message
     )
-    successMessage.value = 'Kontaktanfrage erfolgreich verschickt.'
-    resetForm()
-  } catch (e) {
-    errorMessage.value = 'Fehler beim Verarbeiten der Kontaktanfrage.'
-  } finally {
-    submitting.value = false
-  }
-}
+  },
+  onError: (error) => console.error(error),
+  successText: 'Kontaktanfrage erfolgreich verschickt.',
+})
 </script>

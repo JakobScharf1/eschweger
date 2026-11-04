@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import FoerderForm from '@/components/FoerderForm.vue';
+import FoerderForm from '@/components/forms/FoerderForm.vue';
 
 </script>
 

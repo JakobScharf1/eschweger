@@ -113,6 +113,6 @@
 </template>
 
 <script setup>
-import GewinnspielFormular from '@/components/GewinnspielFormular.vue';
+import GewinnspielFormular from '@/components/forms/GewinnspielForm.vue';
 
 </script>

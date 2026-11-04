@@ -26,8 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import Kontaktformular from '@/components/Kontaktformular.vue';
+import { computed } from 'vue';
+import Kontaktformular from '@/components/forms/Kontaktform.vue';
 
 const adresse = "Unter den Weiden 5, 37281 Wanfried"
 

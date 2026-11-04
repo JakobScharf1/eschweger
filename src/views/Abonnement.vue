@@ -107,7 +107,7 @@
 </template>
 
 <script setup>
-import AboForm from '@/components/AboForm.vue';
+import AboForm from '@/components/forms/AboForm.vue';
 import { nextTick, reactive, ref } from 'vue';
 
 const active = ref('ganzjahr')

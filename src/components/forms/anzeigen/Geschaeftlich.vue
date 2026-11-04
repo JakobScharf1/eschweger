@@ -1,40 +1,129 @@
-<template>
-    <h4>Nur <b>nicht gewerbliche Inserate</b> aus dem Verbreitungsgebiet.</h4>
-    
+<template>    
     <section class="mb-5">
-            Beispiele für Inserate von Privatpersonen, gemeinnützige Organisationen und Kirchen:<br/>
-            Trauer & Gedenken, Grüße, Geburt, Hochzeit, Jubiläum, Konfirmation, Jugendweihe, Kommunion, Einschulung, bestandene Prüfungen, Schul-, Ausbildungs-, Studiumsabschluss uvm.<br/>
-            <b>Kleinanzeigen</b> in Textform bis 500 Zeichen ohne gewerblichen Charakter sind <b>kostenfrei</b>!<br/>
-            <a href="/kleinanzeigen">Hier</a> können Sie Kleinanzeigen aufgeben.
+        <strong>Auslage: </strong>{{ infos.auslage }}<br/>
+        <strong>Erscheinungsweise: </strong>{{ infos.erscheinungsweise }}<br/>
+        <strong>Auflage: </strong>{{ infos.auflage }} Exemplare<br/>
+        <strong>Verbreitung: </strong>{{ infos.verbreitung }}<br/>
     </section>
+
+    <template v-if="infos.sonderaktionen.length > 0">
+        <div class="alert alert-primary" role="alert" v-for="aktion of infos.sonderaktionen">
+            {{ aktion.text }}
+        </div>
+    </template>
 
     <section>
         <h2 class="mb-0">Format auswählen</h2>
-        <small>Preise inkl. 19% MwSt.</small>
+        <small>Preise exkl. MwSt. - Nur für Gewerbetreibende mit Sitz im Verbreitungsgebiet</small>
+
+        <h3 class="mb-0 mt-3">Anzeigen</h3>
         <div class="row g-3 mt-1 mb-5">
             <AdFormatCard
-                class="col-sm-12 col-md-6 col-lg-3"
-                v-for="f in formats"
-                :key="f.id"
-                :value="f.id"
-                :title="f.title"
-                :width="f.width"
-                :height="f.height"
-                :subtitle="f.subtitle"
-                :price="f.price"
-                :selected="selectedId === f.id"
-                @select="setSelectedId"
+            class="col-sm-12 col-md-6 col-lg-3"
+            v-for="f in formats"
+            :key="f.id"
+            :value="f.id"
+            :title="f.title"
+            :width="f.width"
+            :height="f.height"
+            :subtitle="f.subtitle"
+            :priceBusiness="f.priceBusiness"
+            :selected="selectedId === f.id"
+            @select="setSelectedId"
             />
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <h3 class="mb-0 mt-3">Gewinnspiele</h3>
+                <div class="row g-3 mt-1 mb-5">
+                    <AdFormatCard
+                    class="col-sm-12 col-lg-6"
+                    v-for="f in gewinnspiele"
+                    :key="f.id"
+                    :value="f.id"
+                    :title="f.title"
+                    :width="f.width"
+                    :height="f.height"
+                    :subtitle="f.subtitle"
+                    :priceBusiness="f.priceBusiness"
+                    :selected="selectedId === f.id"
+                    @select="setSelectedId"
+                    />
+                </div>
+                <small>Gewinnspiele werden redaktionell gestaltet und setzen die Bereitstellung von mindestens einem Gewinn voraus.</small>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                 <h3 class="mb-0 mt-3">Umschlagseiten</h3>
+                <div class="row g-3 mt-1 mb-5">
+                    <AdFormatCard
+                    class="col-sm-12 col-lg-6"
+                    v-for="f in umschlagseiten"
+                    :key="f.id"
+                    :value="f.id"
+                    :title="f.title"
+                    :width="f.width"
+                    :height="f.height"
+                    :subtitle="f.subtitle"
+                    :priceBusiness="f.priceBusiness"
+                    :selected="selectedId === f.id"
+                    @select="setSelectedId"
+                    />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="mb-5 col-sm-12 col-lg-6">
+                <h3 class="mb-0 mt-3">Newsletter</h3>
+                <AdFormatCard
+                class="mt-3 col-sm-12 col-lg-6"
+                newsletter
+                title="Newsletter"
+                value="newsletter"
+                subtitle="Pro 1.000 Abonnenten"
+                :price="preise.newsletter.preisPro1000"
+                :selected="selectedId === 'newsletter'"
+                @select="setSelectedId('newsletter')"
+                >
+                </AdFormatCard>
+                <div class="form-floating mt-2 col-sm-12 col-lg-6" v-if="selectedId === 'newsletter'">
+                    <input
+                        type="text"
+                        name="newsletter-wochen"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.newsletter && (showErrors || touched.newsletter) }"
+                        placeholder="Newsletter-Werbung in Wochen"
+                        v-model="form.newsletter"
+                        @blur="setTouched('newsletter')"
+                    />
+                    <label>Newsletter-Werbung in Wochen *</label>
+                    <div v-if="errors.newsletter && (showErrors || touched.newsletter)" class="invalid-feedback">{{ errors.newsletter }}</div>
+                </div>
+            </div>
+            <div class="mb-5 col-sm-12 col-lg-4">
+                <h3 class="mb-0 mt-3">Jahresrabatte</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Schaltungen</th>
+                            <th>Rückerstattungen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item of preise.jahresrabatte">
+                            <td>{{ item.schaltungen }}</td>
+                            <td>{{ item.prozent }} %</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
     <section>
         <form ref="formRef" class="contact-form needs-validation" @submit.prevent="submitForm" novalidate>
-            <div class="messages">
-                <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-                <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-            </div>
-
             <div class="row mt-4 mb-6">
                 <div class="col-12">
                     <strong v-if="selectedId === 'newsletter'">Ausgewähltes Format: Newsletter</strong>
@@ -60,7 +149,17 @@
                         <div v-if="errors.ausgabe && (showErrors || touched.ausgabe)" class="invalid-feedback">{{ errors.ausgabe }}</div>
                     </div>
                 </div>
-                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <div class="form-floating mb-4">
+                        <select class="form-select" id="preiskategorie" v-model="form.kategorie">
+                            <option value="ortspreis">Ortspreis</option>
+                            <option value="grundpreis">Basispreis</option>
+                            <option value="social_gamification">Social-Gamification</option>
+                        </select>
+                        <label for="preiskategorie">Preiskategorie</label>
+                        <small>Ortspreise gelten nur für Kunden mit Eschweger Postleitzahl</small>
+                    </div>
+                </div>
                 <hr class="mb-2">
                 <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
@@ -69,12 +168,28 @@
                         name="kundennummer"
                         class="form-control"
                         placeholder="Kundennummer"
+                        required
                         v-model="form.kundennummer"
                         />
                         <label>Kundennummer (falls vorhanden)</label>
                     </div>
                 </div>
-                <div class="col-lg-6"></div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="firma"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.firma && (showErrors || touched.firma) }"
+                        placeholder="Firma"
+                        required
+                        v-model="form.firma"
+                        @blur="setTouched('firma')"
+                        />
+                        <label>Firmenname *</label>
+                        <div v-if="errors.firma && (showErrors || touched.firma)" class="invalid-feedback">{{ errors.firma }}</div>
+                    </div>
+                </div>
                 <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
@@ -174,7 +289,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="email"
@@ -191,7 +306,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="tel"
@@ -208,7 +323,7 @@
                     </div>
                 </div>
                 <hr class="mb-2">
-                <div class="col-md-6">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="text"
@@ -224,7 +339,7 @@
                         <div v-if="errors.uebernahme && (showErrors || touched.uebernahme)" class="invalid-feedback">{{ errors.uebernahme }}</div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12 col-lg-6">
                     <div class="form-floating mb-4">
                         <input
                         type="email"
@@ -236,8 +351,25 @@
                         v-model="form.korrekturabzug"
                         @blur="setTouched('korrekturabzug')"
                         />
-                        <label>Korrekturabzug an (Email) *</label>
+                        <label>Korrekturabzug an (Email)*</label>
                         <div v-if="errors.korrekturabzug && (showErrors || touched.korrekturabzug)" class="invalid-feedback">{{ errors.korrekturabzug }}</div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <input
+                        type="text"
+                        name="platzierung"
+                        class="form-control"
+                        :class="{ 'is-invalid': errors.platzierung && (showErrors || touched.platzierung) }"
+                        placeholder="Platzierungswunsch"
+                        required
+                        v-model="form.platzierung"
+                        @blur="setTouched('platzierung')"
+                        />
+                        <label>Platzierungswunsch (+5% Zuschlag)</label>
+                        <div v-if="errors.platzierung && (showErrors || touched.platzierung)" class="invalid-feedback">{{ errors.platzierung }}</div>
                     </div>
                 </div>
 
@@ -246,7 +378,7 @@
                         v-model="uploadedFile"
                         name="vorlage"
                         label="Vorlage (kann nachgereicht werden, max. 10MB)"
-                        :accepted-file-types="['image/*', 'application/pdf']"
+                        :accepted-file-types="['image/jpg', 'image/png', 'application/pdf', 'application/octet-stream']"
                         :allow-multiple="false"
                         max-file-size="10MB"
                     />
@@ -278,8 +410,6 @@
 
                 <em class="mb-3">Falls keine Vorlage vorliegt, kann diese nachgereicht werden. Entsprechend bitte in den Notizen anmerken.</em>
 
-                <input type="hidden" name="gewinnspiel" value="00_2026" />
-
                 <div class="col-12 justify-content-center mb-3">
                     <button type="submit" class="btn btn-primary rounded-pill btn-send" :disabled="submitting">
                         {{ submitting ? 'Sende...' : 'Absenden' }}
@@ -289,261 +419,145 @@
                             <span class="visually-hidden">Lädt...</span>
                         </div>
                     </small>
-                    <small class="ms-3" v-else>{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis} € inkl. MwSt.` }}</small>
+                    <small class="ms-3" v-else>{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis} € exkl. MwSt.` }}</small>
                 </div>
+            </div>
+
+            <div class="messages">
+                <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+                <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
             </div>
         </form>
     </section>
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
-import AdFormatCard from '@/components/anzeigen/AdFormatCard.vue'
+import { ref, reactive, onMounted, computed } from 'vue'
+import AdFormatCard from '@/components/forms/anzeigen/AdFormatCard.vue'
 import FileUpload from '@/components/FileUpload.vue'
-import { sendBestellung, uploadVorlage, getLivePreis } from '@/services/AnzeigeService.js'
+import { getPreisinfos, sendBestellung, uploadVorlage } from '@/services/AnzeigeService'
+import { useLivePreis } from './useLivePreis'
+import { useAnzeigeForm } from '@/composables/useFormHandling.js'
+import { formatsGeschaeftlich as formats, gewinnspiele, umschlagseiten, alleGeschaeftlich as allFormats } from './anzeigenFormate'
 
 const honeypot = ref("")
 const startTime = Date.now()
 
-const selectedId = ref("")
+// ### METAINFOS ###
+const infos = reactive({
+    auflage: "",
+    erscheinungsweise: "",
+    verbreitung: "",
+    auslage: "",
+    sonderaktionen: []
+})
 
+const preise = reactive({
+    newsletter: { preisPro1000: 0 },
+    platzierungswunsch: { zuschlagProzent: 0, rubriken: [] },
+    jahresrabatte: [],
+})
+
+function getInfos() {
+    getPreisinfos().then((res) => {
+        infos.auflage = res.publikation.auflage
+        infos.erscheinungsweise = res.publikation.erscheinungsweise
+        infos.verbreitung = res.publikation.verbreitung
+        infos.auslage = res.publikation.auslage
+        preise.newsletter.preisPro1000 = res.newsletter.preis_pro_1000
+        preise.platzierungswunsch = res.platzierungswunsch
+        preise.jahresrabatte = res.jahresrabatte
+        infos.sonderaktionen = res.sonderaktionen
+    })
+}
+
+onMounted(() => {
+    getInfos()
+})
+
+// ### FORM ###
+const selectedId = ref("")
 function setSelectedId(id) {
   selectedId.value = id
 }
-
-const formats = [
-  { id: '1_1', title: '1/1 Seite', width: 210, height: 279, subtitle: "(+3mm Beschnitt)", price: 350 },
-  { id: '1_2_q', title: '1/2 Seite', width: 190, height: 136, subtitle: "4-spaltig, quer", price: 190 },
-  { id: '1_2_h', title: '1/2 Seite', width: 92.5, height: 264, subtitle: "2-spaltig, hoch", price: 190 },
-  { id: '1_3_q', title: '1/3 Seite', width: 190.3, height: 89, subtitle: "4-spaltig, quer", price: 130 },
-  { id: '1_4_q4', title: '1/4 Seite', width: 190, height: 65.5, subtitle: "4-spaltig, quer", price: 100 },
-  { id: '1_4_h2', title: '1/4 Seite', width: 92.5, height: 129.5, subtitle: "2-spaltig, hoch", price: 100 },
-  { id: '1_4_q3', title: '1/4 Seite', width: 141.2, height: 92.5, subtitle: "3-spaltig, quer", price: 100 },
-  { id: '1_4_h1', title: '1/4 Seite', width: 43.7, height: 264, subtitle: "1-spaltig, hoch", price: 100 },
-  { id: '1_6', title: '1/6 Seite', width: 92.5, height: 89, subtitle: "2-spaltig", price: 70 },
-  { id: '1_8_q4', title: '1/8 Seite', width: 190, height: 30.3, subtitle: "4-spaltig, quer", price: 50 },
-  { id: '1_8_q2', title: '1/8 Seite', width: 92.5, height: 65.5, subtitle: "2-spaltig, quer", price: 50 },
-  { id: '1_16', title: '1/16 Seite', width: 43.7, height: 65.5, subtitle: "1-spaltig", price: 20 },
-]
-
 const selectedFormat = computed(() => {
-    let format = formats.find(f => f.id === selectedId.value)
+    let format = allFormats.find(f => f.id === selectedId.value)
     return format ? format : null
 })
 
-const successMessage = ref('')
-const errorMessage = ref('')
-const formRef = ref(null)
-const submitting = ref(false)
+const uploadedFile = ref(null)
 
-const uploadedFile = ref(null) // TODO
-
-const form = reactive({
-    ausgabe: '',
-    vorname: '',
-    nachname: '',
-    kundennummer: '',
-    strasse: '',
-    hausnr: '',
-    plz: '',
-    ort: '',
-    telefon: '',
-    email: '',
-    uebernahme: '',
-    korrekturabzug: '',
-    notizen: '',
-    vorlage: '',
-    format: '',
-})
-
-const errors = reactive({
-    ausgabe: '',
-    vorname: '',
-    nachname: '',
-    strasse: '',
-    hausnr: '',
-    plz: '',
-    ort: '',
-    telefon: '',
-    email: '',
-    uebernahme: '',
-    korrekturabzug: '',
-    notizen: '',
-    vorlage: '',
-    format: '',
-})
-
-const touched = reactive({
-    ausgabe: false,
-    vorname: false,
-    nachname: false,
-    strasse: false,
-    hausnr: false,
-    plz: false,
-    ort: false,
-    telefon: false,
-    email: false,
-    uebernahme: false,
-    korrekturabzug: false,
-    notizen: false,
-    vorlage: false,
-    format: false,
-})
-
-// ### LIVE-PREIS ###
-let timer = null
-const livePreis = ref(0)
-const livePreisLoading = ref(false)
-watch([form, selectedId], () => {
-    if (selectedId.value) {
-        livePreisLoading.value = true
-        clearTimeout(timer)
-        timer = setTimeout(() => {
-            getLivePreis(selectedId.value, "privatpreis", false, form.newsletter).then(res => {
-                livePreis.value = res.summe_netto
-            })
-        }, 2000)
-    } else livePreis.value = 0
-    livePreisLoading.value = false
-}, { deep: true })
-
-const showErrors = ref(false)
-
-const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-function validate() {
-    Object.keys(errors).forEach((key) => (errors[key] = ''))
-
-    let ok = true
-    if (!form.ausgabe || !form.ausgabe.trim()) {
-        errors.ausgabe = 'Bitte geben Sie die gewünschte Ausgabe an.'
-        ok = false
-    }
-    if (!form.vorname || !form.vorname.trim()) {
-        errors.vorname = 'Bitte geben Sie Ihren Vornamen an.'
-        ok = false
-    }
-    if (!form.nachname || !form.nachname.trim()) {
-        errors.nachname = 'Bitte geben Sie Ihren Nachnamen an.'
-        ok = false
-    }
-    if (!form.strasse || !form.strasse.trim()) {
-        errors.strasse = 'Bitte geben Sie Ihre Straße an.'
-        ok = false
-    }
-    if (!form.hausnr || !form.hausnr.trim()) {
-        errors.hausnr = 'Bitte geben Sie Ihre Hausnummer an.'
-        ok = false
-    }
-    if (!form.plz || !form.plz.trim()) {
-        errors.plz = 'Bitte geben Sie Ihre Postleitzahl an.'
-        ok = false
-    }
-    if (!form.ort || !form.ort.trim()) {
-        errors.ort = 'Bitte geben Sie Ihren Ort an.'
-        ok = false
-    }
-    if (!form.telefon || !form.telefon.trim()) {
-        errors.telefon = 'Bitte geben Sie Ihre Telefonnummer an.'
-        ok = false
-    }
-    if (!form.email || !emailRe.test(form.email)) {
-        errors.email = 'Bitte geben Sie eine gültige Email-Adresse an.'
-        ok = false
-    }
-    if (!form.korrekturabzug || !form.korrekturabzug.trim()) {
-        errors.korrekturabzug = 'Bitte geben Sie eine Adresse für den Korrekturabzug an.'
-        ok = false
-    }
-    if (selectedId.value === '') {
-        errors.format = 'Bitte wählen Sie ein Format aus.'
-        ok = false
-    }
-
-    return ok
-}
-
-function setTouched(field) {
-  if (field in touched) {
-    touched[field] = true
-  }
-}
-
-function resetForm() {
-  form.ausgabe = ''
-  form.vorname = ''
-  form.nachname = ''
-  form.kundennummer = ''
-  form.strasse = ''
-  form.hausnr = ''
-  form.plz = ''
-  form.ort = ''
-  form.telefon = ''
-  form.email = ''
-  form.uebernahme = ''
-  form.korrekturabzug = ''
-  form.notizen = ''
-  form.vorlage = ''
-  form.format = ''
-}
-
-async function submitForm() {
-  successMessage.value = ''
-  errorMessage.value = ''
-  showErrors.value = false
-
-  if (honeypot.value || Date.now() - startTime < 3000) {
-    return
-  }
-
-  if (!validate()) {
-    showErrors.value = true
-    errorMessage.value = 'Bitte füllen Sie alle Pflichtfelder korrekt aus.'
-    Object.keys(touched).forEach((key) => {
-      touched[key] = true
-    })
-    const firstError = Object.keys(errors).find((key) => errors[key])
-    if (firstError && formRef.value) {
-      const el = formRef.value.querySelector(`[name="${firstError}"]`)
-      el?.focus()
-    }
-    return
-  }
-
-  submitting.value = true
-  try {
-    const res = await sendBestellung(
-        form.kundennummer,
-        form.ausgabe,
-        form.newsletter ? 'newsletter' : selectedId.value,
-        "privatpreis",
-        null,
-        form.uebernahme,
-        form.korrekturabzug,
-        form.notizen,
-        {
-            vorname: form.vorname,
-            name: form.nachname,
-            strasse: form.strasse,
-            nr: form.hausnr,
-            plz: form.plz,
-            ort: form.ort,
-            land: "DE",
-            zusatz: null,
-            telefon: form.telefon,
-            email: form.email
+const {
+    form,
+    errors,
+    touched,
+    successMessage,
+    errorMessage,
+    formRef,
+    submitting,
+    showErrors,
+    setTouched,
+    submitForm,
+} = useAnzeigeForm({
+    initialValues: {
+        ausgabe: '', vorname: '', nachname: '', strasse: '', hausnr: '', plz: '', ort: '',
+        telefon: '', email: '', kundennummer: '', uebernahme: '', korrekturabzug: '',
+        platzierung: '', notizen: '', format: '', newsletter: '', kategorie: 'ortspreis',
+        firma: '',
+    },
+    selectedId,
+    honeypot,
+    startTime,
+    requiredFields: {
+        ausgabe: 'Bitte geben Sie die gewünschte Ausgabe an.',
+        vorname: 'Bitte geben Sie Ihren Vornamen an.',
+        nachname: 'Bitte geben Sie Ihren Nachnamen an.',
+        strasse: 'Bitte geben Sie Ihre Straße an.',
+        hausnr: 'Bitte geben Sie Ihre Hausnummer an.',
+        plz: 'Bitte geben Sie Ihre Postleitzahl an.',
+        ort: 'Bitte geben Sie Ihren Ort an.',
+        telefon: 'Bitte geben Sie Ihre Telefonnummer an.',
+        firma: 'Bitte geben Sie den Firmennamen an.',
+        korrekturabzug: 'Bitte geben Sie eine Adresse für den Korrekturabzug an.',
+    },
+    emailFields: {
+        email: 'Bitte geben Sie eine gültige Email-Adresse an.',
+    },
+    validateAdditional: ({ form, selectedId, errors }) => {
+        if (selectedId === 'newsletter' && !form.newsletter) {
+            errors.newsletter = 'Bitte geben Sie die Anzahl der Wochen für den Newsletter an.'
         }
-    )
-    if (res.status === "ok") {
-        await uploadVorlage(res.bestellung_id, uploadedFile.value)
-    }
+    },
+    onSubmit: async ({ form, selectedId }) => {
+        const res = await sendBestellung(
+            form.kundennummer,
+            form.ausgabe,
+            form.newsletter ? 'newsletter' : selectedId,
+            form.kategorie,
+            form.platzierung,
+            form.uebernahme,
+            form.korrekturabzug,
+            form.notizen,
+            {
+                firma: form.firma,
+                vorname: form.vorname,
+                name: form.nachname,
+                strasse: form.strasse,
+                nr: form.hausnr,
+                zusatz: null,
+                plz: form.plz,
+                ort: form.ort,
+                land: 'DE',
+                telefon: form.telefon,
+                email: form.email,
+            },
+        )
+        if (res.status === 'ok') {
+            await uploadVorlage(res.bestellung_id, uploadedFile.value[0])
+        }
+    },
+    successText: 'Erfolgreich abgesendet! Bitte bestätigen Sie Ihre Email-Adresse, damit wir Ihre Anfrage bearbeiten können.',
+})
 
-    successMessage.value = 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.'
-    resetForm()
-  } catch (e) {
-    errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
-  } finally {
-    submitting.value = false
-  }
-}
+const { livePreis, livePreisLoading } = useLivePreis(form, selectedId)
 </script>

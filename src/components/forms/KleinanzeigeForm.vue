@@ -1,11 +1,6 @@
 <template>
   <div class="kleinanzeige-formular">
     <form ref="formRef" class="contact-form needs-validation" @submit.prevent="submitForm" novalidate>
-      <div class="messages">
-        <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-      </div>
-
       <div class="row gx-4">
         <div class="col-md-6">
           <div class="form-floating mb-4">
@@ -162,18 +157,18 @@
         </div>
       </div>
     </form>
+
+    <div class="messages">
+      <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue'
-import FileUpload from './FileUpload.vue'
+import { computed, ref } from 'vue'
 import { sendKleinanzeige } from '@/services/MailService.js'
-
-const formRef = ref(null)
-const submitting = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
+import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 
 const honeypot = ref("")
 const startTime = Date.now()
@@ -183,135 +178,54 @@ const rubriken = [
   'Biete',
 ]
 
-const form = reactive({
-  name: '',
-  email: '',
-  strasse: '',
-  plz: '',
-  ort: '',
-  rubrik: '',
-  anzeigentext: '',
-})
-
-const errors = reactive({
-  name: '',
-  email: '',
-  strasse: '',
-  plz: '',
-  ort: '',
-  rubrik: '',
-  anzeigentext: '',
-})
-
-const touched = reactive({
-  name: false,
-  email: false,
-  strasse: false,
-  plz: false,
-  ort: false,
-  rubrik: false,
-  anzeigentext: false,
-})
-
-const showErrors = ref(false)
 const uploadedFiles = ref([])
-
-const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const plzRe = /^\d{5}$/
 
-function validate() {
-  Object.keys(errors).forEach((key) => (errors[key] = ''))
-
-  let ok = true
-  if (!form.name || !form.name.trim()) {
-    errors.name = 'Bitte Namen angeben.'
-    ok = false
-  }
-  if (!form.email || !emailRe.test(form.email)) {
-    errors.email = 'Bitte geben Sie eine gültige Email an.'
-    ok = false
-  }
-  if (!form.strasse || !form.strasse.trim()) {
-    errors.strasse = 'Bitte Straße und Hausnr. angeben.'
-    ok = false
-  }
-  if (!form.plz || !plzRe.test(form.plz)) {
-    errors.plz = 'Bitte eine gültige PLZ angeben.'
-    ok = false
-  }
-  if (!form.ort || !form.ort.trim()) {
-    errors.ort = 'Bitte Ort angeben.'
-    ok = false
-  }
-  if (!form.rubrik) {
-    errors.rubrik = 'Bitte eine Rubrik wählen.'
-    ok = false
-  }
-  if (!form.anzeigentext || !form.anzeigentext.trim()) {
-    errors.anzeigentext = 'Bitte einen Anzeigentext angeben.'
-    ok = false
-  }
-
-  return ok
-}
-
-function setTouched(field) {
-  if (field in touched) {
-    touched[field] = true
-  }
-}
-
-function resetForm() {
-  form.name = ''
-  form.email = ''
-  form.strasse = ''
-  form.plz = ''
-  form.ort = ''
-  form.rubrik = ''
-  form.anzeigentext = ''
-  uploadedFiles.value = []
-}
-
-async function submitForm() {
-  successMessage.value = ''
-  errorMessage.value = ''
-  showErrors.value = false
-
-  if (honeypot.value || Date.now() - startTime < 3000) {
-    return
-  }
-
-  if (!validate()) {
-    showErrors.value = true
-    errorMessage.value = 'Bitte füllen Sie alle Pflichtfelder korrekt aus.'
-    Object.keys(touched).forEach((key) => {
-      touched[key] = true
-    })
-    const firstError = Object.keys(errors).find((key) => errors[key])
-    if (firstError && formRef.value) {
-      const el = formRef.value.querySelector(`[name="${firstError}"]`)
-      el?.focus()
+const {
+  form,
+  errors,
+  touched,
+  showErrors,
+  submitting,
+  successMessage,
+  errorMessage,
+  setTouched,
+  submitForm,
+} = useAnzeigeForm({
+  initialValues: {
+    name: '',
+    email: '',
+    strasse: '',
+    plz: '',
+    ort: '',
+    rubrik: '',
+    anzeigentext: '',
+  },
+  honeypot,
+  startTime,
+  requiredFields: {
+    name: 'Bitte Namen angeben.',
+    strasse: 'Bitte Straße und Hausnr. angeben.',
+    plz: 'Bitte eine gültige PLZ angeben.',
+    ort: 'Bitte Ort angeben.',
+    rubrik: 'Bitte eine Rubrik wählen.',
+    anzeigentext: 'Bitte einen Anzeigentext angeben.',
+  },
+  emailFields: {
+    email: 'Bitte geben Sie eine gültige Email an.',
+  },
+  validateAdditional: ({ form, errors }) => {
+    if (form.plz && !plzRe.test(form.plz)) {
+      errors.plz = 'Bitte eine gültige PLZ angeben.'
     }
-    return
-  }
-
-  submitting.value = true
-  try {
-    // const payload = new FormData()
-    // if (uploadedFiles.value[0]) {
-    //   payload.append('datei', uploadedFiles.value[0])
-    // }
-
-    await sendKleinanzeige(form.name, form.email, form.strasse, form.plz, form.ort, form.rubrik, form.text)
-
-    successMessage.value = 'Ihre Anzeige wurde erfolgreich eingereicht!'
-    resetForm()
-  } catch (e) {
-    errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
-  } finally {
-    submitting.value = false
-  }
-}
+  },
+  onSubmit: async ({ form }) => {
+    await sendKleinanzeige(form.name, form.email, form.strasse, form.plz, form.ort, form.rubrik, form.anzeigentext)
+    uploadedFiles.value = []
+  },
+  onError: (error) => console.error(error),
+  successText: 'Ihre Anzeige wurde erfolgreich eingereicht!',
+})
 
 const price = computed(() => {
   const textLength = form.anzeigentext.trim().length

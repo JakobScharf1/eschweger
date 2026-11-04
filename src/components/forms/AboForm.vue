@@ -173,12 +173,8 @@
 
 <script setup>
 import { postAbo } from '@/services/AboService.js'
-import { computed, reactive, ref } from 'vue'
-
-const formRef = ref(null)
-const submitting = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
+import { computed, ref } from 'vue'
+import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 
 const honeypot = ref("")
 const startTime = Date.now()
@@ -208,141 +204,99 @@ const startAm = computed(() => {
     .slice(0, 10)
 })
 
-const form = reactive({
+const {
+  form,
+  errors,
+  showErrors,
+  formRef,
+  submitting,
+  successMessage,
+  errorMessage,
+  submitForm,
+} = useAnzeigeForm({
+  initialValues: {
     ist_geschenk: false,
     start_am: startAm.value,
     empfaenger: {
-        name: '',
-        strasse: '',
-        nr: '',
-        plz: '',
-        ort: '',
-        land: 'DE',
-        email: '',
+      name: '',
+      strasse: '',
+      nr: '',
+      plz: '',
+      ort: '',
+      land: 'DE',
+      email: '',
     },
     zahler: {
-        name: '',
-        strasse: '',
-        nr: '',
-        plz: '',
-        ort: '',
-        land: 'DE',
-        email: '',
+      name: '',
+      strasse: '',
+      nr: '',
+      plz: '',
+      ort: '',
+      land: 'DE',
+      email: '',
     },
     grussnachricht: '',
     notiz_vom_besteller: '',
-})
-
-const errors = reactive({
+  },
+  initialErrors: {
     chosenAbo: '',
-    ist_geschenk: '',
     empfaenger: {
-        name: '',
-        strasse: '',
-        nr: '',
-        plz: '',
-        ort: '',
-        email: '',
+      name: '',
+      strasse: '',
+      nr: '',
+      plz: '',
+      ort: '',
+      email: '',
     },
     zahler: {
-        name: '',
-        strasse: '',
-        nr: '',
-        plz: '',
-        ort: '',
-        email: '',
+      name: '',
+      strasse: '',
+      nr: '',
+      plz: '',
+      ort: '',
+      email: '',
     },
     grussnachricht: '',
-})
-
-const showErrors = ref(false)
-
-const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-function validate() {
-  errors.chosenAbo = ''
-  errors.ist_geschenk = ''
-  errors.grussnachricht = ''
-
-  for (const address of ['empfaenger', 'zahler']) {
-    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'email']) {
-      errors[address][field] = ''
+    notiz_vom_besteller: '',
+  },
+  honeypot,
+  startTime,
+  validateForm: ({ form, errors }) => {
+    const fields = ['name', 'strasse', 'nr', 'plz', 'ort', 'email']
+    const fieldLabels = {
+      name: 'Namen',
+      strasse: 'Straße',
+      nr: 'Hausnummer',
+      plz: 'PLZ',
+      ort: 'Ort',
+      email: 'E-Mail-Adresse',
     }
-  }
+    const addressesToValidate = form.ist_geschenk ? ['empfaenger', 'zahler'] : ['zahler']
 
-  let isValid = true
-  const addressesToValidate = form.ist_geschenk ? ['empfaenger', 'zahler'] : ['zahler']
-
-  for (const address of addressesToValidate) {
-    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'email']) {
-      const value = form[address][field].trim()
-      if (!value) {
-        errors[address][field] = `Bitte geben Sie ${field === 'plz' ? 'PLZ' : field === 'ort' ? 'Ort' : field === 'strasse' ? 'Straße' : field === 'nr' ?  'Hausnummer' : field === 'email' ? 'E-Mail-Adresse' : 'Namen'} an.`
-        isValid = false
-      } else if (field === 'email' && !emailRe.test(value)) {
-        errors[address][field] = 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
-        isValid = false
+    for (const address of addressesToValidate) {
+      for (const field of fields) {
+        const value = form[address][field].trim()
+        if (!value) {
+          errors[address][field] = `Bitte geben Sie ${fieldLabels[field]} an.`
+        } else if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          errors[address][field] = 'Bitte geben Sie eine gültige E-Mail-Adresse an.'
+        }
       }
     }
-  }
 
-  if (!props.chosenAbo) {
-    isValid = false
-    errors.chosenAbo = 'Bitte wählen Sie ein Abo aus.'
-  }
-
-  return isValid
-}
-
-function resetForm() {
-  form.ist_geschenk = false
-  for (const address of ['empfaenger', 'zahler']) {
-    for (const field of ['name', 'strasse', 'nr', 'plz', 'ort', 'email']) {
-      form[address][field] = ''
+    if (!props.chosenAbo) {
+      errors.chosenAbo = 'Bitte wählen Sie ein Abo aus.'
     }
-  }
-  form.grussnachricht = ''
-  form.notiz_vom_besteller = ''
-  form.empfaenger.land = 'DE'
-  form.zahler.land = 'DE'
-  form.start_am = startAm.value
-}
-
-async function submitForm() {
-  successMessage.value = ''
-  errorMessage.value = ''
-  showErrors.value = false
-
-  if (honeypot.value || Date.now() - startTime < 3000) {
-    return
-  }
-
-  if (!validate()) {
-    showErrors.value = true
-    errorMessage.value = 'Bitte füllen Sie alle Pflichtfelder korrekt aus.'
-    formRef.value?.querySelector('.is-invalid')?.focus()
-    return
-  }
-
-  if (!form.ist_geschenk) {
-    Object.assign(form.empfaenger, form.zahler)
-  }
-
-  submitting.value = true
-  try {
-    await postAbo(props.active, props.chosenAbo, {
-      ...form,
-    })
-
-    successMessage.value = 'Erfolgreich gesendet! Bitte überprüfen Sie Ihre E-Mails, um die Bestellung zu bestätigen.'
-    resetForm()
-  } catch (e) {
-    console.error(e)
-    errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
-  } finally {
-    submitting.value = false
-  }
-}
+  },
+  onSubmit: async ({ form }) => {
+    if (!form.ist_geschenk) {
+      Object.assign(form.empfaenger, form.zahler)
+    }
+    await postAbo(props.active, props.chosenAbo, { ...form })
+  },
+  onError: (error) => console.error(error),
+  successText: 'Erfolgreich gesendet! Bitte überprüfen Sie Ihre E-Mails, um die Bestellung zu bestätigen.',
+})
 </script>
 
 <style scoped>

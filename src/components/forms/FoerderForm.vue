@@ -201,53 +201,77 @@
 
 <script setup>
 import { sendFoerder } from '@/services/MailService'
-import { computed, reactive, ref } from 'vue'
-
-const formRef = ref(null)
-const submitting = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
+import { computed, ref } from 'vue'
+import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 
 const honeypot = ref("")
 const startTime = Date.now()
+const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const form = reactive({
-  spendenbetrag: null,
-  personentyp: '',
-  email: '',
-  name: '',
-  strasse: '',
-  hausnr: '',
-  plz: '',
-  ort: '',
-  zahlart: '',
+const {
+  form,
+  errors,
+  touched,
+  showErrors,
+  formRef,
+  submitting,
+  successMessage,
+  errorMessage,
+  setTouched,
+  submitForm,
+} = useAnzeigeForm({
+  initialValues: {
+    spendenbetrag: null,
+    personentyp: '',
+    email: '',
+    name: '',
+    strasse: '',
+    hausnr: '',
+    plz: '',
+    ort: '',
+    zahlart: '',
+  },
+  honeypot,
+  startTime,
+  validateForm: ({ form, errors }) => {
+    const minAmount = form.personentyp === 'Bürger:in'
+      ? 12
+      : form.personentyp === 'Gewerbetreibende:r' ? 36 : undefined
+
+    if (!form.spendenbetrag || (minAmount &&form.spendenbetrag < minAmount)) {
+      errors.spendenbetrag = `Bitte einen gültigen Spendenbetrag angeben.`
+    }
+    if (!form.personentyp) {
+      errors.personentyp = 'Bitte Personentyp auswählen.'
+    }
+    if (!form.email || !emailRe.test(form.email)) {
+      errors.email = 'Bitte geben Sie eine gültige Email an.'
+    }
+    if (!form.name || !form.name.trim()) {
+      errors.name = 'Bitte Namen angeben.'
+    }
+    if (!form.strasse || !form.strasse.trim()) {
+      errors.strasse = 'Bitte Straße angeben.'
+    }
+    if (!form.hausnr || !form.hausnr.trim()) {
+      errors.hausnr = 'Bitte Hausnummer angeben.'
+    }
+    if (!form.plz || !form.plz.trim()) {
+      errors.plz = 'Bitte PLZ angeben.'
+    }
+    if (!form.ort || !form.ort.trim()) {
+      errors.ort = 'Bitte Ort angeben.'
+    }
+    if (!form.zahlart) {
+      errors.zahlart = 'Bitte Zahlart auswählen.'
+    }
+  },
+  onSubmit: async ({ form }) => {
+    await sendFoerder(form.spendenbetrag, form.personentyp, form.email, form.name, form.strasse, form.plz, form.ort, form.zahlart)
+  },
+  onError: (error) => console.error(error),
+  successText: 'Spende erfolgreich übermittelt.',
 })
-
-const errors = reactive({
-  spendenbetrag: '',
-  personentyp: '',
-  email: '',
-  name: '',
-  strasse: '',
-  hausnr: '',
-  plz: '',
-  ort: '',
-  zahlart: '',
-})
-
-const touched = reactive({
-  spendenbetrag: false,
-  personentyp: false,
-  email: false,
-  name: false,
-  strasse: false,
-  hausnr: false,
-  plz: false,
-  ort: false,
-  zahlart: false,
-})
-
-const showErrors = ref(false)
 
 const minAmount = computed(() => {
   if (form.personentyp === 'Bürger:in') return 12
@@ -261,104 +285,6 @@ const amountInfo = computed(() => {
   return 'Für Bürger:innen mind. 12 €/Jahr, für Gewerbetreibende mind. 36 €/Jahr.'
 })
 
-
-const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-function validate() {
-  Object.keys(errors).forEach((key) => (errors[key] = ''))
-
-  let ok = true
-  if (!form.spendenbetrag || form.spendenbetrag < minAmount.value) {
-    errors.spendenbetrag = `Bitte einen gültigen Spendenbetrag angeben (${minAmount.value} € mindestens).`
-    ok = false
-  }
-  if (!form.personentyp) {
-    errors.personentyp = 'Bitte Personentyp auswählen.'
-    ok = false
-  }
-  if (!form.email || !emailRe.test(form.email)) {
-    errors.email = 'Bitte geben Sie eine gültige Email an.'
-    ok = false
-  }
-  if (!form.name || !form.name.trim()) {
-    errors.name = 'Bitte Namen angeben.'
-    ok = false
-  }
-  if (!form.strasse || !form.strasse.trim()) {
-    errors.strasse = 'Bitte Straße angeben.'
-    ok = false
-  }
-  if (!form.hausnr || !form.hausnr.trim()) {
-    errors.hausnr = 'Bitte Hausnummer angeben.'
-    ok = false
-  }
-  if (!form.plz || !form.plz.trim()) {
-    errors.plz = 'Bitte PLZ angeben.'
-    ok = false
-  }
-  if (!form.ort || !form.ort.trim()) {
-    errors.ort = 'Bitte Ort angeben.'
-    ok = false
-  }
-  if (!form.zahlart) {
-    errors.zahlart = 'Bitte Zahlart auswählen.'
-    ok = false
-  }
-
-  return ok
-}
-
-function setTouched(field) {
-  if (field in touched) {
-    touched[field] = true
-  }
-}
-
-function resetForm() {
-  form.spendenbetrag = null
-  form.email = ''
-  form.name = ''
-  form.strasse = ''
-  form.hausnr = ''
-  form.plz = ''
-  form.ort = ''
-  form.zahlart = ''
-}
-
-async function submitForm() {
-  successMessage.value = ''
-  errorMessage.value = ''
-  showErrors.value = false
-
-  if (honeypot.value || Date.now() - startTime < 3000) {
-    return
-  }
-
-  if (!validate()) {
-    showErrors.value = true
-    errorMessage.value = 'Bitte füllen Sie alle Pflichtfelder korrekt aus.'
-    Object.keys(touched).forEach((key) => {
-      touched[key] = true
-    })
-    const firstError = Object.keys(errors).find((key) => errors[key])
-    if (firstError && formRef.value) {
-      const el = formRef.value.querySelector(`[name="${firstError}"]`)
-      el?.focus()
-    }
-    return
-  }
-
-  submitting.value = true
-  try {
-    await sendFoerder(form.spendenbetrag, form.personentyp, form.email, form.name, form.strasse, form.plz, form.ort, form.zahlart)
-    successMessage.value = 'Spende erfolgreich übermittelt.'
-    resetForm()
-  } catch (e) {
-    errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
-  } finally {
-    submitting.value = false
-  }
-}
 </script>
 
 <style scoped>

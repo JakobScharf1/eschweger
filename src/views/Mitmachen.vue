@@ -175,7 +175,7 @@
               Wie man sehen kann, ist die journalistische Arbeit sehr vielfältig. Zum Glück kann sie in eine Reihe von kleinen Mitmachpaketen aufgeteilt werden. So kann sich jede:r für sich das heraussuchen, was er/sie bewältigen kann und/oder was ihm/ihr Spaß macht.<br/>
               Natürlich kann ein: Mitmacher:in mehrere Pakete auswählen oder auch Mitmachpakete, die ihm/ihr zu viel werden, abgeben. Von daher lässt sich der individuelle Arbeitsumfang maßschneidern.<br/>
             </p>
-            <MitmachFormular />
+            <MitmachForm />
         </div>
     </div>
 </section>
@@ -183,7 +183,7 @@
 </template>
 
 <script setup>
-import MitmachFormular from '@/components/MitmachFormular.vue';
+import MitmachForm from '@/components/forms/MitmachForm.vue';
 import { reactive } from 'vue';
 
 const pakete = reactive([

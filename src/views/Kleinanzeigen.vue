@@ -105,7 +105,7 @@
 </template>
 
 <script setup>
-import KleinanzeigeForm from '@/components/KleinanzeigeForm.vue';
+import KleinanzeigeForm from '@/components/forms/KleinanzeigeForm.vue';
 
 </script>
 

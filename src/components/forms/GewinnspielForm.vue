@@ -154,10 +154,13 @@
             <textarea
               name="loesung"
               class="form-control"
+              :class="{ 'is-invalid': errors.loesung && (showErrors || touched.loesung) }"
               placeholder="Lösung"
               v-model="form.loesung"
+              @blur="setTouched('loesung')"
             ></textarea>
             <label>Lösung *</label>
+            <div v-if="errors.loesung && (showErrors || touched.loesung)" class="invalid-feedback">{{ errors.loesung }}</div>
           </div>
         </div>
 
@@ -192,155 +195,59 @@ Datenschutz: Die erfassten Adressen werden bei uns gespeichert und nicht an Drit
 
 <script setup>
 import { sendLoesung } from '@/services/GewinnspielService'
-import { reactive, ref } from 'vue'
-
-const formRef = ref(null)
-const submitting = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
+import { ref } from 'vue'
+import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 
 const honeypot = ref("")
 const startTime = Date.now()
 
-const form = reactive({
-  vorname: '',
-  nachname: '',
-  email: '',
-  telefon: '',
-  strasse: '',
-  hausnr: '',
-  plz: '',
-  ort: '',
-  loesung: '',
-})
-
-const errors = reactive({
-  vorname: '',
-  nachname: '',
-  email: '',
-  telefon: '',
-  strasse: '',
-  hausnr: '',
-  plz: '',
-  ort: '',
-  loesung: '',
-})
-
-const touched = reactive({
-  vorname: false,
-  nachname: false,
-  email: false,
-  telefon: false,
-  strasse: false,
-  hausnr: false,
-  plz: false,
-  ort: false,
-  loesung: false,
-})
-
-const showErrors = ref(false)
-
-const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-function validate() {
-  Object.keys(errors).forEach((key) => (errors[key] = ''))
-
-  let ok = true
-  if (!form.vorname || !form.vorname.trim()) {
-    errors.vorname = 'Bitte Vornamen angeben.'
-    ok = false
-  }
-  if (!form.nachname || !form.nachname.trim()) {
-    errors.nachname = 'Bitte Nachnamen angeben.'
-    ok = false
-  }
-  if (!form.email || !emailRe.test(form.email)) {
-    errors.email = 'Bitte geben Sie eine gültige Email an.'
-    ok = false
-  }
-  if (!form.telefon || !form.telefon.trim()) {
-    errors.telefon = 'Bitte Telefonnummer angeben.'
-    ok = false
-  }
-  if (!form.strasse || !form.strasse.trim()) {
-    errors.strasse = 'Bitte Straße angeben.'
-    ok = false
-  }
-  if (!form.hausnr || !form.hausnr.trim()) {
-    errors.hausnr = 'Bitte Hausnummer angeben.'
-    ok = false
-  }
-  if (!form.plz || !form.plz.trim()) {
-    errors.plz = 'Bitte PLZ angeben.'
-    ok = false
-  }
-  if (!form.ort || !form.ort.trim()) {
-    errors.ort = 'Bitte Ort angeben.'
-    ok = false
-  }
-  if (!form.loesung || !form.loesung.trim()) {
-    errors.loesung = 'Bitte Lösung angeben.'
-    ok = false
-  }
-
-  return ok
-}
-
-function setTouched(field) {
-  if (field in touched) {
-    touched[field] = true
-  }
-}
-
-function resetForm() {
-  form.vorname = ''
-  form.nachname = ''
-  form.email = ''
-  form.telefon = ''
-  form.strasse = ''
-  form.hausnr = ''
-  form.plz = ''
-  form.ort = ''
-  form.loesung = ''
-}
-
-async function submitForm() {
-  successMessage.value = ''
-  errorMessage.value = ''
-  showErrors.value = false
-
-  if (honeypot.value || Date.now() - startTime < 3000) {
-    return
-  }
-
-  if (!validate()) {
-    showErrors.value = true
-    errorMessage.value = 'Bitte füllen Sie alle Pflichtfelder korrekt aus.'
-    Object.keys(touched).forEach((key) => {
-      touched[key] = true
-    })
-    const firstError = Object.keys(errors).find((key) => errors[key])
-    if (firstError && formRef.value) {
-      const el = formRef.value.querySelector(`[name="${firstError}"]`)
-      el?.focus()
-    }
-    return
-  }
-
-  submitting.value = true
-  try {
+const {
+  form,
+  errors,
+  touched,
+  showErrors,
+  formRef,
+  submitting,
+  successMessage,
+  errorMessage,
+  setTouched,
+  submitForm,
+} = useAnzeigeForm({
+  initialValues: {
+    vorname: '',
+    nachname: '',
+    email: '',
+    telefon: '',
+    strasse: '',
+    hausnr: '',
+    plz: '',
+    ort: '',
+    loesung: '',
+  },
+  honeypot,
+  startTime,
+  requiredFields: {
+    vorname: 'Bitte Vornamen angeben.',
+    nachname: 'Bitte Nachnamen angeben.',
+    telefon: 'Bitte Telefonnummer angeben.',
+    strasse: 'Bitte Straße angeben.',
+    hausnr: 'Bitte Hausnummer angeben.',
+    plz: 'Bitte PLZ angeben.',
+    ort: 'Bitte Ort angeben.',
+    loesung: 'Bitte Lösung angeben.',
+  },
+  emailFields: {
+    email: 'Bitte geben Sie eine gültige Email an.',
+  },
+  onSubmit: async ({ form }) => {
     await sendLoesung(
       { anrede: null, titel: null, vorname: form.vorname, name: form.nachname, strasse: form.strasse, nr: form.hausnr, zusatz: null, plz: form.plz, ort: form.ort, land: "DE", email: form.email, telefon: form.telefon },
       [ { gewinnspiel_id: 2, antwort: form.loesung } ]
     )
-    successMessage.value = 'Erfolgreich eingetragen!'
-    resetForm()
-  } catch (e) {
-    errorMessage.value = 'Beim Senden des Formulars ist ein Fehler aufgetreten.'
-  } finally {
-    submitting.value = false
-  }
-}
+  },
+  onError: (error) => console.error(error),
+  successText: 'Erfolgreich eingetragen!',
+})
 </script>
 
 <style scoped>

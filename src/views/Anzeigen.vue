@@ -46,8 +46,8 @@
 </template>
 <script setup>
 import { reactive, ref, computed } from 'vue'
-import Privat from '@/components/anzeigen/Privat.vue'
-import Geschaeftlich from '@/components/anzeigen/Geschaeftlich.vue'
+import Privat from '@/components/forms/anzeigen/Privat.vue'
+import Geschaeftlich from '@/components/forms/anzeigen/Geschaeftlich.vue'
 
 const active = ref('geschaeftlich')
 
