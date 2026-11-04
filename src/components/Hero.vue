@@ -1,44 +1,27 @@
 <template>
   <section class="wrapper bg-gray hero-section mt-n5">
-    <div class="container text-center hero-content" :class="aktuelles !== '' ? 'pt-12 pt-md-16' : 'pt-21 pb-17'">
-      <div class="row justify-content-center">
-        <div
-          class="col-lg-8 col-xxl-7 mx-auto text-center"
-          data-aos="fade"
-          data-aos-once="true"
-          data-aos-delay=""
-        >
-          <img src="/assets/img/eschweger/head/eschweger_kommt.png" alt="Eschweger kommt" class="img-fluid d-block mx-auto mb-5 hero-logo">
-          <!-- <h1 class="display-1 fs-58 mb-7 headline">
-            {{ meta.title }} kommt!
-          </h1> -->
-          <div v-if="aktuelles !== ''" class="alert alert-primary" style="color: #133168" role="alert">
-            <b>Aktuelles</b><br/>
-            {{ aktuelles }}
-          </div>
-          <div
-            class="d-flex justify-content-center mb-5 mb-md-0"
-            data-aos="fade-up"
-            data-aos-once="true"
-            data-aos-delay="300"
-          >
-            <!-- <span
-              ><router-link
-                to="/contact"
-                class="btn btn-lg btn-outline-primary rounded-pill"
-                >KONTAKT</router-link
-              ></span
-            > -->
-          </div>
-        </div>
-        <!--/column -->
+    <div class="hero-banner">
+      <figure class="hero-bg-image">
+        <img src="/assets/img/eschweger/head/hero.jpeg?url" alt="photo" />
+      </figure>
+      <div
+        class="container text-center hero-content"
+        data-aos="fade"
+        data-aos-once="true"
+      >
+        <img
+          src="/assets/img/eschweger/head/eschweger_kommt.png"
+          alt="Eschweger kommt"
+          class="img-fluid d-block mx-auto hero-logo"
+        />
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container -->
-    <figure class="position-absolute hero-bg-image">
-      <img src="/assets/img/eschweger/head/hero.jpeg?url" alt="photo" />
-    </figure>
+    <div v-if="aktuelles !== ''" class="container hero-alert">
+      <div class="alert alert-primary" role="alert">
+        <b>Aktuelles</b><br />
+        {{ aktuelles }}
+      </div>
+    </div>
   </section>
 </template>
 
@@ -62,49 +45,62 @@ onMounted(async () => {
 .hero-section {
   position: relative;
   overflow: hidden;
-  padding-bottom: 20rem;
+  padding-top: 0;
+  padding-bottom: clamp(8rem, 18vh, 20rem);
+}
+
+.hero-banner {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 32rem;
 }
 
 .hero-logo {
-  max-width: 100%;
-  width: 700px;
+  width: min(700px, 100%);
   height: auto;
   filter: brightness(0) invert(1);
 }
 
 .hero-content {
-  position: relative;
-  z-index: 3;
+  z-index: 2;
 }
 
 .hero-bg-image {
-  top: 0;
-  right: 0;
-  left: 0;
-  width: 100%;
-  height: 60vh;
+  position: absolute;
+  inset: 0;
+  margin: 0;
   z-index: 1;
 }
 
 .hero-bg-image img {
   width: 100%;
-  height: 100%;
+  height: 100% !important;
   object-fit: cover;
   display: block;
   filter: brightness(0.6);
 }
 
-@media (max-width: 991px) {
+.hero-alert {
+  margin-top: 1.5rem;
+}
+
+.hero-alert .alert {
+  margin-bottom: 0;
+  color: #133168;
+}
+
+@media (max-width: 767.98px) {
   .hero-section {
-    padding-bottom: 4rem;
+    padding-bottom: 8rem;
   }
 
-  .hero-bg-image {
-    height: 12rem;
+  .hero-banner {
+    height: 24rem;
   }
 
-  .hero-content .alert {
-    margin-top: 6rem;
+  .hero-alert {
+    margin-top: 1rem;
   }
 }
 </style>

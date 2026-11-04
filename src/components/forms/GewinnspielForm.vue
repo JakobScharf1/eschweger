@@ -1,11 +1,6 @@
 <template>
   <div class="gewinnspiel-formular">
     <form ref="formRef" class="contact-form needs-validation" @submit.prevent="submitForm" novalidate>
-      <div class="messages">
-        <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-        <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-      </div>
-
       <div class="row gx-4">
         <!-- <div class="col-12 mb-4">
           <div class="form-check">
@@ -190,6 +185,11 @@ Datenschutz: Die erfassten Adressen werden bei uns gespeichert und nicht an Drit
         </div>
       </div>
     </form>
+
+    <div class="messages">
+      <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    </div>
   </div>
 </template>
 

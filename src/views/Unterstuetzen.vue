@@ -1,7 +1,7 @@
 <template>
   <section id="snippet-3" class="wrapper bg-gray">
     <div class="container pt-15 pt-md-17 pb-13 pb-md-15 text-center">
-      <div class="row">
+      <div class="row gy-4">
 
         <div class="col-md-12 col-lg-6 col-xl-6 mx-auto text-center">
           <img
