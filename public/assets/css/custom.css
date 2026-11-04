@@ -16,6 +16,7 @@
     -webkit-backdrop-filter: blur(2px);
 }
 .text-block {
+    display: block;
     text-align: justify;
     hyphens: auto;
 }

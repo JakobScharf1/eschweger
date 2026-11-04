@@ -241,7 +241,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <FileUpload
                         v-model="uploadedFile"
                         name="vorlage"
@@ -250,9 +250,9 @@
                         :allow-multiple="false"
                         max-file-size="10MB"
                     />
-                </div>
+                </div> -->
 
-                <div class="col-md-6">
+                <div class="col-12">
                     <div class="form-floating mb-4">
                         <textarea
                         name="notizen"
@@ -276,7 +276,7 @@
                     style="position:absolute; left:-9999px"
                 />
 
-                <em class="mb-3">Falls keine Vorlage vorliegt, kann diese nachgereicht werden. Entsprechend bitte in den Notizen anmerken.</em>
+                <em class="mb-3">Wir setzen uns bzgl. der Anzeigenvorlage(n) mit Ihnen in Verbindung. Gerne erstellen wir auch für Sie kostenpflichtig individuelle Anzeigenvorlagen.</em>
 
                 <input type="hidden" name="gewinnspiel" value="00_2026" />
 
@@ -299,8 +299,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import AdFormatCard from '@/components/forms/anzeigen/AdFormatCard.vue'
-import FileUpload from '@/components/FileUpload.vue'
-import { sendBestellung, uploadVorlage, getLivePreis } from '@/services/AnzeigeService.js'
+import { sendBestellung, getLivePreis } from '@/services/AnzeigeService.js'
 import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 
 const honeypot = ref("")
@@ -332,7 +331,7 @@ const selectedFormat = computed(() => {
     return format ? format : null
 })
 
-const uploadedFile = ref(null) // TODO
+// const uploadedFile = ref(null) // TODO
 
 const {
     form,
@@ -403,9 +402,9 @@ const {
                 email: form.email,
             },
         )
-        if (res.status === 'ok') {
-            await uploadVorlage(res.bestellung_id, uploadedFile.value)
-        }
+        // if (res.status === 'ok') {
+        //     await uploadVorlage(res.bestellung_id, uploadedFile.value)
+        // }
     },
     successText: 'Erfolgreich abgesendet! Ihre Anfrage wird schnellstmöglich bearbeitet.',
 })

@@ -57,6 +57,16 @@
     >Über</router-link>
   </li>
 
+  <li class="nav-item">
+    <router-link
+      class="gewinnspiel-item"
+      :class="['nav-link', { active: isActiveMenu('/gewinnspiele') }]"
+      to="/gewinnspiele"
+    >
+      Gewinnspiele
+    </router-link>
+  </li>
+
   <RapidMailPopup ref="popup"></RapidMailPopup>
 </template>
 
@@ -80,4 +90,11 @@ const isActiveMenu = (menuPath) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.gewinnspiel-item {
+  color: #daa400;
+}
+.gewinnspiel-item:hover, .gewinnspiel-item:focus, .gewinnspiel-item & .active{
+  color: #a37b00;
+}
+</style>

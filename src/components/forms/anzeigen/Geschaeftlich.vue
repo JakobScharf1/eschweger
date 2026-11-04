@@ -374,17 +374,17 @@
                 </div>
 
                 <div class="col-md-6">
-                    <FileUpload
+                    <!-- <FileUpload
                         v-model="uploadedFile"
                         name="vorlage"
                         label="Vorlage (kann nachgereicht werden, max. 10MB)"
                         :accepted-file-types="['image/jpg', 'image/png', 'application/pdf', 'application/octet-stream']"
                         :allow-multiple="false"
                         max-file-size="10MB"
-                    />
+                    /> -->
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-12">
                     <div class="form-floating mb-4">
                         <textarea
                         name="notizen"
@@ -408,7 +408,7 @@
                     style="position:absolute; left:-9999px"
                 />
 
-                <em class="mb-3">Falls keine Vorlage vorliegt, kann diese nachgereicht werden. Entsprechend bitte in den Notizen anmerken.</em>
+                <em class="mb-3">Wir setzen uns bzgl. der Anzeigenvorlage(n) mit Ihnen in Verbindung. Gerne erstellen wir auch für Sie kostenpflichtig individuelle Anzeigenvorlagen.</em>
 
                 <div class="col-12 justify-content-center mb-3">
                     <button type="submit" class="btn btn-primary rounded-pill btn-send" :disabled="submitting">
@@ -434,8 +434,7 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 import AdFormatCard from '@/components/forms/anzeigen/AdFormatCard.vue'
-import FileUpload from '@/components/FileUpload.vue'
-import { getPreisinfos, sendBestellung, uploadVorlage } from '@/services/AnzeigeService'
+import { getPreisinfos, sendBestellung } from '@/services/AnzeigeService'
 import { useLivePreis } from './useLivePreis'
 import { useAnzeigeForm } from '@/composables/useFormHandling.js'
 import { formatsGeschaeftlich as formats, gewinnspiele, umschlagseiten, alleGeschaeftlich as allFormats } from './anzeigenFormate'
@@ -485,7 +484,7 @@ const selectedFormat = computed(() => {
     return format ? format : null
 })
 
-const uploadedFile = ref(null)
+// const uploadedFile = ref(null)
 
 const {
     form,
@@ -493,7 +492,6 @@ const {
     touched,
     successMessage,
     errorMessage,
-    formRef,
     submitting,
     showErrors,
     setTouched,
@@ -552,9 +550,9 @@ const {
                 email: form.email,
             },
         )
-        if (res.status === 'ok') {
-            await uploadVorlage(res.bestellung_id, uploadedFile.value[0])
-        }
+        // if (res.status === 'ok') {
+        //     await uploadVorlage(res.bestellung_id, uploadedFile.value[0])
+        // }
     },
     successText: 'Erfolgreich abgesendet! Bitte bestätigen Sie Ihre Email-Adresse, damit wir Ihre Anfrage bearbeiten können.',
 })
