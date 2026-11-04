@@ -73,7 +73,6 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="mb-5 col-sm-12 col-lg-6">
                 <h3 class="mb-0 mt-3">Newsletter</h3>
@@ -132,23 +131,32 @@
                 </div>
             </div>
 
-            <div class="row gx-4">
-                <div class="col-md-6">
-                    <div class="form-floating mb-4">
+            <div v-if="ausgaben.length" class="row mb-5">
+                <h4>Gewünschte Ausgabe/n</h4>
+                <div
+                    v-for="(column, columnIndex) in ausgabenColumns"
+                    :key="columnIndex"
+                    class="col-12 col-md-4"
+                >
+                    <div v-for="(ausgabe, optionIndex) in ausgaben" :key="`${columnIndex}-${optionIndex}`" class="form-check">
                         <input
-                            type="text"
-                            name="ausgabe"
-                            class="form-control"
-                            :class="{ 'is-invalid': errors.ausgabe && (showErrors || touched.ausgabe) }"
-                            placeholder="Gewünschte Ausgabe"
-                            required
-                            v-model="form.ausgabe"
-                            @blur="setTouched('ausgabe')"
+                            :id="`ausgabe-${columnIndex}-${optionIndex}`"
+                            v-model="ausgabe.selected"
+                            class="form-check-input"
+                            type="checkbox"
+                            :value="ausgabe.erscheinungsdatum"
                         />
-                        <label>Gewünschte Ausgabe *</label>
-                        <div v-if="errors.ausgabe && (showErrors || touched.ausgabe)" class="invalid-feedback">{{ errors.ausgabe }}</div>
+                        <label
+                            class="form-check-label"
+                            :for="`ausgabe-${columnIndex}-${optionIndex}`"
+                        >
+                            {{ ausgabe.label }}
+                        </label>
                     </div>
                 </div>
+            </div>
+
+            <div class="row gx-4">
                 <div class="col-md-6">
                     <div class="form-floating mb-4">
                         <select class="form-select" id="preiskategorie" v-model="form.kategorie">
@@ -457,6 +465,13 @@ const preise = reactive({
     jahresrabatte: [],
 })
 
+const ausgaben = ref([ {
+            erscheinungsdatum: "2027-01-01",
+            label: "Januar 2027",
+            kurz: "01/2027",
+            intervall_monate: 1
+        },])
+
 function getInfos() {
     getPreisinfos().then((res) => {
         infos.auflage = res.publikation.auflage
@@ -467,6 +482,7 @@ function getInfos() {
         preise.platzierungswunsch = res.platzierungswunsch
         preise.jahresrabatte = res.jahresrabatte
         infos.sonderaktionen = res.sonderaktionen
+        res.ausgabenliste.forEach((a) => ausgaben.value.push({ ...a, selected: false }))
     })
 }
 
@@ -476,6 +492,19 @@ onMounted(() => {
 
 // ### FORM ###
 const selectedId = ref("")
+
+// ### Ausgaben ###
+const ausgabenColumns = computed(() => {
+    const columnCount = Math.min(3, ausgaben.value.length)
+    const columns = Array.from({ length: columnCount }, () => [])
+
+    ausgaben.value.forEach((option, index) => {
+        columns[index % columnCount].push(option)
+    })
+
+    return columns
+})
+
 function setSelectedId(id) {
   selectedId.value = id
 }
@@ -498,7 +527,7 @@ const {
     submitForm,
 } = useAnzeigeForm({
     initialValues: {
-        ausgabe: '', vorname: '', nachname: '', strasse: '', hausnr: '', plz: '', ort: '',
+        ausgabe: [], vorname: '', nachname: '', strasse: '', hausnr: '', plz: '', ort: '',
         telefon: '', email: '', kundennummer: '', uebernahme: '', korrekturabzug: '',
         platzierung: '', notizen: '', format: '', newsletter: '', kategorie: 'ortspreis',
         firma: '',
@@ -507,7 +536,7 @@ const {
     honeypot,
     startTime,
     requiredFields: {
-        ausgabe: 'Bitte geben Sie die gewünschte Ausgabe an.',
+        ausgabe: 'Bitte geben Sie die gewünschte/n Ausgabe/n an.',
         vorname: 'Bitte geben Sie Ihren Vornamen an.',
         nachname: 'Bitte geben Sie Ihren Nachnamen an.',
         strasse: 'Bitte geben Sie Ihre Straße an.',
@@ -526,10 +555,11 @@ const {
             errors.newsletter = 'Bitte geben Sie die Anzahl der Wochen für den Newsletter an.'
         }
     },
-    onSubmit: async ({ form, selectedId }) => {
-        const res = await sendBestellung(
+    onSubmit: async ({ form, selectedId, ausgaben }) => {
+        const selectedAusgaben = ausgaben.filter(a => a.selected)
+        await sendBestellung(
             form.kundennummer,
-            form.ausgabe,
+            selectedAusgaben,
             form.newsletter ? 'newsletter' : selectedId,
             form.kategorie,
             form.platzierung,
