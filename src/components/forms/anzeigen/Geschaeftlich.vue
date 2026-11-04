@@ -38,7 +38,7 @@
                 <h3 class="mb-0 mt-3">Gewinnspiele</h3>
                 <div class="row g-3 mt-1 mb-5">
                     <AdFormatCard
-                    class="col-sm-12 col-lg-6"
+                    class="col-sm-12 col-md-6"
                     v-for="f in gewinnspiele"
                     :key="f.id"
                     :value="f.id"
@@ -57,7 +57,7 @@
                  <h3 class="mb-0 mt-3">Umschlagseiten</h3>
                 <div class="row g-3 mt-1 mb-5">
                     <AdFormatCard
-                    class="col-sm-12 col-lg-6"
+                    class="col-sm-12 col-md-6"
                     v-for="f in umschlagseiten"
                     :key="f.id"
                     :value="f.id"
