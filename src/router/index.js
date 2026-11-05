@@ -19,19 +19,9 @@ router.beforeEach((to) => {
     window.location.href = to.meta.externalRedirect;
     return false;
   }
-});
+})
 
-const setMeta = (attr, key, content) => {
-  let el = document.head.querySelector(`meta[${attr}="${key}"]`);
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(attr, key);
-    document.head.appendChild(el);
-  }
-  el.content = content;
-};
-
-router.afterEach((to) => {
+  router.afterEach((to) => {
   const url = SITE_URL + to.path;
   const title = to.meta.title ?? DEFAULT_TITLE;
   const description = to.meta.description ?? DEFAULT_DESC;
@@ -52,5 +42,15 @@ router.afterEach((to) => {
   }
   link.href = url;
 });
+
+const setMeta = (attr, key, content) => {
+  let el = document.head.querySelector(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.content = content;
+};
 
 export default router;

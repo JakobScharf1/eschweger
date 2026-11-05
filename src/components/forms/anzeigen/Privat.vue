@@ -72,7 +72,7 @@
             <div v-if="ausgaben.length" class="row mb-5">
                 <div
                     v-for="(ausgabe, optionIndex) in ausgaben"
-                    :key="ausgabe.erscheinungsdatum"
+                    :key="ausgabe.id"
                     class="col-12 col-md-4"
                 >
                     <div class="form-check">
@@ -82,7 +82,7 @@
                             class="form-check-input"
                             type="checkbox"
                             name="ausgabe"
-                            :value="ausgabe.erscheinungsdatum"
+                            :value="ausgabe.id"
                             @change="setTouched('ausgabe')"
                         />
                         <label
@@ -446,7 +446,7 @@ const {
     onSubmit: async ({ form, selectedId }) => {
         const selectedAusgaben = ausgaben.value
             .filter(ausgabe => ausgabe.selected)
-            .map(ausgabe => ausgabe.erscheinungsdatum)
+            .map(ausgabe => ausgabe.id)
 
         await sendBestellung(
             form.kundennummer,
