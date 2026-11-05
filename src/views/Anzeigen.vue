@@ -37,15 +37,19 @@
                     </li>
                 </ul>
 
-                <Privat v-show="active === 'privat'"></Privat>
-                <Geschaeftlich v-show="active === 'geschaeftlich'"></Geschaeftlich>
+                <div v-show="active === 'privat'">
+                    <Privat></Privat>
+                </div>
+                <div v-show="active === 'geschaeftlich'">
+                    <Geschaeftlich></Geschaeftlich>
+                </div>
             </div>
         </div>
     <!-- /.container -->
     </section>
 </template>
 <script setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref } from 'vue'
 import Privat from '@/components/forms/anzeigen/Privat.vue'
 import Geschaeftlich from '@/components/forms/anzeigen/Geschaeftlich.vue'
 
@@ -55,9 +59,5 @@ const tabs = reactive([
     { key: 'privat', label: 'Ich bin Privatkunde' },
     { key: 'geschaeftlich', label: 'Ich bin Geschäftskunde' },
 ])
-
-const currentComponent = computed(() => {
-    return tabs.find(t => t.key === active.value).component
-})
 
 </script>
