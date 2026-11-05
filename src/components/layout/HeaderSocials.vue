@@ -3,6 +3,7 @@
   <a
     v-for="(socialMedia, index) in socialMediaLinks"
     :key="index"
+    :title="socialMedia.title"
     :href="socialMedia.href"
     target="_blank"
   >
@@ -16,8 +17,8 @@ import { useMetaStore } from '@/stores/metadata';
 const meta = useMetaStore()
 
 const socialMediaLinks = [
-  { id: 2, href: meta.facebook, iconClass: "uil uil-facebook-f" },
-  { id: 4, href: meta.instagram, iconClass: "uil uil-instagram" },
+  { id: 2, href: meta.facebook, iconClass: "uil uil-facebook-f", title: "facebook" },
+  { id: 4, href: meta.instagram, iconClass: "uil uil-instagram", title: "instagram" },
 ];
 </script>
 

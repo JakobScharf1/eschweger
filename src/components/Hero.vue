@@ -2,7 +2,7 @@
   <section class="wrapper bg-gray hero-section mt-n5">
     <div class="hero-banner">
       <figure class="hero-bg-image">
-        <img src="/assets/img/eschweger/head/hero.jpeg?url" alt="photo" />
+        <img src="/assets/img/eschweger/head/hero.jpeg?url" alt="Stadt Eschwege Hintergrundbild" />
       </figure>
       <div
         class="container text-center hero-content"

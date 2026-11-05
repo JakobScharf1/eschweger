@@ -7,7 +7,7 @@
                     <img
                     src="/assets/img/icons/lineal/email.svg"
                     class="icon-svg icon-svg-sm mb-4"
-                    alt=""
+                    alt="Symbolbild Newsletter"
                     />
                     <h2 class="display-4 mb-3 pe-lg-10">
                     Unser Newsletter

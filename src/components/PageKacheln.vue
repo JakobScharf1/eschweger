@@ -15,7 +15,7 @@
                         <img
                             :src="item.iconSrc"
                             :class="item.iconClass"
-                            alt=""
+                            :alt="item.title"
                         />
                         <h4>{{ item.title }}</h4>
                         <p class="mb-0">{{ item.description }}</p>

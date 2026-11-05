@@ -22,7 +22,7 @@
           'mb-5',
         ]"
       >
-        <img src="/assets/img/icons/lineal/group-2.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
+        <img src="/assets/img/icons/lineal/group-2.svg" class=" icon-svg icon-svg-sm text-primary" alt="Symbolbild: Von BürgerInnen für BürgerInnen" />
       </div>
       <h4>Unabhängiger Journalismus von Bürger:innen für Bürger:innen</h4>
       <span class="mb-3 text-block">DIE ESCHWEGER steht für Journalismus von unten: Wir wollen selbst erzählen, was uns bewegt, was gut läuft und wo es hakt. Von uns über uns – direkt aus dem Leben unserer Stadt. Wir sind unabhängig, weltoffen und demokratisch und stehen für positive, optimistische Inhalte, die Mut machen. Dabei schauen wir kritisch hin und sprechen Probleme offen an.<br/>Wir orientieren uns bei der Erstellung an den Prinzipien des <a href="https://up2date.uni-bremen.de/artikel/konstruktiver-journalismus-wenn-medien-nach-loesungen-suchen" target="_blank" class="fw-bold link-blue">konstruktiven Journalismus</a>.</span>
@@ -40,7 +40,7 @@
           'mb-5',
         ]"
       >
-        <img src="/assets/img/icons/lineal/paper.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
+        <img src="/assets/img/icons/lineal/paper.svg" class=" icon-svg icon-svg-sm text-primary" alt="Symbolbild: Berichterstattung" />
       </div>
       <h4>Transparente und gemeinschaftliche Berichterstattung</h4>
       <p class="mb-3 text-block">Unsere Redaktion ist offen. Alle können mitmachen: mit einem Foto, einem Text, einer Idee, einem Vorschlag oder mit Kritik. Auch ein kleiner Beitrag zählt. Ihr müsst keine Profis sein – wir helfen einander. Gemeinsam geben wir Vereinen, engagierten Menschen und Organisationen eine Plattform. Wir zeigen, was in Eschwege los ist, hören unterschiedliche Stimmen und machen sichtbar, wie unsere Beiträge entstehen.<br/>
@@ -59,7 +59,7 @@
           'mb-5',
         ]"
       >
-        <img src="/assets/img/icons/lineal/megaphone.svg" class=" icon-svg icon-svg-sm text-primary" alt="photo" />
+        <img src="/assets/img/icons/lineal/megaphone.svg" class=" icon-svg icon-svg-sm text-primary" alt="Symbolbild: Frei Informationen für alle Haushalte" />
       </div>
       <h4>Frei zugängliche, verlässliche Informationen für alle Haushalte</h4>
       <p class="mb-3 text-block">Wir wollen Informationen aus unserer Stadt für alle Haushalte frei zugänglich machen: verständlich, sorgfältig recherchiert und nah am Alltag. <b>Das Heft wird kostenlos an vielen Auslagestellen in der Stadt verfügbar sein</b>. Wir berichten über Veranstaltungen, Angebote und bürgerschaftliches Engagement – und erzählen von Menschen, die etwas bewegen.<br/>

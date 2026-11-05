@@ -7,7 +7,7 @@
             <img
               class="mb-4"
               :src="meta.logoFooter"
-              alt="photo"
+              alt="DIE ESCHWEGER Logo weiß"
               style="filter: invert(1);width: 250px;"
             />
             <p class="mb-4">

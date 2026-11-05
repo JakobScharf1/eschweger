@@ -13,7 +13,7 @@
             <router-link to="/">
               <img
                 :src="meta.logo"
-                alt="photo"
+                alt="DIE ESCHWEGER Logo"
                 style="width: 250px;"
               />
             </router-link>

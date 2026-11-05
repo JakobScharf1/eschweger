@@ -14,7 +14,7 @@
 
     <section class="wrapper bg-gray">
         <div class="text-center p-15">
-            <h2 class="pb-0">Von Eschwegern für Eschweger: Eure Stadt, Eure Geschichten, Eure Zeitung!</h2>
+            <h1 class="pb-0">Von Eschwegern für Eschweger: Eure Stadt, Eure Geschichten, Eure Zeitung!</h1>
             <hr class="m-0" />
         </div>
         <!-- <Foerderer /> -->
