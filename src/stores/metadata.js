@@ -9,7 +9,7 @@ export const useMetaStore = defineStore('meta', () => {
     const facebook = ref("https://www.facebook.com/people/Die-Eschweger/61592634340997")
     const instagram = ref("https://instagram.com/dieeschweger")
     const favicon = ref("/favicon.ico")
-    const strasse = ref("Ab 1.1.2027: Marktstr. 29")
+    const strasse = ref("Marktstr. 29")
     const ort = ref("37269 Eschwege")
     const email = ref("info@brombeerland.de")
     const tel = ref("0160 89 89 401")

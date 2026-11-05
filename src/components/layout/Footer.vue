@@ -34,6 +34,7 @@
             <h4 class="widget-title text-white mb-3">Kontakt</h4>
             <router-link class="text-sky" to="/kontakt">Kontaktformular</router-link>
             <address class="pe-xl-15 pe-xxl-17">
+              Ab 1.1.2027:<br/>
               {{ meta.strasse }}<br/>
               {{ meta.ort }}
             </address>
