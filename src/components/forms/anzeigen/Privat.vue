@@ -71,17 +71,13 @@
             </div>
             <div v-if="ausgaben.length" class="row mb-5">
                 <div
-                    v-for="(column, columnIndex) in ausgabenColumns"
-                    :key="columnIndex"
+                    v-for="(ausgabe, optionIndex) in ausgaben"
+                    :key="ausgabe.erscheinungsdatum"
                     class="col-12 col-md-4"
                 >
-                    <div
-                        v-for="(ausgabe, optionIndex) in column"
-                        :key="ausgabe.erscheinungsdatum"
-                        class="form-check"
-                    >
+                    <div class="form-check">
                         <input
-                            :id="`privat-ausgabe-${columnIndex}-${optionIndex}`"
+                            :id="`privat-ausgabe-${optionIndex}`"
                             v-model="ausgabe.selected"
                             class="form-check-input"
                             type="checkbox"
@@ -91,7 +87,7 @@
                         />
                         <label
                             class="form-check-label"
-                            :for="`privat-ausgabe-${columnIndex}-${optionIndex}`"
+                            :for="`privat-ausgabe-${optionIndex}`"
                         >
                             {{ ausgabe.label }}
                         </label>
@@ -359,17 +355,6 @@ const ausgaben = ref([])
 onMounted(async () => {
     const res = await getPreisinfos()
     ausgaben.value = res.ausgabenliste.map(ausgabe => ({ ...ausgabe, selected: false }))
-})
-
-const ausgabenColumns = computed(() => {
-    const columnCount = Math.min(3, ausgaben.value.length)
-    const columns = Array.from({ length: columnCount }, () => [])
-
-    ausgaben.value.forEach((ausgabe, index) => {
-        columns[index % columnCount].push(ausgabe)
-    })
-
-    return columns
 })
 
 const yearAusgabenSelected = computed({

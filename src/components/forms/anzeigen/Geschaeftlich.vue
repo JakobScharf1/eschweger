@@ -150,16 +150,20 @@
                 </div>
             </div>
             <div v-if="ausgaben.length" class="row mb-5">
-                <div v-for="(column, columnIndex) in ausgabenColumns" :key="columnIndex" class="col-12 col-md-4">
-                    <div v-for="(ausgabe, optionIndex) in column" :key="ausgabe.erscheinungsdatum" class="form-check">
+                <div
+                    v-for="(ausgabe, optionIndex) in ausgaben"
+                    :key="ausgabe.erscheinungsdatum"
+                    class="col-12 col-md-4"
+                >
+                    <div class="form-check">
                         <input
-                            :id="`ausgabe-${columnIndex}-${optionIndex}`"
+                            :id="`ausgabe-${optionIndex}`"
                             v-model="ausgabe.selected"
                             class="form-check-input"
                             type="checkbox"
                             :value="ausgabe.erscheinungsdatum"
                         />
-                        <label class="form-check-label" :for="`ausgabe-${columnIndex}-${optionIndex}`">
+                        <label class="form-check-label" :for="`ausgabe-${optionIndex}`">
                             {{ ausgabe.label }}
                         </label>
                     </div>
@@ -502,17 +506,6 @@ onMounted(() => {
 const selectedId = ref("")
 
 // ### Ausgaben ###
-const ausgabenColumns = computed(() => {
-    const columnCount = Math.min(3, ausgaben.value.length)
-    const columns = Array.from({ length: columnCount }, () => [])
-
-    ausgaben.value.forEach((option, index) => {
-        columns[index % columnCount].push(option)
-    })
-
-    return columns
-})
-
 const yearAusgabenSelected = computed({
     get: () => ausgaben.value.length >= 12 && ausgaben.value.slice(0, 12).every(ausgabe => ausgabe.selected),
     set: selected => ausgaben.value.slice(0, 12).forEach(ausgabe => {
