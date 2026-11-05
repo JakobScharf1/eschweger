@@ -43,21 +43,21 @@
                 <div class="col-auto d-flex flex-wrap">
                     <div class="form-check me-5">
                         <input
-                            id="selectAusgabenYear"
+                            id="selectAusgabenYearP"
                             v-model="yearAusgabenSelected"
                             class="form-check-input"
                             type="checkbox"
                         />
-                        <label class="form-check-label" for="selectAusgabenYear">Nächsten 12 Ausgaben</label>
+                        <label class="form-check-label" for="selectAusgabenYearP">Nächsten 12 Ausgaben</label>
                     </div>
                     <div class="form-check">
                         <input
-                            id="selectAusgabenHalfyear"
+                            id="selectAusgabenHalfyearP"
                             v-model="halfyearAusgabenSelected"
                             class="form-check-input"
                             type="checkbox"
                         />
-                        <label class="form-check-label" for="selectAusgabenHalfyear">Nächsten 6 Ausgaben</label>
+                        <label class="form-check-label" for="selectAusgabenHalfyearP">Nächsten 6 Ausgaben</label>
                     </div>
                 </div>
                 <div v-if="errors.ausgabe && (showErrors || touched.ausgabe)" class="col-12">
@@ -72,7 +72,7 @@
             <div v-if="ausgaben.length" class="row mb-5">
                 <div
                     v-for="(ausgabe, optionIndex) in ausgaben"
-                    :key="ausgabe.ausgabe_id"
+                    :key="ausgabe.id"
                     class="col-12 col-md-4"
                 >
                     <div class="form-check">
@@ -82,7 +82,7 @@
                             class="form-check-input"
                             type="checkbox"
                             name="ausgabe"
-                            :value="ausgabe.ausgabe_id"
+                            :value="ausgabe.id"
                             @change="setTouched('ausgabe')"
                         />
                         <label
@@ -446,7 +446,7 @@ const {
     onSubmit: async ({ form, selectedId }) => {
         const selectedAusgaben = ausgaben.value
             .filter(ausgabe => ausgabe.selected)
-            .map(ausgabe => ausgabe.ausgabe_id)
+            .map(ausgabe => ausgabe.id)
 
         await sendBestellung(
             form.kundennummer,

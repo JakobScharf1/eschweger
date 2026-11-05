@@ -23,7 +23,7 @@ export async function sendBestellung(kundennummer, ausgabeAm, formatCode, preisk
     return await ApiService.post("/anzeigen-bestellung", {
         publikation_id: import.meta.env.VITE_PUBLIKATION_ID,
         kundennummer: kundennummer,
-        ausgabe_am: ausgabeAm,
+        ausgabe_id: ausgabeAm,
         format_code: formatCode,
         preiskategorie: preiskategorie,
         newsletter_abonnenten: null,

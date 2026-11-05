@@ -135,12 +135,12 @@
                 <h4>Gewünschte Ausgabe/n</h4>
                 <div class="col-auto d-flex">
                     <div class="form-check me-5">
-                        <input v-model="yearAusgabenSelected" id="selectAusgabenYear" class="form-check-input" type="checkbox" >
-                        <label for="selectAusgabenYear">Nächsten 12 Ausgaben</label>
+                        <input v-model="yearAusgabenSelected" id="selectAusgabenYearG" class="form-check-input" type="checkbox" >
+                        <label for="selectAusgabenYearG">Nächsten 12 Ausgaben</label>
                     </div>
                     <div class="form-check">
-                        <input v-model="halfyearAusgabenSelected" id="selectAusgabenHalfyear" class="form-check-input" type="checkbox" >
-                        <label for="selectAusgabenHalfyear">Nächsten 6 Ausgaben</label>
+                        <input v-model="halfyearAusgabenSelected" id="selectAusgabenHalfyearG" class="form-check-input" type="checkbox" >
+                        <label for="selectAusgabenHalfyearG">Nächsten 6 Ausgaben</label>
                     </div>
                 </div>
             </div>
@@ -152,7 +152,7 @@
             <div v-if="ausgaben.length" class="row mb-5">
                 <div
                     v-for="(ausgabe, optionIndex) in ausgaben"
-                    :key="ausgabe.ausgabe_id"
+                    :key="ausgabe.id"
                     class="col-12 col-md-4"
                 >
                     <div class="form-check">
@@ -161,7 +161,7 @@
                             v-model="ausgabe.selected"
                             class="form-check-input"
                             type="checkbox"
-                            :value="ausgabe.ausgabe_id"
+                            :value="ausgabe.id"
                         />
                         <label class="form-check-label" :for="`ausgabe-${optionIndex}`">
                             {{ ausgabe.label }}
@@ -585,7 +585,7 @@ const {
         }
     },
     onSubmit: async ({ form, selectedId }) => {
-        const selectedAusgaben = ausgaben.value.filter(ausgabe => ausgabe.selected).map(a => a.ausgabe_id)
+        const selectedAusgaben = ausgaben.value.filter(ausgabe => ausgabe.selected).map(a => a.id)
         await sendBestellung(
             form.kundennummer,
             selectedAusgaben,
