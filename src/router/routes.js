@@ -129,4 +129,12 @@ export const routes = [
       title: "Datenschutz || " + pageTitle
     }
   },
+  {
+    path: "/bestaetigung",
+    name: "Bestätigung",
+    component: () => import("@/views/Bestaetigung.vue"),
+    meta: {
+      title: "Bestellung bestätigen || " + pageTitle,
+    },
+  }
 ];
