@@ -6,7 +6,7 @@
                     <h1>Bestellung bestätigt</h1>
                     <span>Vielen Dank. Ihre Anzeigenbestellung wurde erfolgreich bestätigt. Wir setzen uns in Kürze mit Ihnen in Verbindung.</span>
                 </template>
-                <template v-if="status === 'bereitBestaetigt'">
+                <template v-if="status === 'bereitsBestaetigt'">
                     <h1>Bestellung wurde bereits bestätigt</h1>
                     <span>Ihre Anzeigenbestellung wurde bereits erfolgreich bestätigt. Wir setzen uns in Kürze mit Ihnen in Verbindung.</span>
                 </template>
@@ -31,8 +31,8 @@ onMounted(async () => {
     if ("token" in query) {
         try {
             processing.value = true
-            const res = ApiService.get(`/anzeigen-bestellung/bestaetigen/${query.token}`)
-            status.value = await res.neu_bestaetigt
+            const res = await ApiService.get(`/anzeigen-bestellung/bestaetigen/${query.token}`)
+            status.value = res.anzahl_gruppe === res.neu_bestaetigt  ? "bestaetigt" : (res.anzahl_gruppe === res.bereits_bestaetigt ? "bereitsBestaetigt" : "error")
         } catch {
             status.value = "error"
         }
