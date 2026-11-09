@@ -9,13 +9,14 @@ export async function getPreisinfos() {
     return await ApiService.get(`/publikationen/${import.meta.env.VITE_PUBLIKATION_ID}/preisinfos`)
 }
 
-export async function getLivePreis(formatCode, preiskategorie, platzierungswunsch, newsletter) {
+export async function getLivePreis(formatCode, preiskategorie, platzierungswunsch, newsletter, ausgaben) {
     return await ApiService.post("/anzeigen-preis", {
         publikation_id: import.meta.env.VITE_PUBLIKATION_ID,
         format_code: formatCode,
         preiskategorie: preiskategorie,
         platzierungswunsch: platzierungswunsch,
-        newsletter_abonnenten: newsletter
+        newsletter_abonnenten: newsletter,
+        ausgabe_id: ausgaben,
     })
 }
 
