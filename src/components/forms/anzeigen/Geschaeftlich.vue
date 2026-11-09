@@ -543,7 +543,7 @@ const selectedFormat = computed(() => {
 
 // const uploadedFile = ref(null)
 
-const selectedAusgaben = computed(() => return ausgaben.value.filter(ausgabe => ausgabe.selected).map(a => a.id))
+const selectedAusgaben = computed(() => {return ausgaben.value.filter(ausgabe => ausgabe.selected).map(a => a.id)})
     
 const {
     form,
@@ -620,5 +620,5 @@ const {
     successText: 'Erfolgreich abgesendet! Bitte bestätigen Sie Ihre Anzeigenbestellung, damit wir Ihre Anfrage bearbeiten können.',
 })
 
-const { livePreis, livePreisLoading } = useLivePreis(form, selectedId, selectedAusgaben.value)
+const { livePreis, livePreisLoading } = useLivePreis(form, selectedId, selectedAusgaben)
 </script>

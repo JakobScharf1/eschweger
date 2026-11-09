@@ -396,7 +396,7 @@ const selectedFormat = computed(() => {
 
 // const uploadedFile = ref(null) // TODO
 
-const selectedAusgaben = computed(() => return ausgaben.value.filter(ausgabe => ausgabe.selected).map(ausgabe => ausgabe.id))
+const selectedAusgaben = computed(() => { return ausgaben.value.filter(ausgabe => ausgabe.selected).map(ausgabe => ausgabe.id) })
     
 const {
     form,
@@ -479,7 +479,7 @@ const {
 let timer = null
 const livePreis = ref(0)
 const livePreisLoading = ref(false)
-watch([form, selectedId], () => {
+watch([form, selectedId, selectedAusgaben], () => {
     if (selectedId.value) {
         livePreisLoading.value = true
         clearTimeout(timer)
