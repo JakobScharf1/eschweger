@@ -325,12 +325,20 @@
                     <button type="submit" class="btn btn-primary rounded-pill btn-send" :disabled="submitting">
                         {{ submitting ? 'Sende...' : 'Absenden' }}
                     </button>
+                </div>
+                <div class="col-12">
                     <small class="ms-3" v-if="livePreisLoading">
                         <div class="spinner-border" role="status">
                             <span class="visually-hidden">Lädt...</span>
                         </div>
                     </small>
-                    <small class="ms-3" v-else>{{ livePreis === 0 ? 'Bitte wählen Sie ein Format aus' : `${livePreis} € inkl. MwSt.` }}</small>
+                    <template v-else>
+                        <small v-if="livePreis.length === 0">Bitte wählen Sie ein Format aus</small>
+                        <template v-else>
+                            <small v-for="preis in livePreis">{{ preis }}<br/></small>
+                            <small>Alle Preise inkl. MwSt.</small>
+                        </template>
+                    </template>
                 </div>
             </div>
         </form>
@@ -488,7 +496,7 @@ watch([form, selectedId, selectedAusgaben], () => {
                 livePreis.value = res.summe_netto
             })
         }, 2000)
-    } else livePreis.value = 0
+    } else livePreis.value = []
     livePreisLoading.value = false
 }, { deep: true })
 
