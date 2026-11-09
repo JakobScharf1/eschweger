@@ -396,6 +396,8 @@ const selectedFormat = computed(() => {
 
 // const uploadedFile = ref(null) // TODO
 
+const selectedAusgaben = computed(() => return ausgaben.value.filter(ausgabe => ausgabe.selected).map(ausgabe => ausgabe.id))
+    
 const {
     form,
     errors,
@@ -447,13 +449,9 @@ const {
         email: 'Bitte geben Sie eine gültige Email-Adresse an.',
     },
     onSubmit: async ({ form, selectedId }) => {
-        const selectedAusgaben = ausgaben.value
-            .filter(ausgabe => ausgabe.selected)
-            .map(ausgabe => ausgabe.id)
-
         await sendBestellung(
             form.kundennummer,
-            selectedAusgaben,
+            selectedAusgaben.value,
             form.newsletter ? 'newsletter' : selectedId,
             'privatpreis',
             null,
@@ -486,7 +484,7 @@ watch([form, selectedId], () => {
         livePreisLoading.value = true
         clearTimeout(timer)
         timer = setTimeout(() => {
-            getLivePreis(selectedId.value, "privatpreis", false, form.newsletter).then(res => {
+            getLivePreis(selectedId.value, "privatpreis", false, form.newsletter, selectedAusgaben.value).then(res => {
                 livePreis.value = res.summe_netto
             })
         }, 2000)
