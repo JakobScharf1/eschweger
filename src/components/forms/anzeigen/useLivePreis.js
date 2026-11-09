@@ -5,7 +5,7 @@ export function useLivePreis(form, selectedId, selectedAusgaben) {
     let timer = null
     const livePreis = ref(0)
     const livePreisLoading = ref(false)
-    watch([form, selectedI, selectedAusgaben], () => {
+    watch([form, selectedId, selectedAusgaben], () => {
         if (form.kategorie && selectedId.value) {
             livePreisLoading.value = true
             clearTimeout(timer)
@@ -13,7 +13,7 @@ export function useLivePreis(form, selectedId, selectedAusgaben) {
                 getLivePreis(selectedId.value, form.kategorie, form.platzierung !== "", form.newsletter, selectedAusgaben.value).then(res => {
                     livePreis.value = res.summe_netto
                 })
-            }, 2000)
+            }, 1000)
         } else livePreis.value = 0
         livePreisLoading.value = false
     }, { deep: true })
