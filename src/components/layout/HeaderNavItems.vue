@@ -47,6 +47,7 @@
     <ul class="dropdown-menu">
       <li><router-link class="dropdown-item" to="/mitmachen">Mitmachen</router-link></li>
       <li><router-link class="dropdown-item" to="/foerdern">Fördermitgliedschaft</router-link></li>
+      <li><router-link class="dropdown-item" to="/coworking">Coworking-Space / STARTRAMPE</router-link></li>
     </ul>
   </li>
 

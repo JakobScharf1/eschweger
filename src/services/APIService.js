@@ -1,9 +1,13 @@
+//import { showDebug } from "@/main"
+
 class ApiError extends Error {
   constructor(status, statusText, message) {
     super(message ?? `${status} ${statusText}`)
     this.name = 'ApiError'
   }
 }
+
+//showDebug(`origin: ${location.origin}\nUA: ${navigator.userAgent}\nAPI: ${import.meta.env.VITE_API_URL}`)
 
 async function request(method, path, body, options = {}) {
   const url = new URL(import.meta.env.VITE_BASE_URL + path)
@@ -24,11 +28,16 @@ async function request(method, path, body, options = {}) {
     ...(options.headers || {}),
   }
 
-  const response = await fetch(url.toString(), {
-    method,
-    headers,
-    body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
-  })
+  //try {
+    const response = await fetch(url.toString(), {
+      method,
+      headers,
+      body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
+    })
+
+  //} catch (e) {
+    //showDebug(`${e.name}: ${e.message}\nstatus: ${e.response?.status}\nurl: ${e.config?.url ?? ''}\n${e.stack}`)
+  //}
 
   if (response.status !== 200 && response.status !== 201 && response.status !== 204) {
     throw new ApiError(response.status, response.statusText)

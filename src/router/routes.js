@@ -82,6 +82,14 @@ export const routes = [
     }
   },
   {
+    path: "/coworking",
+    name: "STARTRAMPE",
+    component: () => import("@/views/CoworkingSpace.vue"),
+    meta: {
+      title: "STARTRAMPE – Coworking in Eschwege || " + pageTitle
+    }
+  },
+  {
     path: "/anzeigen",
     name: "Anzeigen",
     component: () => import("@/views/Anzeigen.vue"),

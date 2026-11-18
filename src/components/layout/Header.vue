@@ -88,6 +88,9 @@
               <router-link to="/demo" @click="menuClose">Ausgaben</router-link>
             </li>
             <li class="nav-item">
+              <router-link to="/coworking" @click="menuClose">Coworking-Space</router-link>
+            </li>
+            <li class="nav-item">
               <router-link to="/gewinnspiele" @click="menuClose">Gewinnspiele</router-link>
             </li>
             <li class="nav-item">

@@ -77,6 +77,17 @@ const cards = [
   //   path: "/veranstaltungen"
   // },
   {
+    id: 3,
+    classes: "col-md-5",
+    cardClass: "bg-pale-leaf",
+
+    iconSrc: "/assets/img/icons/lineal/shop.svg",
+    iconClass: "icon-svg icon-svg-md text-leaf mb-3",
+    title: "STARTRAMPE",
+    description: "Der Coworking-Space mitten in Eschwege.",
+    path: "/coworking"
+  },
+  {
     id: 2,
     classes: "col-md-6 align-self-end",
     cardClass: "bg-pale-red",
@@ -87,18 +98,8 @@ const cards = [
       "Gewinnen Sie spannende Preise aus der Region!",
     path: "/gewinnspiele"
   },
-  // {
-  //   id: 3,
-  //   classes: "col-md-5",
-  //   cardClass: "bg-pale-leaf",
-  //   iconSrc: "/assets/img/icons/lineal/shop.svg",
-  //   iconClass: "icon-svg icon-svg-md text-leaf mb-3",
-  //   title: "Merchandise",
-  //   description: "Regional hergestellt und gestaltet.",
-  //   path: "/shop"
-  // },
   {
-    id: 3,
+    id: 4,
     classes: "col-md-6 align-self-start",
     cardClass: "bg-pale-yellow",
     iconSrc: "/assets/img/icons/lineal/pin.svg",
